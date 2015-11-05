@@ -64,7 +64,7 @@ class Motion < ActiveRecord::Base
   end
 
   def grouped_unique_votes
-    order = ['block', 'no', 'abstain', 'yes']
+    order = ['confused', 'block', 'no', 'abstain', 'yes', 'commited']
     unique_votes.sort do |a,b|
       order.index(a.position) <=> order.index(b.position)
     end
@@ -104,10 +104,12 @@ class Motion < ActiveRecord::Base
 
   # map of position and votes
   def vote_counts
-    {'yes' => yes_votes_count,
+    {'commited' => commited_votes_count,
+     'yes' => yes_votes_count,
      'abstain' => abstain_votes_count,
      'no' => no_votes_count,
-     'block' => block_votes_count}
+     'block' => block_votes_count,
+     'confused' => confused_votes_count}
   end
 
   def restricted_changes_made?

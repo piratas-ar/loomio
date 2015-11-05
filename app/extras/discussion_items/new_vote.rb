@@ -7,10 +7,12 @@ class DiscussionItems::NewVote < DiscussionItem
 
   def icon
     case vote.position
+    when "commited"     then 'position-commited-icon'
     when "yes"     then 'position-yes-icon'
     when "abstain" then 'position-abstain-icon'
     when "no"      then 'position-no-icon'
     when "block"   then 'position-block-icon'
+    when "confused"   then 'position-confused-icon'
     else
       'position-unvoted-icon'
     end

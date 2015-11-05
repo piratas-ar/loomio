@@ -38,6 +38,8 @@
     = t :"help.have_your_say_details_html"
   .col-sm-6
     .positions
+      =image_tag("hand-commited.png", class: "pull-left")
+      %p= t(:"help.positions_commited_description").html_safe
       =image_tag("hand-yes.png", class: "pull-left")
       %p= t(:"help.positions_agree_description").html_safe
       =image_tag("hand-abstain.png", class: "pull-left")
@@ -46,3 +48,5 @@
       %p= t(:"help.positions_disagree_description").html_safe
       =image_tag("hand-block.png", class: "pull-left")
       %p= t(:"help.positions_block_description").html_safe
+      =image_tag("hand-confused.png", class: "pull-left")
+      %p= t(:"help.positions_confused_description").html_safe

@@ -1,3 +1,7 @@
+= link_to t(:"position_verbs.commited").capitalize,
+          new_motion_vote_url( motion, @utm_hash.merge(position: 'commited')),
+          class: 'commited-link'
+= " - "
 = link_to t(:"position_verbs.yes").capitalize,
           new_motion_vote_url( motion, @utm_hash.merge(position: 'yes')),
           class: 'yes-link'
@@ -13,3 +17,7 @@
 = link_to t(:"position_verbs.block").capitalize,
           new_motion_vote_url( motion, @utm_hash.merge(position: 'block')),
           class: 'block-link'
+= " - "
+= link_to t(:"position_verbs.confused").capitalize,
+          new_motion_vote_url( motion, @utm_hash.merge(position: 'confused')),
+          class: 'confused-link'

@@ -492,11 +492,15 @@ es:
     mute_description: "Ocultar este grupo en el panel de control y no notificarme a no ser que sea @mencionado."
   thread_item:
     user_agreed_on_proposal_html: "<strong>%{name}</strong> apoyó la propuesta."
+    user_commited_on_proposal_html: "<strong>%{name}</strong> se compromete a realizar la propuesta."
+    user_confused_on_proposal_html: "<strong>%{name}</strong> se confundió con la propuesta."
     user_abstained_on_proposal_html: "<strong>%{name}</strong> se abstuvo en la propuesta."
     user_disagreed_on_proposal_html: "<strong>%{name}</strong> no estuvo de acuerdo con la propuesta."
     user_blocked_on_proposal_html: "<strong>%{name}</strong> bloqueó la propuesta."
     user_agreed_on_proposal_with_statement_html: "<strong>%{name}</strong> apoyó la propuesta:"
     user_abstained_on_proposal_with_statement_html: "<strong>%{name}</strong> se abstuvo en la propuesta:"
+    user_confused_on_proposal_with_statement_html: "<strong>%{name}</strong> se confundió con la propuesta:"
+    user_commited_on_proposal_with_statement_html: "<strong>%{name}</strong> se comprometió a realizar la propuesta:"
     user_disagreed_on_proposal_with_statement_html: "<strong>%{name}</strong> no estuvo de acuerdo con la propuesta:"
     user_blocked_on_proposal_with_statement_html: "<strong>%{name}</strong> bloqueó la propuesta:"
   discussion_items:
@@ -595,6 +599,10 @@ es:
   positions: Posiciones
   yes_position: Estoy de acuerdo
   yes_details: Estoy de acuerdo con esto y quiero que siga adelante.
+  commited_position: Me comprometo
+  commited_details: Voy a ayudar a que esta propuesta se lleve a cabo.
+  confused_position: Me confunde
+  confused_details: Encuentro la propuesta confusa y necesito que se la aclare.
   abstain_position: Me abstengo
   abstain_details: Estoy contento con lo que el grupo decida sin mí.
   no_position: No estoy de acuerdo
@@ -605,6 +613,8 @@ es:
   outcome_placeholder: ¿Cuál fue el resultado de esta propuesta?
   outcome_submit: Publicar resultado
   position_verbs:
+    confused: Confusión
+    commited: Compromiso
     "yes": De acuerdo
     "no": en desacuerdo
     abstain: Me abstengo
@@ -614,6 +624,8 @@ es:
       "no": No estoy de acuerdo
       abstain: Me abstengo
       block: Bloqueo
+      confused: Confusión
+      commited: Compromiso
   unable_to_vote:
     permission_denied: No tienes permiso para votar en esta propuesta.
     motion_closed: Esta propuesta ya se ha cerrado

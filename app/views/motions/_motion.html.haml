@@ -37,6 +37,9 @@
     %canvas.pie{id: "graph_#{motion.id}", height: 150, width: 150}
 
     .legend
+      .item.commited
+        = t(:'position_verbs.commited')
+        (#{motion.commited_votes_count})
       .item.yes
         = t(:'position_verbs.yes')
         (#{motion.yes_votes_count})
@@ -49,6 +52,9 @@
       .item.block
         = t(:'position_verbs.block')
         (#{motion.block_votes_count})
+      .item.confused
+        = t(:'position_verbs.confused')
+        (#{motion.confused_votes_count})
 
   .percentage-to-vote
     = t :engagement_on_open_proposal,

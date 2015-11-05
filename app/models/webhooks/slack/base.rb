@@ -34,10 +34,12 @@ Webhooks::Slack::Base = Struct.new(:event) do
   def motion_vote_field
     {
       title: "Have your say",
-      value: "#{proposal_link(eventable, "yes")} · " +
+      value: "#{proposal_link(eventable, "commited")} · " +
+             "#{proposal_link(eventable, "yes")} · " +
              "#{proposal_link(eventable, "abstain")} · " +
              "#{proposal_link(eventable, "no")} · " +
-             "#{proposal_link(eventable, "block")}"
+             "#{proposal_link(eventable, "block")} · " +
+             "#{proposal_link(eventable, "confused")}"
     }
   end
 
@@ -59,10 +61,12 @@ Webhooks::Slack::Base = Struct.new(:event) do
 
   def position_text_for(position)
     case position
+    when 'commited' then 'commited'
     when 'yes' then 'agree'
     when 'abstain' then 'abstain'
     when 'no' then 'no'
     when 'block' then 'block'
+    when 'confused' then 'confused'
     end
   end
 

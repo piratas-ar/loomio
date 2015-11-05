@@ -49,14 +49,21 @@ th{
   padding-right: 0.5em;
 }
 
+.confused { color: grey; }
+.commited { color: blue; }
 .agreed, .yes { color: #90D490;}
 .abstained, .abstain { color: #F0BB67; }
 .disagreed, .no { color: #D49090;}
 .blocked, .block { color: #dd0000; }
 
-.yes-link{
+.commited-link{
   font-weight: bold;
   margin: 0 5px 0 0;
+}
+
+.yes-link{
+  font-weight: bold;
+  margin: 0 5px;
 }
 
 .abstain-link{
@@ -70,6 +77,11 @@ th{
 }
 
 .block-link{
+  font-weight: bold;
+  margin: 0 5px;
+}
+
+.confused-link{
   font-weight: bold;
   margin: 0 5px;
 }
