@@ -1,13 +1,3 @@
-= render 'avatar', author: @author
-.thread-mailer__subject
-  %strong
-    = @discussion.author.name
-  %span
-    = t :"email.create_discussion.intro_html"
-  %span
-    %strong
-      = link_to @discussion.title, discussion_url(@discussion, @utm_hash)
-
-= render_rich_text(@discussion.description, @discussion.uses_markdown)
-- if @discussion.attachments.any?
-  = render "attachments", resource: @discussion
+= render "thread_mailer/header"
+= render "thread_mailer/body"
+= render "thread_mailer/footer"

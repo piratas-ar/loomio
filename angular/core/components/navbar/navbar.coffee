@@ -1,23 +1,15 @@
-angular.module('loomioApp').directive 'navbar', ->
+angular.module('loomioApp').directive 'navbar', ($rootScope, ModalService, AuthModal, AbilityService, AppConfig) ->
   scope: {}
   restrict: 'E'
   templateUrl: 'generated/components/navbar/navbar.html'
   replace: true
-  controller: ($scope, $rootScope, $window, Records, ModalService, SignInForm, AppConfig, AbilityService) ->
-    parser = document.createElement('a')
-    parser.href = AppConfig.baseUrl
-    $scope.showNavbar = true
+  controller: ($scope) ->
+    $scope.bgStyle = ->
+      {'background-image': "url(#{AppConfig.theme.small_logo_src})"}
 
-    $scope.$on 'toggleNavbar', (event, show) ->
-      $scope.showNavbar = show
-
-    $scope.hostName = parser.hostname
-
-    $scope.isLoggedIn = AbilityService.isLoggedIn
-
-    $scope.toggleSidebar = ->
-      $rootScope.$broadcast 'toggleSidebar'
-
+    $scope.isLoggedIn = ->
+      AbilityService.isLoggedIn()
+    $scope.toggleSidebar = -> $rootScope.$broadcast 'toggleSidebar'
 
     $scope.signIn = ->
-      ModalService.open SignInForm
+      ModalService.open AuthModal

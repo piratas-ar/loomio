@@ -5,6 +5,7 @@ angular.module('loomioApp').factory 'CommentModel', (DraftableModel, AppConfig) 
     @indices: ['discussionId', 'authorId']
     @serializableAttributes: AppConfig.permittedParams.comment
     @draftParent: 'discussion'
+    @draftPayloadAttributes: ['body', 'attachment_ids']
 
     afterConstruction: ->
       @newAttachmentIds = _.clone(@attachmentIds) or []
@@ -13,7 +14,6 @@ angular.module('loomioApp').factory 'CommentModel', (DraftableModel, AppConfig) 
       usesMarkdown: true
       discussionId: null
       body: ''
-      likerIds:           []
       attachmentIds:      []
       mentionedUsernames: []
 
@@ -28,6 +28,11 @@ angular.module('loomioApp').factory 'CommentModel', (DraftableModel, AppConfig) 
       data.comment.attachment_ids = @newAttachmentIds
       data
 
+    reactions: ->
+      @recordStore.reactions.find
+        reactableId: @id
+        reactableType: _.capitalize(@constructor.singular)
+
     group: ->
       @discussion().group()
 
@@ -37,20 +42,20 @@ angular.module('loomioApp').factory 'CommentModel', (DraftableModel, AppConfig) 
     isReply: ->
       @parentId?
 
-    hasContext: ->
+    hasDescription: ->
       !!@body
 
     parent: ->
       @recordStore.comments.find(@parentId)
 
-    likers: ->
-      @recordStore.users.find(@likerIds)
+    reactors: ->
+      @recordStore.users.find(_.pluck(@reactions(), 'userId'))
 
     newAttachments: ->
       @recordStore.attachments.find(@newAttachmentIds)
 
     attachments: ->
-      @recordStore.attachments.find(attachableId: @id, attachableType: 'Comment')
+      @recordStore.attachments.find(attachableId: @id, attachableType: _.capitalize(@constructor.singular))
 
     authorName: ->
       @author().name
@@ -60,15 +65,6 @@ angular.module('loomioApp').factory 'CommentModel', (DraftableModel, AppConfig) 
 
     authorAvatar: ->
       @author().avatarOrInitials()
-
-    addLiker: (user) ->
-      @likerIds.push user.id
-
-    removeLiker: (user) ->
-      @removeLikerId(user.id)
-
-    removeLikerId: (id) ->
-      @likerIds = _.without(@likerIds, id)
 
     cookedBody: ->
       cooked = @body

@@ -1,4 +1,4 @@
-angular.module('loomioApp').controller 'GroupPageController', ($rootScope, $location, $routeParams, $scope, Records, Session, MessageChannelService, AbilityService, AppConfig, LmoUrlService, PaginationService, PollService, ModalService) ->
+angular.module('loomioApp').controller 'GroupPageController', ($rootScope, $location, $routeParams, $scope, Records, Session, MessageChannelService, AbilityService, AppConfig, LmoUrlService, PaginationService, PollService, ModalService, InstallSlackModal) ->
   $rootScope.$broadcast 'currentComponent', {page: 'groupPage', key: $routeParams.key, skipScroll: true }
 
   @launchers = []
@@ -8,6 +8,13 @@ angular.module('loomioApp').controller 'GroupPageController', ($rootScope, $loca
       action:         action
       condition:      condition
       allowContinue:  opts.allowContinue
+
+  @addLauncher =>
+    ModalService.open InstallSlackModal,
+      group: => @group
+      requirePaidPlan: -> true
+  , ->
+    $location.search().install_slack
 
   @performLaunch = ->
     @launchers.sort((a, b) -> a.priority - b.priority).map (launcher) =>
@@ -26,10 +33,7 @@ angular.module('loomioApp').controller 'GroupPageController', ($rootScope, $loca
 
   @init = (group) =>
     @group = group
-    @performLaunch()
-    MessageChannelService.subscribeToGroup(@group) if AbilityService.isLoggedIn()
-
-    @usePolls = PollService.usePollsFor(@group)
+    MessageChannelService.subscribeToGroup(@group)
 
     Records.drafts.fetchFor(@group) if AbilityService.canCreateContentFor(@group)
 
@@ -43,10 +47,8 @@ angular.module('loomioApp').controller 'GroupPageController', ($rootScope, $loca
       max:      maxDiscussions
       pageType: 'groupThreads'
 
-    $rootScope.$broadcast 'viewingGroup', @group
-    $rootScope.$broadcast 'setTitle', @group.fullName
-    $rootScope.$broadcast 'analyticsSetGroup', @group
     $rootScope.$broadcast 'currentComponent',
+      title: @group.fullName
       page: 'groupPage'
       group: @group
       key: @group.key
@@ -55,6 +57,8 @@ angular.module('loomioApp').controller 'GroupPageController', ($rootScope, $loca
         rss:         LmoUrlService.group(@group, {}, absolute: true, ext: 'xml') if !@group.privacyIsSecret()
         prev:        LmoUrlService.group(@group, from: @pageWindow.prev)         if @pageWindow.prev?
         next:        LmoUrlService.group(@group, from: @pageWindow.next)         if @pageWindow.next?
+
+    @performLaunch()
 
   @canViewMemberships = ->
     AbilityService.canViewMemberships(@group)
@@ -75,8 +79,6 @@ angular.module('loomioApp').controller 'GroupPageController', ($rootScope, $loca
     ModalService.open modal, resolve
 
   @showPreviousPolls = ->
-    @usePolls and
-    AbilityService.canViewPreviousPolls(@group) and
-    @group.closedPollsCount > 0
+    AbilityService.canViewPreviousPolls(@group)
 
   return

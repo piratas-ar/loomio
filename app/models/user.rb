@@ -1,53 +1,59 @@
 class User < ActiveRecord::Base
-  include AvatarInitials
   include ReadableUnguessableUrls
   include MessageChannel
   include HasExperiences
-  include HasGravatar
+  include HasAvatar
+  include UsesWithoutScope
+  include SelfReferencing
+  include NoForbiddenEmails
 
-  AVATAR_KINDS = %w[initials uploaded gravatar]
-  LARGE_IMAGE = 170
-  MED_LARGE_IMAGE = 70
-  MEDIUM_IMAGE = 50
-  SMALL_IMAGE = 30
   MAX_AVATAR_IMAGE_SIZE_CONST = 100.megabytes
+  BOT_EMAILS = {
+    helper_bot: ENV['HELPER_BOT_EMAIL'] || 'contact@loomio.org',
+    demo_bot:   ENV['DEMO_BOT_EMAIL'] || 'contact+demo@loomio.org'
+  }.freeze
 
-  devise :database_authenticatable, :recoverable, :registerable, :rememberable, :trackable, :omniauthable, :validatable
-  attr_accessor :honeypot
+  devise :database_authenticatable, :recoverable, :registerable, :rememberable, :trackable
+  attr_accessor :recaptcha
   attr_accessor :restricted
+  attr_accessor :token
+  attr_writer :has_password
 
-  validates :email, presence: true, uniqueness: true, email: true
-  #validates :name, presence: true
-  validates_inclusion_of :uses_markdown, in: [true,false]
-
-  has_many :stances, as: :participant
+  validates :email, presence: true, email: true, length: {maximum: 200}
 
   has_attached_file :uploaded_avatar,
     styles: {
-              large: "#{User::LARGE_IMAGE}x#{User::LARGE_IMAGE}#",
-              medlarge: "#{User::MED_LARGE_IMAGE}x#{User::MED_LARGE_IMAGE}#",
-              medium: "#{User::MEDIUM_IMAGE}x#{User::MEDIUM_IMAGE}#",
-              small: "#{User::SMALL_IMAGE}x#{User::SMALL_IMAGE}#",
-            }
+      small:  "#{AVATAR_SIZES[:small]}x#{AVATAR_SIZES[:small]}#",
+      medium: "#{AVATAR_SIZES[:medium]}x#{AVATAR_SIZES[:medium]}#",
+      large:  "#{AVATAR_SIZES[:large]}x#{AVATAR_SIZES[:large]}#",
+    }
+
   validates_attachment :uploaded_avatar,
-    size: { in: 0..User::MAX_AVATAR_IMAGE_SIZE_CONST.kilobytes },
+    size: { in: 0..MAX_AVATAR_IMAGE_SIZE_CONST.kilobytes },
     content_type: { content_type: /\Aimage/ },
     file_name: { matches: [/png\Z/i, /jpe?g\Z/i, /gif\Z/i] }
 
-  validates_inclusion_of :avatar_kind, in: AVATAR_KINDS
-
   validates_uniqueness_of :username
   validates_length_of :username, maximum: 30
-  validates_format_of :username, with: /\A[a-z0-9]*\z/, message: I18n.t(:'error.username_must_be_alphanumeric')
+  validates_length_of :short_bio, maximum: 500
+  validates_format_of :username, with: /\A[a-z0-9]*\z/, message: I18n.t(:'user.error.username_must_be_alphanumeric')
+  validates_confirmation_of :password, if: :password_required?
 
   validates_length_of :password, minimum: 8, allow_nil: true
   validates :password, nontrivial_password: true, allow_nil: true
+  validate  :ensure_recaptcha, if: :recaptcha
 
   has_many :contacts, dependent: :destroy
   has_many :admin_memberships,
            -> { where('memberships.admin = ? AND memberships.is_suspended = ?', true, false) },
            class_name: 'Membership',
            dependent: :destroy
+
+  has_many :formal_groups,
+           -> { where(type: "FormalGroup") },
+           through: :memberships,
+           class_name: 'FormalGroup',
+           source: :group
 
   has_many :adminable_groups,
            -> { where( archived_at: nil) },
@@ -79,30 +85,22 @@ class User < ActiveRecord::Base
            foreign_key: 'author_id',
            dependent: :destroy
 
-  has_many :motions,
-           through: :discussions
-
-  has_many :authored_motions,
-           class_name: 'Motion',
-           foreign_key: 'author_id',
-           dependent: :destroy
-
   has_many :polls, foreign_key: :author_id
-  has_many :communities, through: :polls, class_name: "Communities::Base"
-  has_many :visitors, through: :communities
 
-  has_many :votes, dependent: :destroy
-  has_many :comment_votes, dependent: :destroy
-  has_many :stances, as: :participant, dependent: :destroy
+  has_many :identities, class_name: "Identities::Base", dependent: :destroy
+
+  has_many :reactions, dependent: :destroy
+  has_many :stances, foreign_key: :participant_id, dependent: :destroy
+  has_many :participated_polls, through: :stances, source: :poll
+  has_many :group_polls, through: :groups, source: :polls
 
   has_many :discussion_readers, dependent: :destroy
-  has_many :omniauth_identities, dependent: :destroy
-
 
   has_many :notifications, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :attachments, dependent: :destroy
   has_many :drafts, dependent: :destroy
+  has_many :login_tokens, dependent: :destroy
 
   has_one :deactivation_response,
           class_name: 'UserDeactivationResponse',
@@ -122,41 +120,60 @@ class User < ActiveRecord::Base
   scope :admins, -> { where(is_admin: true) }
   scope :coordinators, -> { joins(:memberships).where('memberships.admin = ?', true).group('users.id') }
   scope :mentioned_in, ->(model) { where(id: model.notifications.user_mentions.pluck(:user_id)) }
+  scope :verified, -> { where(email_verified: true) }
+  scope :unverified, -> { where(email_verified: false) }
+  scope :verified_first, -> { order(email_verified: :desc) }
 
   # move to ThreadMailerQuery
   scope :email_when_proposal_closing_soon, -> { active.where(email_when_proposal_closing_soon: true) }
 
   scope :email_proposal_closing_soon_for, -> (group) {
-    active.
-    joins(:memberships).
-    where('memberships.group_id = ?', group.id).
-    where('users.email_when_proposal_closing_soon = ?', true)
+     email_when_proposal_closing_soon
+    .joins(:memberships)
+    .where('memberships.group_id': group.id)
   }
 
-  scope :without, -> (users) {
-    users = Array(users).compact
-
-    if users.size > 0
-      where('users.id NOT IN (?)', users)
-    else
-      all
-    end
-  }
-
-  def user_id
-    id
+  def self.email_status_for(email)
+    (verified_first.find_by(email: email) || LoggedOutUser.new).email_status
   end
 
-  def participation_token
-    nil
+  define_counter_cache(:memberships_count) {|user| user.memberships.formal.count }
+
+  def associate_with_identity(identity)
+    if existing = identities.find_by(user: self, uid: identity.uid, identity_type: identity.identity_type)
+      existing.update(access_token: identity.access_token)
+    else
+      identities.push(identity)
+      identity.assign_logo! if avatar_kind == 'initials'
+    end
+  end
+
+  def identity_for(type)
+    identities.find_by(identity_type: type)
+  end
+
+  def first_name
+    name.split(' ').first
+  end
+
+  def last_name
+    name.split(' ').drop(1).join(' ')
+  end
+
+  def remember_me
+    true
   end
 
   def is_logged_in?
     true
   end
 
-  def first_name
-    name.split(' ').first
+  def has_password
+    self.encrypted_password.present?
+  end
+
+  def email_status
+    if deactivated_at.present? then :inactive else :active end
   end
 
   def name_and_email
@@ -170,14 +187,6 @@ class User < ActiveRecord::Base
 
   delegate :can?, :cannot?, :to => :ability
 
-  def is_group_admin?(group=nil)
-    if group.present?
-      admin_memberships.where(group_id: group.id).any?
-    else
-      admin_memberships.any?
-    end
-  end
-
   def is_member_of?(group)
     !!memberships.find_by(group_id: group&.id)
   end
@@ -186,41 +195,29 @@ class User < ActiveRecord::Base
     !!memberships.find_by(group_id: group&.id, admin: true)
   end
 
-  def time_zone_city
-    TimeZoneToCity.convert time_zone
+  def first_name
+    self.name.to_s.split(' ').first
   end
 
   def time_zone
     self[:time_zone] || 'UTC'
   end
 
-  def group_membership(group)
-    memberships.for_group(group).first
-  end
-
-  def self.find_by_email(email)
-    User.where('lower(email) = ?', email.to_s.downcase).first
-  end
-
   def self.helper_bot
-    find_by(email: helper_bot_email) ||
-    create!(email: helper_bot_email,
+    verified.find_by(email: BOT_EMAILS[:helper_bot]) ||
+    create!(email: BOT_EMAILS[:helper_bot],
             name: 'Loomio Helper Bot',
             password: SecureRandom.hex(20),
-            uses_markdown: true,
+            email_verified: true,
             avatar_kind: :gravatar)
   end
 
-  def self.helper_bot_email
-    ENV['HELPER_BOT_EMAIL'] || 'contact@loomio.org'
-  end
-
-  def subgroups
-    groups.where("parent_id IS NOT NULL")
-  end
-
-  def parent_groups
-    groups.where("parent_id IS NULL").order("LOWER(name)")
+  def self.demo_bot
+    verified.find_by(email: BOT_EMAILS[:helper_bot]) ||
+    create!(email: BOT_EMAILS[:demo_bot],
+            name: 'Loomio Demo bot',
+            email_verified: true,
+            avatar_kind: :gravatar)
   end
 
   def name
@@ -249,30 +246,12 @@ class User < ActiveRecord::Base
     super && !deactivated_at
   end
 
-  def avatar_url(size=nil)
-    size = size ? size.to_sym : :medium
-    case size
-    when :small
-      pixels = User::SMALL_IMAGE
-    when :medium
-      pixels = User::MEDIUM_IMAGE
-    when :"med-large"
-      pixels = User::MED_LARGE_IMAGE
-    when :large
-      pixels = User::LARGE_IMAGE
-    else
-      pixels = User::SMALL_IMAGE
-    end
-
-    if avatar_kind == "gravatar"
-      gravatar_url(:size => pixels)
-    else
-      uploaded_avatar.url(size)
-    end
+  def locale
+    selected_locale || detected_locale || I18n.locale
   end
 
-  def locale
-    selected_locale || detected_locale || I18n.default_locale
+  def update_detected_locale(locale)
+    self.update_attribute(:detected_locale, locale) if self.detected_locale&.to_sym != locale.to_sym
   end
 
   def generate_username
@@ -292,6 +271,11 @@ class User < ActiveRecord::Base
 
   def ensure_email_api_key
     self.email_api_key ||= SecureRandom.hex(16)
+  end
+
+  def ensure_recaptcha
+    return if Clients::Recaptcha.instance.validate(self.recaptcha)
+    self.errors.add(:recaptcha, I18n.t(:"user.error.recaptcha"))
   end
 
   def ensure_unsubscribe_token

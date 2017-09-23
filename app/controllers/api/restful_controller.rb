@@ -3,9 +3,10 @@ class API::RestfulController < ActionController::Base
   include ::ProtectedFromForgery
   include ::LoadAndAuthorize
   include ::CurrentUserHelper
-  before_filter :set_application_locale
-  before_filter :set_paper_trail_whodunnit
-  snorlax_used_rest!
+  around_filter :process_locale            # LocalesHelper
+  before_action :set_invitation_token      # CurrentUserHelper
+  before_filter :set_paper_trail_whodunnit # gem 'paper_trail'
+  snorlax_used_rest!                       # gem 'snorlax'
 
   private
 
@@ -57,4 +58,5 @@ class API::RestfulController < ActionController::Base
   def resources_to_serialize
     Array(resource || collection)
   end
+
 end

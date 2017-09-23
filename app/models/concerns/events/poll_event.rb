@@ -1,7 +1,6 @@
-#TODO: there are some discussion dependencies that will need to be resolved here
 module Events::PollEvent
-  include Events::NotifyUser
-  include Events::EmailUser
+  include Events::Notify::InApp
+  include Events::Notify::Users
 
   def poll
     @poll ||= eventable.poll
@@ -27,24 +26,24 @@ module Events::PollEvent
   end
 
   def announcement_notification_recipients
-    poll.group.members
+    poll.members
   end
 
   def specified_notification_recipients
-    Queries::UsersToMentionQuery.for(poll)
+    Queries::UsersToMentionQuery.for(eventable)
   end
 
   def email_recipients
-    return User.none unless poll.group
+    return User.none if poll.example
     if announcement
       announcement_email_recipients
     else
       specified_email_recipients
-    end
+    end.without(poll.unsubscribers)
   end
 
   def announcement_email_recipients
-    Queries::UsersByVolumeQuery.normal_or_loud(poll.discussion)
+    Queries::UsersByVolumeQuery.normal_or_loud((poll.discussion || poll.group), poll.guest_group)
   end
 
   def specified_email_recipients

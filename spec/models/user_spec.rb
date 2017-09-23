@@ -7,8 +7,8 @@ describe User do
   }
 
   let(:user) { create(:user) }
-  let(:group) { create(:group) }
-  let(:restrictive_group) { create(:group, members_can_start_discussions: false) }
+  let(:group) { create(:formal_group) }
+  let(:restrictive_group) { create(:formal_group, members_can_start_discussions: false) }
   let(:admin) { create :user }
   let(:new_user) { build(:user, password: "a_good_password", password_confirmation: "a_good_password") }
 
@@ -121,13 +121,6 @@ describe User do
     user.authored_discussions.should include(discussion)
   end
 
-  it "has authored motions" do
-    group.add_member!(user)
-    discussion = create :discussion, group: group
-    motion = FactoryGirl.create(:motion, discussion: discussion, author: user)
-    user.authored_motions.should include(motion)
-  end
-
   describe "name" do
     it "returns '[deactivated account]' if deactivated_at is true (a date is present)" do
       user.update_attribute(:deactivated_at, Time.now)
@@ -199,6 +192,13 @@ describe User do
       it "restores the user's memberships" do
         user.memberships.should include(@membership)
       end
+    end
+  end
+
+  describe 'find_by_email' do
+    it 'is case insensitive' do
+      user = create(:user, email: "bob@bob.com")
+      expect(User.find_by(email: "BOB@bob.com")).to eq user
     end
   end
 

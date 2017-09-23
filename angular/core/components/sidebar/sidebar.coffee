@@ -1,11 +1,23 @@
-angular.module('loomioApp').directive 'sidebar', ->
+angular.module('loomioApp').directive 'sidebar', ($rootScope, $mdMedia, $mdSidenav, $window, Session, InboxService, RestfulClient, UserHelpService, AppConfig, IntercomService, LmoUrlService, Records, ModalService, GroupModal, DiscussionForm, AbilityService)->
   scope: false
   restrict: 'E'
   templateUrl: 'generated/components/sidebar/sidebar.html'
   replace: true
-  controller: ($scope, Session, $rootScope, $window, RestfulClient, ThreadQueryService, UserHelpService, AppConfig, IntercomService, $mdMedia, $mdSidenav, LmoUrlService, Records, ModalService, GroupForm) ->
+  controller: ($scope) ->
     $scope.currentState = ""
     $scope.showSidebar = true
+
+    $scope.hasAnyGroups = ->
+      Session.user().hasAnyGroups()
+
+    availableGroups = ->
+      _.filter Session.user().groups(), (group) ->
+        AbilityService.canAddMembers(group)
+
+    $scope.currentGroup = ->
+      return _.first(availableGroups()) if availableGroups().length == 1
+      _.find(availableGroups(), (g) -> g.id == Session.currentGroupId()) || Records.groups.build()
+
 
     $scope.$on 'toggleSidebar', (event, show) ->
       if !_.isUndefined(show)
@@ -26,17 +38,19 @@ angular.module('loomioApp').directive 'sidebar', ->
       LmoUrlService.group(group)
 
     $scope.signOut = ->
-      Records.sessions.remote.destroy('').then -> $window.location.href = '/'
+      Session.logout()
 
     $scope.helpLink = ->
       UserHelpService.helpLink()
 
     $scope.unreadThreadCount = ->
-      ThreadQueryService.filterQuery(['show_unread', 'only_threads_in_my_groups'], queryType: 'inbox').length()
+      InboxService.unreadCount()
 
     $scope.showContactUs = ->
-      # TODO: use loomio_org plugin to determine official site or not
-      AppConfig.baseUrl == 'https://www.loomio.org/'
+      IntercomService.available()
+
+    $scope.showHelp = ->
+      AppConfig.features.help_link
 
     $scope.contactUs = ->
       IntercomService.contactUs()
@@ -51,5 +65,11 @@ angular.module('loomioApp').directive 'sidebar', ->
     $scope.currentUser = ->
       Session.user()
 
+    $scope.canStartGroup = -> AbilityService.canStartGroups()
+    $scope.canViewPublicGroups = -> AbilityService.canViewPublicGroups()
+
     $scope.startGroup = ->
-      ModalService.open GroupForm, group: -> Records.groups.build()
+      ModalService.open GroupModal, group: -> Records.groups.build()
+
+    $scope.startThread = ->
+      ModalService.open DiscussionForm, discussion: -> Records.discussions.build(groupId: $scope.currentGroup().id)

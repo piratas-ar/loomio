@@ -1,0 +1,51 @@
+@mixin displayFlex {
+  display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
+  display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+}
+
+.lmo-flex {
+  @include displayFlex;
+}
+
+.lmo-flex__flex-end {
+  justify-content: flex-end;
+}
+
+.lmo-flex__baseline {
+  align-items: baseline;
+}
+
+.lmo-flex__center {
+  align-items: center;
+}
+
+.lmo-flex__horizontal-center {
+  justify-content: center !important;
+}
+
+.lmo-flex__shrink {
+  flex-shrink: 1;
+}
+
+.lmo-flex__align-top {
+  align-items: flex-start;
+}
+
+.lmo-flex__space-between {
+  justify-content: space-between;
+}
+
+.lmo-flex__space-around {
+  justify-content: space-around;
+}
+
+.lmo-flex__grow {
+  flex-grow: 1;
+}
+
+.lmo-flex__no-shrink {
+  flex-shrink: 0;
+}

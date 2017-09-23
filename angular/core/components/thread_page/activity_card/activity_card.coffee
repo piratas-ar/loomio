@@ -13,7 +13,7 @@ angular.module('loomioApp').directive 'activityCard', ->
     $scope.firstLoadedSequenceId = 0
     $scope.lastLoadedSequenceId = 0
     $scope.lastReadSequenceId = $scope.discussion.lastReadSequenceId
-    $scope.hasNewActivity = $scope.discussion.isUnread()
+    $scope.hasNewActivity = $scope.lastReadSequenceId < $scope.discussion.lastSequenceId
     $scope.pagination = (current) ->
       PaginationService.windowFor
         current:  current
@@ -23,7 +23,7 @@ angular.module('loomioApp').directive 'activityCard', ->
     visibleSequenceIds = []
 
     $scope.init = ->
-      $scope.discussion.markAsRead(0)
+      $scope.discussion.markAsSeen()
 
       $scope.loadEventsForwards(
         commentId: $scope.activeCommentId
@@ -31,10 +31,10 @@ angular.module('loomioApp').directive 'activityCard', ->
         $rootScope.$broadcast 'threadPageEventsLoaded'
 
     $scope.initialLoadSequenceId = ->
-      return $location.search().from                  if $location.search().from      # respond to ?from parameter
-      return 0                                        if !AbilityService.isLoggedIn() # show beginning of discussion for logged out users
-      return $scope.discussion.lastReadSequenceId - 5 if $scope.discussion.isUnread() # show newest unread content for logged in users
-      return $scope.pagination($scope.discussion.lastSequenceId).prev                 # show latest content if the discussion has been read
+      return $location.search().from       if $location.search().from      # respond to ?from parameter
+      return 0                             if !AbilityService.isLoggedIn() # show beginning of discussion for logged out users
+      return $scope.lastReadSequenceId - 5 if $scope.discussion.isUnread() # show newest unread content for logged in users
+      return $scope.pagination($scope.discussion.lastSequenceId).prev      # show latest content if the discussion has been read
 
     $scope.beforeCount = ->
       $scope.firstLoadedSequenceId - $scope.discussion.firstSequenceId
@@ -56,7 +56,7 @@ angular.module('loomioApp').directive 'activityCard', ->
 
     $scope.threadItemVisible = (item) ->
       addSequenceId(item.sequenceId)
-      $scope.discussion.markAsRead(item.sequenceId)
+      item.markAsRead()
       $scope.loadEventsForwards(sequenceId: $scope.lastLoadedSequenceId) if $scope.loadMoreAfterReading(item)
 
     $scope.loadEvents = ({from, per, commentId}) ->
@@ -94,6 +94,10 @@ angular.module('loomioApp').directive 'activityCard', ->
 
     $scope.noEvents = ->
       !$scope.loadEventsForwardsExecuting and !_.any($scope.events())
+
+    $scope.isLastRead = (event) ->
+      $scope.lastReadSequenceId == event.sequenceId &&
+      $scope.lastLoadedSequenceId > event.sequenceId
 
     $scope.init()
     return

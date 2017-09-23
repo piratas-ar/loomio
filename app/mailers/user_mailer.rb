@@ -1,9 +1,16 @@
 class UserMailer < BaseMailer
-  helper :email
-  helper :application
-  layout 'invite_people_mailer', only: [:membership_request_approved, :user_added_to_group]
+  layout 'invite_people_mailer', only: [:membership_request_approved, :contact_request, :user_added_to_group, :login, :start_decision, :accounts_merged]
+
+  def accounts_merged(user)
+    @user = user
+    @token = user.login_tokens.create!
+    send_single_mail to: @user.email,
+                     subject_key: "user_mailer.accounts_merged.subject",
+                     locale: locale_for(@user)
+  end
 
   def missed_yesterday(user, time_since = nil)
+    return unless user.email_missed_yesterday
     @recipient = @user = user
     @time_start = time_since || 24.hours.ago
     @time_finish = Time.zone.now
@@ -15,7 +22,7 @@ class UserMailer < BaseMailer
                     .last_activity_after(@time_start)
     @groups = @user.groups.order(full_name: :asc)
 
-    @reader_cache = DiscussionReaderCache.new(user: @user, discussions: @discussions)
+    @reader_cache = Caches::DiscussionReader.new(user: @user, parents: @discussions)
 
     unless @discussions.empty? or @user.groups.empty?
       @discussions_by_group = @discussions.group_by(&:group)
@@ -36,11 +43,10 @@ class UserMailer < BaseMailer
                      locale: locale_for(@user)
   end
 
-  def user_added_to_group(recipient, event, message = nil)
+  def user_added_to_group(recipient, event)
     @user    = recipient
     @group   = event.eventable.group
     @inviter = event.eventable.inviter || @group.admins.first
-    @message = message
 
     send_single_mail to: @user.email,
                      from: from_user_via_loomio(@inviter),
@@ -50,12 +56,29 @@ class UserMailer < BaseMailer
                      locale: locale_for(@user, @inviter)
   end
 
-  def analytics(user:, group:)
-    @user, @group = user, group
-    @stats = Queries::GroupAnalytics.new(group: group).stats
+  def login(user:, token:)
+    @user = user
+    @token = token
     send_single_mail to: @user.email,
-                     subject_key: "email.analytics.subject",
-                     subject_params: { which_group: @group.name },
+                     subject_key: "email.login.subject",
                      locale: locale_for(@user)
+  end
+
+  def start_decision(received_email:)
+    @email = received_email
+    send_single_mail to: @email.sender_email,
+                     subject_key: "email.start_decision.subject",
+                     locale: locale_for(@email)
+  end
+
+  def contact_request(contact_request:)
+    @contact_request = contact_request
+
+    send_single_mail to: @contact_request.recipient.email,
+                     from: from_user_via_loomio(@contact_request.sender),
+                     reply_to: @contact_request.sender.name_and_email,
+                     subject_key: "email.contact_request.subject",
+                     subject_params: { name: @contact_request.sender.name },
+                     locale: locale_for(@contact_request.recipient, @contact_request.sender)
   end
 end

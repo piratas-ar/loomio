@@ -6,34 +6,27 @@
   border-top: 1px solid rgba(0,0,0,.14);
 }
 
-.md-whiteframe-4dp {
-  -webkit-box-shadow: 16px 0px 0px 0px rgba(235,235,235,0.3);
-  -moz-box-shadow: 16px 0px 0px 0px rgba(235,235,235,0.3);
-  box-shadow: 16px 0px 0px 0px rgba(235,235,235,0.3);
-}
-
-.sidebar__content {
-  margin: 8px;
-}
-
 .sidebar__list-subhead {
-    margin: 0px 0 0 12px;
-    font-size: 12px;
-    color: $navbar-default-color;
+  @include md-caption;
+  margin: 0px 0 16px 16px;
+  color: $grey-on-white;
 }
 
 .sidebar__list-item-button {
   width: 100%;
   margin: 0;
   padding: 0 15px;
-  display: block;
+  @include displayFlex;
+  align-items: center;
   text-align: left;
   border-radius: 4px;
   text-transform: none;
-  font-size: 13px;
+  @include md-body-1;
   @include truncateText;
 }
-
+.sidebar__list-item-button--group{
+  font-weight: 500;
+}
 .sidebar__list-item-button--subgroup {
   width: 100%;
   margin: 0;
@@ -42,26 +35,14 @@
   border-radius: 4px;
   text-align: left;
   padding-left: 53px;
-  font-size: 13px;
+  @include md-body-1;
 }
 
 .sidebar__list-item-icon {
   width: 20px;
   margin-right: 16px;
   font-size: 22px;
-  color: $navbar-default-color;
-}
-
-.fa-envelope-o {
-  font-size: 20px;
-}
-
-.fa-inbox {
-  color: $brand-success;
-}
-
-.fa-clock-o {
-  color: $brand-primary;
+  color: $grey-on-white;
 }
 
 .sidebar__list-item-group-logo {
@@ -100,8 +81,8 @@
 .sidebar__user-icon {
   font-size: 32px;
   position: absolute;
-  left: 28px;
-  top: 28px;
+  left: 24px;
+  top: 24px;
 }
 
 .sidebar__user-details {

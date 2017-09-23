@@ -1,23 +1,27 @@
 class PollSerializer < ActiveModel::Serializer
   embed :ids, include: true
-  attributes :id, :discussion_id, :group_id, :key, :poll_type, :title, :details, :mentioned_usernames, :stance_data, :stance_counts, :matrix_counts, :closed_at, :closing_at, :stances_count, :did_not_votes_count, :created_at, :poll_option_names, :multiple_choice, :custom_fields, :email_community_id
+  attributes :id, :discussion_id, :group_id, :key, :poll_type, :title, :details,
+             :stance_data, :stance_counts, :matrix_counts, :anyone_can_participate, :voter_can_add_options,
+             :closed_at, :closing_at, :stances_count, :undecided_user_count, :undecided_count,
+             :created_at, :multiple_choice, :custom_fields, :poll_option_names,
+             :notify_on_participate, :subscribed, :example
 
   has_one :author, serializer: UserSerializer, root: :users
   has_one :current_outcome, serializer: OutcomeSerializer, root: :outcomes
-  has_many :poll_options, serializer: PollOptionSerializer, root: :poll_options
-  has_many :attachments, serializer: AttachmentSerializer, root: :attachments
   has_one :my_stance, serializer: StanceSerializer, root: :stances
+  has_one :guest_group, serializer: Simple::GroupSerializer, root: :groups
+  has_many :poll_options, serializer: PollOptionSerializer, root: :poll_options
 
-  def removed_poll_option_ids
-    object.poll_option_attributes.select { |attr| attr[:_destroy] }.map { |attr| attr[:id] }
+  def subscribed
+    object.poll_unsubscriptions.find_by(user: scope[:current_user]).blank?
   end
 
   def my_stance
     @my_stances_cache ||= scope[:my_stances_cache].get_for(object) if scope[:my_stances_cache]
   end
 
-  def email_community_id
-    object.community_of_type(:email).id
+  def include_subscribed?
+    (scope || {})[:current_user].present?
   end
 
   def include_matrix_counts?

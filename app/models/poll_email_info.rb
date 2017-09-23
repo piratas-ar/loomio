@@ -1,6 +1,6 @@
 class PollEmailInfo
   include Routing
-  attr_reader :recipient, :poll, :actor, :action_name
+  attr_reader :recipient, :poll, :actor, :action_name, :eventable, :event
 
   def send_reason
     # TODO: determine why this recipient is receiving this email
@@ -8,35 +8,56 @@ class PollEmailInfo
     "some reason"
   end
 
-  def initialize(recipient:, poll:, actor: nil, action_name:)
+  def login_token(redirect_path: poll_path(@poll))
+    @token ||= @recipient.login_tokens.create!(redirect: redirect_path)
+  end
+
+  def initialize(recipient:, event:, action_name:)
     @recipient   = recipient
-    @poll        = poll
-    @actor       = actor || LoggedOutUser.new
+    @event       = event
+    @poll        = event.poll
+    @eventable   = event.eventable
     @action_name = action_name
+  end
+
+  def actor
+    @actor ||= if @event.eventable.is_a?(Stance)
+      @event.eventable.participant
+    else
+      @event.user || LoggedOutUser.new
+    end
   end
 
   def recipient_stance
     @recipient_stance ||= @poll.stances.latest.find_by(participant: @recipient)
   end
 
+  def poll_options
+    if @poll.dates_as_options
+      @poll.poll_options.order(name: :asc)
+    else
+      @poll.poll_options
+    end
+  end
+
   def poll_type
     @poll.poll_type
   end
 
-  def formatted_datetime_for(date_string)
-    date_time = DateTime.strptime(date_string, "%FT%T")
-    date_time.strftime(date_time.year == Date.today.year ? "%e %b %l:%M %P" : "%e %b %Y %l:%M %P")
-  rescue ArgumentError
-    formatted_date_for(date_string)
+  def undecided
+    @undecided ||= @poll.undecided
   end
 
-  def display_name_for(poll_option)
-    @poll.dates_as_options ? formatted_datetime_for(poll_option.name) : poll_option.name
+  def undecided_max
+    20
   end
 
-  def formatted_date_for(date_string)
-    date = date_string.to_date
-    date.strftime(date.year == Date.today.year ? "%e %b" : "%e %b %Y")
+  def time_zone
+    @recipient.time_zone || @poll.time_zone
+  end
+
+  def formatted_time_zone
+    ActiveSupport::TimeZone[time_zone].to_s if time_zone
   end
 
   def outcome
@@ -60,14 +81,14 @@ class PollEmailInfo
       utm_medium: 'email',
       utm_campaign: 'poll_mailer',
       utm_source: action_name,
-      participation_token: @recipient.participation_token
+      invitation_token: @recipient.token
     }.merge(args)
   end
 
   private
 
   def unsubscribe_url
-    email_preferences_url utm_hash.merge(unsubscribe_token: recipient.unsubscribe_token)
+    poll_unsubscribe_url poll, utm_hash.merge(unsubscribe_token: recipient.unsubscribe_token)
   end
 
   def target_url

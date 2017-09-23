@@ -11,6 +11,11 @@ class API::ProfileController < API::RestfulController
     respond_with_resource serializer: UserSerializer
   end
 
+  def remind
+    service.remind(user: load_resource, actor: current_user, model: load_and_authorize(:poll))
+    respond_with_resource
+  end
+
   def update_profile
     service.update(current_user_params)
     respond_with_resource
@@ -26,11 +31,6 @@ class API::ProfileController < API::RestfulController
     respond_with_resource
   end
 
-  def change_password
-    service.change_password(current_user_params) { bypass_sign_in resource }
-    respond_with_resource
-  end
-
   def deactivate
     service.deactivate(current_user_params)
     respond_with_resource
@@ -42,10 +42,18 @@ class API::ProfileController < API::RestfulController
     respond_with_resource
   end
 
+  def email_status
+    respond_with_resource(serializer: Pending::UserSerializer)
+  end
+
   private
 
   def resource
-    @user || current_user
+    @user || current_user.presence || user_by_email
+  end
+
+  def user_by_email
+    resource_class.active.verified_first.find_by(email: params[:email]) || LoggedOutUser.new(email: params[:email])
   end
 
   def current_user_params

@@ -1,6 +1,6 @@
 angular.module('loomioApp').factory 'DiscussionForm', ->
   templateUrl: 'generated/components/discussion_form/discussion_form.html'
-  controller: ($scope, $controller, $location, discussion, Session, Records, AbilityService, FormService, MentionService, AttachmentService, KeyEventService, PrivacyString, EmojiService) ->
+  controller: ($scope, $controller, $location, discussion, Session, Records, AbilityService, FormService, MentionService, AttachmentService, KeyEventService, PrivacyString) ->
     $scope.discussion = discussion.clone()
 
     if $scope.discussion.isNew()
@@ -11,7 +11,7 @@ angular.module('loomioApp').factory 'DiscussionForm', ->
 
     $scope.submit = FormService.submit $scope, $scope.discussion,
       flashSuccess: "discussion_form.messages.#{actionName}"
-      draftFields: ['title', 'description']
+      drafts: true
       successCallback: (response) =>
         discussion = response.discussions[0]
         Records.attachments.find(attachableId: discussion.id, attachableType: 'Discussion')
@@ -39,10 +39,5 @@ angular.module('loomioApp').factory 'DiscussionForm', ->
       return unless $scope.discussion.group()
       $scope.discussion.group().discussionPrivacyOptions == 'public_or_private'
 
-    $scope.descriptionSelector = '.discussion-form__description-input'
-    EmojiService.listen $scope, $scope.discussion, 'description', $scope.descriptionSelector
-
-    AttachmentService.listenForPaste $scope
     AttachmentService.listenForAttachments $scope, $scope.discussion
     KeyEventService.submitOnEnter $scope
-    MentionService.applyMentions $scope, $scope.discussion

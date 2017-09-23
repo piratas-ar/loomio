@@ -2,40 +2,23 @@ require 'rails_helper'
 
 describe PollService do
   let(:poll_created) { build :poll, discussion: discussion }
-  let(:public_poll) { build :poll, anyone_can_participate: true }
+  let(:public_poll) { build :poll }
   let(:private_poll) { build :poll }
   let(:poll) { create :poll, discussion: discussion }
   let(:user) { create :user }
   let(:another_user) { create :user }
-  let(:motion) { create(:motion, discussion: discussion) }
-  let(:closed_motion) { create(:motion, discussion: discussion, closed_at: 1.day.ago, outcome: "an outcome", outcome_author: user) }
-  let(:vote) { create :vote, motion: motion, statement: "I am a statement" }
-  let(:visitor) { LoggedOutUser.new }
-  let(:group) { create :group }
-  let(:another_group) { create :group }
+  let(:group) { create :formal_group }
+  let(:another_group) { create :formal_group }
+
   let(:discussion) { create :discussion, group: group }
   let(:stance) { create :stance, poll: poll_created, choice: poll_created.poll_options.first.name }
+  let(:identity) { create :slack_identity }
 
-  before { group.add_member!(user); group.community }
+  before { group.add_member!(user) }
 
   describe '#create' do
     it 'creates a new poll' do
       expect { PollService.create(poll: poll_created, actor: user) }.to change { Poll.count }.by(1)
-    end
-
-    it 'populates an email community by default' do
-      PollService.create(poll: private_poll, actor: user)
-
-      poll = Poll.last
-      expect(poll.communities.map(&:class)).to include Communities::Email
-    end
-
-    it 'populates a public poll if anyone_can_participate is true' do
-      PollService.create(poll: public_poll, actor: user)
-
-      poll = Poll.last
-      expect(poll.communities.map(&:class)).to include Communities::Public
-      expect(poll.communities.map(&:class)).to include Communities::Email
     end
 
     it 'populates removing custom poll actions' do
@@ -59,22 +42,11 @@ describe PollService do
       expect { PollService.create(poll: poll_created, actor: user) }.to_not change { Poll.count }
     end
 
-    it 'does not allow visitors to create polls' do
-      expect { PollService.create(poll: poll_created, actor: visitor) }.to raise_error { CanCan::AccessDenied }
+    it 'does not allow logged out users to create polls' do
+      expect { PollService.create(poll: poll_created, actor: logged_out_user) }.to raise_error { CanCan::AccessDenied }
     end
 
-    it 'creates a poll which references the group community from a discussion' do
-      PollService.create(poll: poll_created, actor: user)
-
-      poll = Poll.last
-      expect(poll.communities).to include group.community
-      expect(poll.discussion).to eq discussion
-      expect(poll.group).to eq discussion.group
-      expect(group.polls).to include poll
-      expect(discussion.polls).to include poll
-    end
-
-    it 'does not allow users to create polls for communities they are not a part of' do
+    it 'does not allow users to create polls they are not allowed to' do
       expect { PollService.create(poll: poll_created, actor: another_user) }.to raise_error { CanCan::AccessDenied }
     end
 
@@ -121,71 +93,60 @@ describe PollService do
         PollService.update(poll: poll_created, params: { details: "A new description", make_announcement: true }, actor: user)
       }.to change { ActionMailer::Base.deliveries.count }.by(1)
     end
-  end
 
-  describe 'convert' do
-    before { vote; motion.save }
-
-    it 'creates a poll from an active motion' do
-      expect { PollService.convert(motions: motion) }.to change { Poll.count }.by(1)
-      poll = Poll.last
-
-      expect(poll.motion).to eq motion
-      expect(poll.discussion).to eq motion.discussion
-      expect(poll.group).to eq motion.group
-      expect(group.polls).to include poll
-      expect(discussion.polls).to include poll
-      expect(poll.closing_at).to eq motion.closing_at
-      expect(poll.closed_at).to eq motion.closed_at
-      expect(poll.participants).to eq motion.voters
-      expect(poll.poll_options.map(&:name).sort).to eq ['abstain', 'agree', 'block', 'disagree']
-      expect(poll.stances.count).to eq motion.votes.count
-      expect(poll.stances.first.reason).to eq vote.statement
-      expect(poll.current_outcome).to be_nil
+    it 'creates a new poll edited event for poll option changes' do
+      expect {
+        PollService.update(poll: poll_created, params: { poll_option_names: ["new_option"] }, actor: user)
+      }.to change { Events::PollEdited.where(kind: :poll_edited).count }.by(1)
     end
 
-    it 'saves an outcome on a closed motion' do
-      PollService.convert(motions: closed_motion)
-      poll = Poll.last
-      expect(poll.current_outcome.statement).to eq closed_motion.outcome
-      expect(poll.current_outcome.author).to eq closed_motion.outcome_author
+    it 'creates a new poll edited event for major changes' do
+      expect {
+        PollService.update(poll: poll_created, params: { title: "BIG CHANGES!" }, actor: user)
+      }.to change { Events::PollEdited.where(kind: :poll_edited).count }.by(1)
     end
 
-    it 'does not alter the existing motion' do
-      PollService.convert(motions: motion)
-      expect(motion.reload).to eq motion
-    end
-
-    it 'uses the groups community for voting motions' do
-      PollService.convert(motions: motion)
-      group.add_member! another_user
-
-      poll = Poll.last
-      expect(poll.communities.count).to eq 1
-      expect(poll.communities).to include motion.group.community
-      expect(poll.communities.first.includes?(vote.user)).to eq true
-      expect(poll.communities.first.includes?(another_user)).to eq true
-    end
-
-    it 'creates a new community based on the participants for closed motions' do
-      motion.close!
-      PollService.convert(motions: motion)
-      group.add_member! another_user
-
-      poll = Poll.last
-      expect(poll.communities.count).to eq 1
-      expect(poll.communities.first).to be_a Communities::LoomioUsers
-      expect(poll.communities.first.includes?(vote.user)).to eq true
-      expect(poll.communities.first.includes?(another_user)).to eq false
-    end
-
-    it 'does not create duplicate polls for the same motion' do
-      PollService.convert(motions: motion)
-      expect { PollService.convert(motions: motion) }.to_not change { Poll.count }
+    it 'does not create a new poll edited event for minor changes' do
+      expect {
+        PollService.update(poll: poll_created, params: { anyone_can_participate: false }, actor: user)
+      }.to_not change { Events::PollEdited.where(kind: :poll_edited).count }
     end
   end
 
-  describe 'close', focus: true do
+  describe 'add_options' do
+    before { poll.update(voter_can_add_options: true) }
+
+    it 'adds new poll options' do
+      expect {
+        PollService.add_options(poll: poll, params: { poll_option_names: ['new_option'] }, actor: user)
+      }.to change { poll.poll_options.count }.by(1)
+      expect(poll.reload.poll_option_names).to include 'new_option'
+      expect(Event.last.kind).to eq 'poll_option_added'
+    end
+
+    it 'does not update when poll does not accept new options' do
+      poll.update(voter_can_add_options: false)
+      expect {
+        PollService.add_options(poll: poll, params: { poll_option_names: ['new_option'] }, actor: user)
+      }.to raise_error { CanCan::AccessDenied }
+      expect(poll.reload.poll_option_names).to_not include 'new_option'
+      expect(Event.last).to be_nil
+    end
+
+    it 'does not update when no new options are passed' do
+      expect {
+        PollService.add_options(poll: poll, params: { poll_option_names: [] }, actor: user)
+      }.to_not change { Event.count }
+    end
+
+    it 'does not update for unauthorized user' do
+      expect {
+        PollService.add_options(poll: poll, params: { poll_option_names: ['new_option'] }, actor: another_user)
+      }.to raise_error { CanCan::AccessDenied }
+    end
+  end
+
+  describe 'close' do
     it 'closes a poll' do
       PollService.create(poll: poll_created, actor: user)
       PollService.close(poll: poll_created, actor: user)
@@ -200,11 +161,14 @@ describe PollService do
       expect(user.ability.can?(:create, stance_created)).to eq false
     end
 
-    it 'freezes the possible participants from a group' do
+    it 'creates poll_did_not_votes for each member that did not vote' do
+      formal_user = create :user
+      guest_user = create :user
       PollService.create(poll: poll_created, actor: user)
+      poll_created.group.add_member! formal_user
+      poll_created.guest_group.add_member! guest_user
       PollService.close(poll: poll_created, actor: user)
-      group.add_member! another_user
-      expect(poll_created.reload.communities.first.includes?(another_user)).to eq false
+      expect(poll_created.reload.poll_did_not_voters).to include(formal_user, guest_user)
     end
   end
 
@@ -226,6 +190,40 @@ describe PollService do
       PollService.create(poll: poll_created, actor: user)
       poll_created.update_attributes(closing_at: 1.day.ago, closed_at: 1.day.ago)
       expect { PollService.expire_lapsed_polls }.to_not change { poll_created.reload.closed_at }
+    end
+  end
+
+  describe '#toggle_subscription' do
+    it 'toggles a subscription on' do
+      PollService.toggle_subscription(poll: poll, actor: user)
+      expect(poll.reload.unsubscribers).to include user
+    end
+
+    it 'toggles a subscription off' do
+      poll.unsubscribers << user
+      PollService.toggle_subscription(poll: poll, actor: user)
+      expect(poll.reload.unsubscribers).to_not include user
+    end
+
+    it 'does nothing if the user doesnt have access' do
+      expect { PollService.toggle_subscription(poll: poll, actor: another_user) }.to raise_error { CanCan::AccessDenied }
+    end
+  end
+
+  describe '#cleanup_examples' do
+    it 'removes example polls' do
+      create(:poll, example: true, created_at: 2.days.ago)
+      expect { PollService.cleanup_examples }.to change { Poll.count }.by(-1)
+    end
+
+    it 'does not remove recent example polls' do
+      create(:poll, example: true, created_at: 30.minutes.ago)
+      expect { PollService.cleanup_examples }.to_not change { Poll.count }
+    end
+
+    it 'does not remove non-example polls' do
+      create(:poll, created_at: 2.days.ago)
+      expect { PollService.cleanup_examples }.to_not change { Poll.count }
     end
   end
 end

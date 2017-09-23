@@ -3,8 +3,30 @@
   .lmo-card-heading { margin-top: 7px; }
 }
 
+.context-panel__top {
+  @include displayFlex;
+}
+
+.context-panel__pin {
+  font-size: 1.2em;
+  line-height: 34px;
+  margin-right: 8px;
+}
+
+.context-panel__before-thread-actions {
+  order: 1;
+}
+
 .context-panel__thread-actions {
   margin-right: -10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.context-panel__discussion-privacy i {
+  position: relative;
+  font-size: 14px;
+  top: 2px;
 }
 
 .context-panel__thread-actions .star-toggle {
@@ -19,13 +41,13 @@
 }
 
 .context-panel__details {
-  @include fontSmall;
   color: $grey-on-white;
   margin-bottom: 15px;
 }
 
-.context-panel__description p:last-of-type{
-  margin-bottom: 0;
+.context-panel__description {
+  margin-bottom: 16px;
+  p:last-of-type { margin-bottom: 0; }
 }
 
 .context-panel__attachments {
@@ -36,14 +58,12 @@
   margin-top: 16px;
 }
 
-.context-panel__actions {
-  @include displayFlex;
-  margin-top: 16px;
-}
+@media (min-width: $medium-max-px) {
+  .context-panel__before-thread-actions {
+    order: 0;
+  }
 
-.context-panel__edit,
-.context-panel__add-comment {
-  @include lmoBtnLink;
-  cursor: pointer;
-  margin: 16px 16px 0 0;
+  .context-panel__thread-actions {
+    flex-direction: row;
+  }
 }

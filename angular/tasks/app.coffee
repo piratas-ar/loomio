@@ -10,7 +10,6 @@ haml     = require 'gulp-haml'
 htmlmin  = require 'gulp-htmlmin'
 template = require 'gulp-angular-templatecache'
 concat   = require 'gulp-concat'
-uglify   = require 'gulp-uglify'
 rename   = require 'gulp-rename'
 
 module.exports = ->
@@ -31,7 +30,4 @@ module.exports = ->
     ]),
     concat('app.js'),                           # concatenate app files
     gulp.dest(paths.dist.assets)                # write assets/app.js
-    uglify(),                                   # minify app.js file
-    rename(suffix: '.min'),                     # rename stream to app.min.js
-    gulp.dest(paths.dist.assets)                # write assets/app.min.js
   ]

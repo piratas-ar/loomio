@@ -1,4 +1,4 @@
-angular.module('loomioApp').factory 'PollService', ($window, $location, AppConfig, Records, FormService, LmoUrlService, AbilityService, AttachmentService) ->
+angular.module('loomioApp').factory 'PollService', ($window, $location, AppConfig, Records, Session, FormService, LmoUrlService, ScrollService, AbilityService, AttachmentService) ->
   new class PollService
 
     # NB: this is an intersection of data and code that's a little uncomfortable at the moment.
@@ -11,40 +11,63 @@ angular.module('loomioApp').factory 'PollService', ($window, $location, AppConfi
 
     activePollTemplates: ->
       # this could have group-specific logic later.
-      AppConfig.pollTemplates
+      # (LATER...) gasp now it does!
+      _.pickBy AppConfig.pollTemplates, (template) ->
+        !template.experimental or
+        (Session.currentGroup or {}).enableExperiments
 
     fieldFromTemplate: (pollType, field) ->
       return unless template = @templateFor(pollType)
       template[field]
 
     templateFor: (pollType) ->
-      @activePollTemplates()[pollType]
+      AppConfig.pollTemplates[pollType]
 
     lastStanceBy: (participant, poll) ->
       criteria =
-        latest:    true
-        pollId:    poll.id
-        visitorId: AppConfig.currentVisitorId or null
-        userId:    AppConfig.currentUserId or null
+        latest: true
+        pollId: poll.id
+        participantId: AppConfig.currentUserId
       _.first _.sortBy(Records.stances.find(criteria), 'createdAt')
 
-    hasVoted: (participant, poll) ->
-      @lastStanceBy(participant, poll)?
+    hasVoted: (user, poll) ->
+      @lastStanceBy(user, poll)?
 
     iconFor: (poll) ->
       @fieldFromTemplate(poll.pollType, 'material_icon')
 
-    usePollsFor: (model) ->
-      model.group().features.use_polls && !$location.search().proposalView
+    optionByName: (poll, name) ->
+      _.find poll.pollOptions(), (option) -> option.name == name
+
+    submitOutcome: (scope, model, options = {}) ->
+      actionName = if scope.outcome.isNew() then 'created' else 'updated'
+      FormService.submit(scope, model, _.merge(
+        flashSuccess: "poll_common_outcome_form.outcome_#{actionName}"
+        drafts: true
+        failureCallback: ->
+          ScrollService.scrollTo '.lmo-validation-error__message', container: '.poll-common-modal'
+        successCallback: (data) ->
+          scope.$emit 'outcomeSaved', data.outcomes[0].id
+      , options))
 
     submitPoll: (scope, model, options = {}) ->
       actionName = if scope.poll.isNew() then 'created' else 'updated'
       FormService.submit(scope, model, _.merge(
         flashSuccess: "poll_#{model.pollType}_form.#{model.pollType}_#{actionName}"
+        drafts: true
+        prepareFn: ->
+          scope.$emit 'processing'
+        failureCallback: ->
+          ScrollService.scrollTo '.lmo-validation-error__message', container: '.poll-common-modal'
         successCallback: (data) ->
-          scope.$emit 'pollSaved', data.polls[0].key
-          AttachmentService.cleanupAfterUpdate(data.polls[0], 'poll')
-        draftFields: ['title', 'details']
+          poll = Records.polls.find(data.polls[0].key)
+          scope.$emit 'saveComplete', poll
+          if actionName == 'created'
+            $location.path(LmoUrlService.poll(poll))
+          else
+            AttachmentService.cleanupAfterUpdate(poll, 'poll')
+        cleanupFn: ->
+          scope.$emit 'doneProcessing'
       , options))
 
     submitStance: (scope, model, options = {}) ->
@@ -52,9 +75,14 @@ angular.module('loomioApp').factory 'PollService', ($window, $location, AppConfi
       pollType   = model.poll().pollType
       FormService.submit(scope, model, _.merge(
         flashSuccess: "poll_#{pollType}_vote_form.stance_#{actionName}"
+        drafts: true
+        prepareFn: ->
+          scope.$emit 'processing'
         successCallback: (data) ->
           model.poll().clearStaleStances()
-          AppConfig.currentVisitorId = data.stances[0].visitor_id
+          ScrollService.scrollTo '.poll-common-card__results-shown'
           scope.$emit 'stanceSaved', data.stances[0].key
-        draftFields: ['reason']
+          Session.login(current_user_id: data.stances[0].participant_id) unless Session.user().emailVerified
+        cleanupFn: ->
+          scope.$emit 'doneProcessing'
       , options))

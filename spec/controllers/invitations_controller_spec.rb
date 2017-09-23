@@ -1,27 +1,28 @@
 require 'rails_helper'
 
 describe InvitationsController do
-  let(:group) { FactoryGirl.create(:group) }
+  let(:group) { FactoryGirl.create(:formal_group) }
   let(:user) { FactoryGirl.create(:user) }
+  let(:another_group) { FactoryGirl.create(:formal_group) }
+  let(:another_user) { FactoryGirl.create(:user) }
 
   before do
     group.add_admin!(user)
   end
 
   describe "GET 'show'" do
-    let(:group) { create(:group) }
-    let(:invitation) { create(:invitation, token: 'abc', invitable: group, recipient_email: user.email) }
+    let(:invitation) { create(:invitation, token: 'abc', group: group, recipient_email: user.email) }
+    let(:start_group_invitation) { create :invitation, token: 'bcd', group: another_group, recipient_email: "something@something.com", intent: :start_group, to_be_admin: true }
 
     context 'invitation not found' do
-      render_views
       it 'renders error page with not found message' do
         get :show, id: 'asdjhadjkhaskjdsahda'
-        expect(response.body).to match(/could not find invitation/i)
+        expect(response.status).to eq 404
+        expect(response).to render_template "errors/404"
       end
     end
 
     context 'invitation used' do
-      render_views
       before do
         sign_in user
         invitation.update_attribute(:accepted_at, Time.now)
@@ -29,7 +30,18 @@ describe InvitationsController do
 
       it 'says sorry invitatino already used' do
         get :show, id: invitation.token
-        expect(response).to redirect_to(invitation.invitable)
+        expect(response).to redirect_to(group_url(invitation.group))
+      end
+    end
+
+    context 'with an associated identity' do
+      before { group.group_identities.create(identity: create(:slack_identity)) }
+
+      it 'redirects to the group if a member' do
+        group.add_member! another_user
+        sign_in another_user
+        get :show, id: invitation.token
+        expect(response).to redirect_to group_url(group)
       end
     end
 
@@ -39,11 +51,11 @@ describe InvitationsController do
       end
 
       it "sets session attribute of the invitation token" do
-        expect(session[:invitation_token]).to eq invitation.token
+        expect(session[:pending_invitation_id]).to eq invitation.token
       end
 
-      it "redirects to sign in" do
-        response.should redirect_to(new_user_session_path)
+      it "redirects to the group" do
+        response.should redirect_to(group_url(invitation.group))
       end
 
       it 'does not accept the invitation' do
@@ -71,7 +83,7 @@ describe InvitationsController do
 
       context 'and has invitation_token in session' do
         before do
-          session[:invitation_token] = invitation.token
+          session[:pending_invitation_id] = invitation.token
         end
 
         it 'accepts the invitation, redirects to group, and clears token from session' do
@@ -80,7 +92,7 @@ describe InvitationsController do
           invitation.reload
           expect(invitation.accepted?).to be true
           expect(Membership.find_by(group: group, user: user)).to be_present
-          session[:invitation_token].should be_nil
+          session[:pending_invitation_id].should be_nil
         end
       end
     end

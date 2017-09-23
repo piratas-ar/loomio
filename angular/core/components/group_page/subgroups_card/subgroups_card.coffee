@@ -1,9 +1,12 @@
-angular.module('loomioApp').directive 'subgroupsCard', ->
+angular.module('loomioApp').directive 'subgroupsCard', ($rootScope, Records, AbilityService, ModalService, GroupModal) ->
   scope: {group: '='}
   restrict: 'E'
   templateUrl: 'generated/components/group_page/subgroups_card/subgroups_card.html'
   replace: true
-  controller: ($scope, $rootScope, Records, AbilityService, ModalService, GroupForm) ->
+  controller: ($scope) ->
+    $scope.show = ->
+      $scope.group.isParent()
+
     Records.groups.fetchByParent($scope.group).then ->
       $rootScope.$broadcast('subgroupsLoaded', $scope.group)
 
@@ -11,7 +14,4 @@ angular.module('loomioApp').directive 'subgroupsCard', ->
       AbilityService.canCreateSubgroups($scope.group)
 
     $scope.startSubgroup = ->
-       ModalService.open GroupForm, group: -> Records.groups.build(parentId: $scope.group.id)
-
-    $scope.showSubgroupsCard = ->
-      $scope.group.subgroups().length
+       ModalService.open GroupModal, group: -> Records.groups.build(parentId: $scope.group.id)

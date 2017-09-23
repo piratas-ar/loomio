@@ -12,15 +12,6 @@ class DiscussionService
        salient_items_count = (SELECT count(id) FROM events WHERE discussions.id = events.discussion_id AND events.kind IN ('#{Discussion::SALIENT_ITEM_KINDS.join('\', \'')}') )")
   end
 
-  def self.mark_as_participating!
-    Discussion.reset_column_information
-    Discussion.includes(:events).find_each(batch_size: 100) do |discussion|
-      participant_ids = (discussion.events.pluck(:user_id) << discussion.author_id).compact.uniq
-      DiscussionReader.where(user_id: participant_ids, discussion: discussion).update_all(participating: true)
-      yield if block_given?
-    end
-  end
-
   def self.create(discussion:, actor:)
     actor.ability.authorize! :create, discussion
     discussion.author = actor
@@ -41,7 +32,7 @@ class DiscussionService
   def self.update(discussion:, params:, actor:)
     actor.ability.authorize! :update, discussion
 
-    discussion.assign_attributes(params.slice(:private, :title, :description))
+    discussion.assign_attributes(params.slice(:private, :title, :description, :pinned))
     version_service = DiscussionVersionService.new(discussion: discussion, new_version: discussion.changes.empty?)
     discussion.attachment_ids = params[:attachment_ids]
 
@@ -65,18 +56,26 @@ class DiscussionService
     Events::DiscussionMoved.publish!(discussion, actor, source)
   end
 
-  def self.update_reader(discussion:, params:, actor:)
-    actor.ability.authorize! :show, discussion
-    DiscussionReader.for(discussion: discussion, user: actor).update(params.slice(:starred, :volume))
+  def self.pin(discussion:, actor:)
+    actor.ability.authorize! :pin, discussion
 
-    EventBus.broadcast('discussion_update_reader', discussion, params, actor)
+    discussion.update(pinned: !discussion.pinned)
+
+    EventBus.broadcast('discussion_pin', discussion, actor)
   end
 
-  def self.mark_as_read(discussion:, params:, actor:)
+  def self.update_reader(discussion:, params:, actor:)
     actor.ability.authorize! :show, discussion
+    reader = DiscussionReader.for(discussion: discussion, user: actor)
+    reader.update(params.slice(:volume))
 
-    target_to_read = Event.where(discussion_id: discussion.id, sequence_id: params[:sequence_id]).first || discussion
-    DiscussionReader.for(user: actor, discussion: discussion).viewed! target_to_read.created_at
+    EventBus.broadcast('discussion_update_reader', reader, params, actor)
+  end
+
+  def self.mark_as_seen(discussion:, actor:)
+    actor.ability.authorize! :mark_as_seen, discussion
+    DiscussionReader.for_model(discussion, actor).update_attribute(:last_read_at, discussion.created_at)
+    EventBus.broadcast('discussion_mark_as_seen', discussion, actor)
   end
 
   def self.dismiss(discussion:, params:, actor:)

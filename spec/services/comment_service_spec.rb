@@ -2,35 +2,15 @@ require 'rails_helper'
 describe 'CommentService' do
   let(:user) { create :user }
   let(:another_user) { create :user }
-  let(:group) { create(:group) }
+  let(:group) { create(:formal_group) }
   let(:discussion) { create :discussion, group: group, author: user }
   let(:comment) { create :comment, discussion: discussion, author: user }
-  let(:comment_vote) { create :comment_vote, comment: comment, user: user }
+  let(:reaction) { create :reaction, reactable: comment, user: user }
   let(:reader) { DiscussionReader.for(user: user, discussion: discussion) }
   let(:comment_params) {{ body: 'My body is ready' }}
 
   before do
     group.add_member! another_user
-  end
-
-  describe 'like' do
-    it 'creates a like for the current user on a comment' do
-      expect { CommentService.like(comment: comment, actor: user) }.to change { CommentVote.count }.by(1)
-    end
-
-    it 'does not notify if the user is no longer in the group' do
-      comment
-      group.memberships.find_by(user: user).destroy
-      expect { CommentService.like(comment: comment, actor: another_user) }.to_not change { user.notifications.count }
-    end
-  end
-
-  describe 'unlike' do
-    before { comment_vote }
-
-    it 'removes a like for the current user on a comment' do
-      expect { CommentService.unlike(comment: comment, actor: user) }.to change { CommentVote.count }.by(-1)
-    end
   end
 
   describe 'destroy' do
@@ -59,6 +39,14 @@ describe 'CommentService' do
       CommentService.create(comment: comment, actor: user)
     end
 
+    it 'sets my volume to loud' do
+      user.update(email_on_participation: true)
+      reader = DiscussionReader.for(discussion: comment.discussion, user: user)
+      reader.set_volume!("normal")
+      CommentService.create(comment: comment, actor: user)
+      expect(reader.reload.volume).to eq "loud"
+    end
+
     it 'saves the comment' do
       comment.should_receive(:save!).and_return(true)
       CommentService.create(comment: comment, actor: user)
@@ -85,8 +73,8 @@ describe 'CommentService' do
       end
 
       it 'updates the discussion reader' do
+        user.update_attribute(:email_on_participation, false)
         CommentService.create(comment: comment, actor: user)
-        expect(reader.reload.participating).to eq true
         expect(reader.reload.volume.to_sym).to eq :normal
       end
 

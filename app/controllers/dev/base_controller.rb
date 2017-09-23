@@ -15,7 +15,7 @@ class Dev::BaseController < ApplicationController
     else
       ActionMailer::Base.deliveries
     end.last
-    render template: 'dev/main/last_email', layout: 'base_mailer'
+    render template: 'dev/main/last_email', layout: false
   end
 
   private
@@ -24,11 +24,11 @@ class Dev::BaseController < ApplicationController
   end
 
   def cleanup_database
+    reset_session
     User.delete_all
     Group.delete_all
     Membership.delete_all
     Poll.delete_all
-    Motion.delete_all
     ActionMailer::Base.deliveries = []
   end
 end

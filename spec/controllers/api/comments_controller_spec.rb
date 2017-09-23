@@ -3,7 +3,7 @@ describe API::CommentsController do
 
   let(:user) { create :user }
   let(:another_user) { create :user }
-  let(:group) { create :group }
+  let(:group) { create :formal_group }
   let(:discussion) { create :discussion, group: group }
   let(:comment) { create :comment, discussion: discussion, author: user }
   let(:another_comment) { create :comment, discussion: discussion, author: another_user }
@@ -15,33 +15,6 @@ describe API::CommentsController do
   describe "signed in" do
     before do
       sign_in user
-    end
-
-    describe 'like' do
-      context 'success' do
-        it "likes the comment" do
-          post :like, id: comment.id
-          expect(comment.reload.likers).to include user
-        end
-      end
-
-      context 'failure' do
-        it "responds with an error when the user is unauthorized" do
-          sign_in another_user
-          post :like, id: comment.id
-          expect(JSON.parse(response.body)['exception']).to eq 'CanCan::AccessDenied'
-        end
-      end
-    end
-
-    describe 'unlike' do
-      context 'success' do
-        it "unlikes the comment" do
-          comment.likers << user
-          post :unlike, id: comment.id
-          expect(comment.reload.likers).to_not include user
-        end
-      end
     end
 
     describe 'update' do

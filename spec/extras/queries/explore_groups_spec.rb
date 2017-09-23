@@ -1,20 +1,24 @@
 require 'rails_helper'
 
 describe Queries::ExploreGroups do
-  let(:group)              { create :group }
-  let(:second_group)       { create :group }
+  let(:group)              { create :formal_group }
+  let(:second_group)       { create :formal_group }
+  let(:archived_group)     { create :formal_group, archived_at: 1.day.ago }
 
   before do
     group.update_attribute(:is_visible_to_public, true)
     second_group.update_attribute(:is_visible_to_public, true)
+    archived_group.update_attribute(:is_visible_to_public, true)
     group.update_attribute(:memberships_count, 4)
     second_group.update_attribute(:memberships_count, 2)
+    archived_group.update_attribute(:memberships_count, 4)
   end
 
   describe 'visible groups' do
 
     it 'shows groups on the explore page' do
       expect(Queries::ExploreGroups.new).to include group
+      expect(Queries::ExploreGroups.new).to_not include archived_group
     end
 
     it 'only shows groups that are visible to public' do
@@ -23,7 +27,7 @@ describe Queries::ExploreGroups do
     end
 
     it 'only shows parent groups' do
-      subgroup = FactoryGirl.create(:group, parent: group)
+      subgroup = FactoryGirl.create(:formal_group, parent: group)
       subgroup.update_attribute(:is_visible_to_public, true)
       expect(Queries::ExploreGroups.new).to_not include subgroup
     end

@@ -1,6 +1,9 @@
+if (bowser.safari and bowser.version < 9) or
+   (bowser.ie and bowser.version < 10)
+  window.location.href = "/417.html"
+
 angular.module('loomioApp', [
   'ngNewRouter',
-  'ui.bootstrap',
   'pascalprecht.translate',
   'ngSanitize',
   'hc.marked',
@@ -11,11 +14,12 @@ angular.module('loomioApp', [
   'ui.gravatar',
   'duScroll',
   'angular-clipboard',
-  'checklist-model',
-  'monospaced.elastic',
   'angularMoment',
   'offClick',
   'ngMaterial',
   'angulartics',
-  'angulartics.google.tagmanager'
+  'angulartics.google.tagmanager',
+  'vcRecaptcha',
+  'ngAnimate',
+  'angular-sortable-view'
 ])

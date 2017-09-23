@@ -3,13 +3,13 @@ require 'rails_helper'
 describe StanceService do
   let(:agree) { create :poll_option, poll: poll, name: "agree" }
   let(:disagree) { create :poll_option, poll: poll, name: "disagree" }
-  let(:group) { create :group }
+  let(:group) { create :formal_group }
   let(:discussion) { create :discussion, group: group }
   let(:poll) { create :poll, discussion: discussion }
+  let(:proposal) { create :poll_proposal, discussion: discussion }
   let(:public_poll) { create :poll, anyone_can_participate: true }
   let(:public_stance) { build :stance, poll: public_poll, stance_choices: [agree_choice], participant: nil }
   let(:user) { create :user }
-  let(:visitor) { build :visitor }
   let(:another_group_member) { create :user }
   let(:another_user) { create :user }
   let(:stance) { create :stance, poll: poll, stance_choices: [agree_choice], participant: user, reason: "Old one" }
@@ -29,6 +29,7 @@ describe StanceService do
     end
 
     it 'does not create an invalid stance' do
+      stance_created.poll_id = proposal.id
       stance_created.stance_choices = []
       expect { StanceService.create(stance: stance_created, actor: user) }.to_not change { Stance.count }
     end
@@ -41,10 +42,8 @@ describe StanceService do
       expect(stance_created.reload.latest).to eq true
     end
 
-    it 'can create a stance with a visitor' do
-      expect { StanceService.create(stance: public_stance, actor: visitor) }.to change { Stance.count }.by(1)
-      expect(visitor.reload.persisted?).to eq true
-      expect(public_stance.reload.participant).to eq visitor
+    it 'does not create a stance for a logged out user' do
+      expect { StanceService.create(stance: public_stance, actor: LoggedOutUser.new) }.to raise_error { CanCan::AccessDenied }
     end
 
     it 'does not allow visitors to create unauthorized stances' do
@@ -63,6 +62,26 @@ describe StanceService do
       stance
       poll.update_stance_data
       expect { StanceService.create(stance: stance_created, actor: user) }.to_not change { poll.stance_data['agree'].to_i }
+    end
+
+    describe 'notify_on_participate' do
+      it 'emails the poll author when notify_on_participate is true' do
+        stance_created.poll.update(notify_on_participate: true)
+        expect { StanceService.create(stance: stance_created, actor: user) }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      end
+
+      it 'notifies the poll author when notify_on_participate is true' do
+        stance_created.poll.update(notify_on_participate: true)
+        expect { StanceService.create(stance: stance_created, actor: user) }.to change { stance_created.poll.author.notifications.count }.by(1)
+      end
+
+      it 'does not email the poll author when notify_on_participate is false' do
+        expect { StanceService.create(stance: stance_created, actor: user) }.to_not change { ActionMailer::Base.deliveries.count }
+      end
+
+      it 'does not notify the poll author when notify_on_participate is false' do
+        expect { StanceService.create(stance: stance_created, actor: user) }.to_not change { stance_created.poll.author.notifications.count }
+      end
     end
   end
 end

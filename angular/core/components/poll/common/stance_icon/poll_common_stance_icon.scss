@@ -3,10 +3,9 @@
 }
 
 .poll-common-stance-icon__svg {
-  @include boxTiny;
   margin-right: 4px;
   position: relative;
-  bottom: 1px;
+  bottom: -4px;
 }
 
 .poll-common-stance-icon__chip {

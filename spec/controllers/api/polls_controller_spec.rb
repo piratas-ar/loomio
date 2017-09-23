@@ -1,15 +1,16 @@
 require 'rails_helper'
 
 describe API::PollsController do
-  let(:group) { create :group }
-  let(:another_group) { create :group }
+  let(:group) { create :formal_group }
+  let(:another_group) { create :formal_group }
   let(:discussion) { create :discussion, group: group }
   let(:another_discussion) { create :discussion, group: group }
   let(:non_group_discussion) { create :discussion }
   let(:user) { create :user }
   let(:another_user) { create :user }
-  let!(:poll) { create :poll, discussion: discussion, author: user }
-  let(:another_poll) { create :poll, discussion: another_discussion }
+  let!(:poll) { create :poll, title: "POLL!", discussion: discussion, author: user }
+  let(:another_poll) { create :poll, title: "ANOTHER", discussion: another_discussion }
+  let(:closed_poll) { create :poll, title: "CLOSED", author: user, closed_at: 1.day.ago }
   let(:non_group_poll) { create :poll }
   let(:poll_params) {{
     title: "hello",
@@ -39,6 +40,8 @@ describe API::PollsController do
   end
 
   describe 'index' do
+    before { poll; another_poll; closed_poll }
+
     it 'shows polls in a discussion' do
       sign_in user
       get :index, discussion_id: discussion.key
@@ -56,7 +59,112 @@ describe API::PollsController do
     end
   end
 
+  describe 'search' do
+    let(:participated_poll) { create :poll }
+    let!(:my_stance) { create :stance, poll: participated_poll, participant: user, poll_options: [participated_poll.poll_options.first] }
+    let!(:authored_poll) { create :poll, author: user }
+    let!(:group_poll) { create :poll, discussion: discussion }
+    let!(:another_poll) { create :poll }
+
+    describe 'search_results_count' do
+      it 'returns a count of possible results' do
+        sign_in user
+        get :search_results_count
+        expect(response.body.to_i).to eq 4
+      end
+    end
+
+    describe 'signed in' do
+      before { sign_in user }
+
+      it 'returns visible polls' do
+        get :search
+        json = JSON.parse(response.body)
+        poll_ids = json['polls'].map { |p| p['id'] }
+
+        expect(poll_ids).to include participated_poll.id
+        expect(poll_ids).to include authored_poll.id
+        expect(poll_ids).to include group_poll.id
+        expect(poll_ids).to_not include another_poll.id
+      end
+
+      it 'filters by status' do
+        authored_poll.update(closed_at: 1.day.ago)
+        get :search, status: :closed
+
+        json = JSON.parse(response.body)
+        poll_ids = json['polls'].map { |p| p['id'] }
+
+        expect(poll_ids).to include authored_poll.id
+        expect(poll_ids).to_not include participated_poll.id
+        expect(poll_ids).to_not include group_poll.id
+        expect(poll_ids).to_not include another_poll.id
+      end
+
+      it 'filters by group' do
+        get :search, group_key: group.key
+        json = JSON.parse(response.body)
+        poll_ids = json['polls'].map { |p| p['id'] }
+
+        expect(poll_ids).to include group_poll.id
+        expect(poll_ids).to_not include participated_poll.id
+        expect(poll_ids).to_not include authored_poll.id
+        expect(poll_ids).to_not include another_poll.id
+      end
+
+      it 'filters by discussion' do
+        get :search, discussion_key: discussion.key
+        json = JSON.parse(response.body)
+        poll_ids = json['polls'].map { |p| p['id'] }
+
+        expect(poll_ids).to include group_poll.id
+        expect(poll_ids).to_not include participated_poll.id
+        expect(poll_ids).to_not include authored_poll.id
+        expect(poll_ids).to_not include another_poll.id
+      end
+
+      it 'filters by participated' do
+        get :search, user: :participation_by
+        json = JSON.parse(response.body)
+        poll_ids = json['polls'].map { |p| p['id'] }
+
+        expect(poll_ids).to include participated_poll.id
+        expect(poll_ids).to_not include group_poll.id
+        expect(poll_ids).to_not include authored_poll.id
+        expect(poll_ids).to_not include another_poll.id
+      end
+
+      it 'filters by authored' do
+        get :search, user: :authored_by
+        json = JSON.parse(response.body)
+        poll_ids = json['polls'].map { |p| p['id'] }
+
+        expect(poll_ids).to include authored_poll.id
+        expect(poll_ids).to_not include participated_poll.id
+        expect(poll_ids).to_not include group_poll.id
+        expect(poll_ids).to_not include another_poll.id
+      end
+
+      it 'filters by search fragment' do
+        authored_poll.update(title: "Made in Korea!")
+        get :search, query: "Korea"
+        json = JSON.parse(response.body)
+        poll_ids = json['polls'].map { |p| p['id'] }
+
+        expect(poll_ids).to include authored_poll.id
+        expect(poll_ids).to_not include group_poll.id
+        expect(poll_ids).to_not include participated_poll.id
+        expect(poll_ids).to_not include another_poll.id
+      end
+    end
+  end
+
   describe 'create' do
+    let(:identity) { create :slack_identity, user: user }
+    let(:community) { create :slack_community, identity: identity }
+    let(:another_identity) { create :slack_identity }
+    let(:another_community) { create :slack_community, identity: another_identity }
+
     it 'creates a poll' do
       sign_in user
       expect { post :create, poll: poll_params }.to change { Poll.count }.by(1)
@@ -66,8 +174,8 @@ describe API::PollsController do
       expect(poll.title).to eq poll_params[:title]
       expect(poll.discussion).to eq discussion
       expect(poll.author).to eq user
-      expect(poll.communities.map(&:class)).to include Communities::LoomioGroup
-      expect(poll.communities.map(&:class)).to include Communities::Email
+      expect(poll.guest_group).to be_present
+      expect(poll.guest_group.admins).to include user
 
       json = JSON.parse(response.body)
       expect(json['polls'].length).to eq 1
@@ -81,9 +189,9 @@ describe API::PollsController do
 
       poll = Poll.last
       expect(poll.discussion).to eq nil
-      expect(poll.group).to eq nil
-      expect(poll.communities.length).to eq 1
-      expect(poll.communities.map(&:class)).to include Communities::Email
+      expect(poll.group.presence).to eq nil
+      expect(poll.guest_group).to be_present
+      expect(poll.guest_group.admins).to include user
     end
 
     it 'does not allow visitors to create polls' do
@@ -95,6 +203,15 @@ describe API::PollsController do
       sign_in another_user
       expect { post :create, poll: poll_params }.to_not change { Poll.count }
       expect(response.status).to eq 403
+    end
+
+    it 'can store an event duration for meeting polls' do
+      sign_in user
+      poll_params[:poll_type] = 'meeting'
+      poll_params[:poll_option_names] = [1.day.from_now.iso8601]
+      poll_params[:custom_fields] = { meeting_duration: 90 }
+      expect { post :create, poll: poll_params }.to change { Poll.count }.by(1)
+      expect(Poll.last.meeting_duration.to_i).to eq 90
     end
   end
 
@@ -129,56 +246,36 @@ describe API::PollsController do
     end
   end
 
-  describe 'autocomplete' do
-    let!(:red_poll) { create(:poll, discussion: discussion,  title: "I am a red ranger!") }
-    let!(:blue_poll) { create(:poll, discussion: discussion, title: "I am a blue bassoon!") }
+  describe 'add_options' do
+    before { poll.update(voter_can_add_options: true) }
 
-    it 'returns polls whose title matches the search fragment' do
+    it 'adds options to a poll' do
       sign_in user
-      get :search, group_id: group.id, q: 'red'
+      post :add_options, id: poll.key, poll_option_names: 'new_option'
       expect(response.status).to eq 200
+      expect(poll.reload.poll_option_names).to include 'new_option'
 
       json = JSON.parse(response.body)
-      poll_ids = json['polls'].map { |p| p['id'] }
-
-      expect(poll_ids).to include red_poll.id
-      expect(poll_ids).to_not include blue_poll.id
+      poll_option_names = json['poll_options'].map { |o| o['name'] }
+      expect(poll_option_names).to include 'new_option'
     end
 
-    it 'requires a group id' do
-      sign_in user
-      get :search, q: "red"
-      expect(response.status).to eq 404
-    end
-
-    it 'requires a search query' do
-      sign_in user
-      get :search, group_id: group.id
-      expect(response.status).to eq 400
-    end
-
-    it 'does not search by details' do
-      sign_in user
-      blue_poll.update(details: "Zed's red, baby")
-      get :search, group_id: group.id, q: "red"
-
-      json = JSON.parse(response.body)
-      poll_ids = json['polls'].map { |p| p['id'] }
-
-      expect(poll_ids).to include red_poll.id
-      expect(poll_ids).to_not include blue_poll.id
-    end
-
-    it 'does not return polls the user cannot see' do
+    it 'does not allow unauthorized users to add options' do
       sign_in another_user
-      get :search, group_id: group.id, q: "red"
+      post :add_options, id: poll.key, poll_option_names: 'new_option'
+      expect(response.status).to eq 403
+    end
+
+    it 'does nothing if no options passed' do
+      sign_in user
+      expect { post :add_options, id: poll.key, poll_option_names: [] }.to_not change { poll.poll_options.count }
       expect(response.status).to eq 200
+    end
 
-      json = JSON.parse(response.body)
-      poll_ids = json['polls'].map { |p| p['id'] }
-
-      expect(poll_ids).to_not include red_poll.id
-      expect(poll_ids).to_not include blue_poll.id
+    it 'cannot add actions to a closed poll' do
+      poll.update(closed_at: 1.day.ago)
+      sign_in user
+      expect { post :add_option, id: poll.key, poll_option_names: 'new_option' }.to raise_error { CanCan::AccessDenied }
     end
   end
 
@@ -209,12 +306,51 @@ describe API::PollsController do
       expect(response.status).to eq 403
       expect(poll.reload.active?).to eq true
     end
+  end
 
-    it 'converts a poll in a loomio group to a loomio user community' do
+  describe 'destroy' do
+    it 'destroys a poll' do
+      sign_in poll.author
+      expect { delete :destroy, id: poll.key }.to change { Poll.count }.by(-1)
+      expect(response.status).to eq 200
+    end
+
+    it 'allows group admins to destroy polls' do
+      sign_in poll.group.admins.first
+      expect { delete :destroy, id: poll.key }.to change { Poll.count }.by(-1)
+      expect(response.status).to eq 200
+    end
+
+    it 'does not allow an unauthed user to destroy a poll' do
+      sign_in create(:user)
+      expect { delete :destroy, id: poll.key }.to_not change { Poll.count }
+      expect(response.status).to eq 403
+    end
+
+  end
+
+  describe 'toggle_subscription' do
+    it 'creates an unsubscription if one does not exist' do
       sign_in user
-      post :close, id: poll.key
-      expect(poll.communities.map(&:class)).to_not include Communities::LoomioGroup
-      expect(poll.communities.map(&:class)).to include Communities::LoomioUsers
+      expect { post :toggle_subscription, id: poll.key }.to change { poll.unsubscribers.count }.by(1)
+      expect(response.status).to eq 200
+    end
+
+    it 'deletes an unsubscription if one does exist' do
+      sign_in user
+      poll.poll_unsubscriptions.create(user: user)
+      expect { post :toggle_subscription, id: poll.key }.to change { poll.unsubscribers.count }.by(-1)
+      expect(response.status).to eq 200
+    end
+
+    it 'does not allow visitors to have an unsubscription' do
+      expect { post :toggle_subscription, id: poll.key }.to_not change { poll.unsubscribers.count }
+      expect(response.status).to eq 403
+    end
+
+    it 'does not allow users who cant see the poll to have unsubscriptions' do
+      sign_in another_user
+      expect { post :toggle_subscription, id: poll.key }.to_not change { poll.unsubscribers.count }
     end
   end
 end

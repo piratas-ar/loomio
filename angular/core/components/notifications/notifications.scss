@@ -1,31 +1,35 @@
 .notifications__button {
-  position: relative;
+  min-width: 36px;
   i { font-size: 24px; }
 }
 
+.notifications__menu-content {
+  max-width: $tiny-max-px;
+  max-height: calc(100vh - 48px);
+  padding: 0;
+  @include fontMedium;
+  a { color: $primary-text-color; outline: 0 }
+  a:active, a:link, a:visited { text-decoration: none !important}
+  li { list-style-type: none; }
+}
+
 .notifications__activity {
-  display: inline-block;
   min-width: 10px;
   padding: 5px 5px;
   color: #fff!important;
   vertical-align: middle;
   font-size: 10px;
   position: absolute;
-  left: 24px;
-  top: -4px;
+  left: 12px;
+  top: 0;
   background: #4A90E2!important;
   border-radius: 10px;
   border: 2px solid #fff;
   line-height: 5px;
-  text-align: center
 }
 
 .notifications__link {
   color: $primary-text-color;
-}
-
-.notifications__dropdown {
-  margin-top: 8px !important;
 }
 
 .navbar-notifications__blank-message {

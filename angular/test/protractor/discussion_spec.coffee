@@ -1,28 +1,21 @@
 describe 'Discussion Page', ->
 
-  groupsHelper = require './helpers/groups_helper.coffee'
-  discussionForm = require './helpers/discussion_form_helper.coffee'
-  threadPage = require './helpers/thread_helper.coffee'
-  flashHelper = require './helpers/flash_helper.coffee'
-  emailhelper = require './helpers/email_helper.coffee'
-  staticPage = require './helpers/static_page_helper.coffee'
   page = require './helpers/page_helper.coffee'
 
   describe 'starting a thread via start menu', ->
     it 'preselects current group', ->
       page.loadPath 'setup_dashboard'
       page.click '.sidebar__list-item-button--muted'
-      page.clickLast '.thread-preview__link'
-      page.click '.start-menu__start-button'
-      page.click '.start-menu__startThread'
+      page.clickFirst '.thread-preview__link'
+      page.click '.sidebar__list-item-button--start-thread'
       page.expectText '.discussion-form__group-select', 'Muted Point Blank'
 
   describe 'viewing while logged out', ->
     it 'should display content for a public thread', ->
-      groupsHelper.loadPath('view_open_group_as_visitor')
+      page.loadPath('view_open_group_as_visitor')
       page.expectText('.group-theme__name', 'Open Dirty Dancing Shoes')
-      page.expectText('.thread-previews-container', 'I carried a watermelon')
-      page.expectText('.navbar__right', 'Log In')
+      page.expectText('.thread-previews-container--unpinned', 'I carried a watermelon')
+      page.expectText('.navbar__right', 'LOG IN')
       page.click('.thread-preview__link')
       page.expectText('.context-panel', 'I carried a watermelon')
 
@@ -39,38 +32,50 @@ describe 'Discussion Page', ->
       page.click '.context-panel__dropdown-button',
                  '.context-panel__dropdown-options--edit'
       page.fillIn('.discussion-form__title-input', 'better title')
-      page.fillIn('.discussion-form__description-input', 'improved description')
+      page.fillIn('.discussion-form textarea', 'improved description')
       page.click('.discussion-form__private')
       page.click('.discussion-form__update')
       page.expectText('.context-panel', 'better title')
       page.expectText('.context-panel', 'improved description')
       page.expectText('.context-panel', 'Private')
-      page.expectText('.thread-item__title', 'updated the thread title, context and privacy')
+      page.expectText('.thread-item__title', 'edited the thread title')
 
-    it 'does not store cancelled thread info', ->
+    xit 'does not store cancelled thread info', ->
       page.click '.context-panel__dropdown-button',
                  '.context-panel__dropdown-options--edit'
 
       page.fillIn('.discussion-form__title-input', 'dumb title')
-      page.fillIn('.discussion-form__description-input', 'rubbish description')
+      page.fillIn('.discussion-form textarea', 'rubbish description')
 
-      page.click('.discussion-form__cancel')
+      page.click('.modal-cancel')
       page.click '.context-panel__dropdown-button',
                  '.context-panel__dropdown-options--edit'
 
       page.expectNoText('.discussion-form__title-input', 'dumb title')
-      page.expectNoText('.discussion-form__description-input', 'rubbish description')
+      page.expectNoText('.discussion-form textarea', 'rubbish description')
 
-    it 'lets you view thread revision history', ->
+    xit 'lets you view thread revision history', ->
       page.click '.context-panel__dropdown-button',
                  '.context-panel__dropdown-options--edit'
       page.fillIn '.discussion-form__title-input', 'Revised title'
-      page.fillIn '.discussion-form__description-input', 'Revised description'
+      page.fillIn '.discussion-form textarea', 'Revised description'
+      page.click '.discussion-form__update'
+      page.click '.context-panel__dropdown-button',
+                 '.context-panel__dropdown-options--edit'
+      page.fillIn '.discussion-form__title-input', 'Revised title'
+      page.fillIn '.discussion-form textarea', 'Revised description'
       page.click '.discussion-form__update'
       page.click '.context-panel__edited'
       page.expectText '.revision-history-modal__body', 'Revised title'
       page.expectText '.revision-history-modal__body', 'Revised description'
       page.expectText '.revision-history-modal__body', 'What star sign are you?'
+
+  describe 'reading a thread', ->
+    it 'can display an unread content line', ->
+      page.loadPath 'setup_unread_discussion'
+      page.expectText '.activity-card', 'New Activity'
+      browser.refresh()
+      page.expectNoText '.activity-card', 'New Activity'
 
   describe 'muting and unmuting a thread', ->
     it 'lets you mute and unmute', ->
@@ -88,25 +93,37 @@ describe 'Discussion Page', ->
       page.loadPath 'setup_multiple_discussions'
       page.click '.context-panel__dropdown-button',
                  '.context-panel__dropdown-options--move'
-      page.click '.move-thread-form__group-dropdown'
-      element(By.cssContainingText('option', 'Point Break')).click()
-      page.click '.move-thread-form'
+      page.selectOption '.move-thread-form__group-dropdown', 'Point Break'
       page.click '.move-thread-form__submit'
-      page.expectFlash 'Thread has been moved to Point Break'
+      page.sleep()
       page.expectText '.thread-item__title', 'Patrick Swayze moved the thread from Dirty Dancing Shoes'
       page.expectText '.group-theme__name--compact','Point Break'
 
   describe 'delete thread', ->
-    beforeEach ->
-      page.loadPath('setup_discussion')
-
     it 'lets coordinators and thread authors delete threads', ->
-      threadPage.openThreadOptionsDropdown()
-      threadPage.selectDeleteThreadOption()
-      threadPage.confirmThreadDeletion()
-      expect(flashHelper.flashMessage()).toContain('Thread deleted')
-      expect(groupsHelper.groupName().isPresent()).toBe(true)
-      expect(groupsHelper.groupPage()).not.toContain('What star sign are you?')
+      page.loadPath 'setup_discussion'
+      page.click '.context-panel__dropdown-button'
+      page.click '.context-panel__dropdown-options--delete button'
+      page.click '.delete-thread-form__submit'
+
+      page.expectFlash 'Thread deleted'
+      page.expectText '.group-theme__name', 'Dirty Dancing Shoes'
+      page.expectNoText '.discussions-card', 'What star sign are you?'
+
+  describe 'pin thread', ->
+    it 'can pin from the discussion page', ->
+      page.loadPath 'setup_discussion'
+      page.click '.context-panel__dropdown-button'
+      page.click '.context-panel__dropdown-options--pin button'
+
+      page.expectText '.pin-thread-modal', 'Pinned threads always appear'
+      page.click '.pin-thread-modal__submit'
+
+      page.expectFlash 'Thread pinned'
+      page.expectElement '.context-panel__pin'
+
+      page.click '.sidebar__list-item-button--recent'
+      page.expectElement '.thread-preview__pin'
 
   describe 'changing thread email settings', ->
     beforeEach ->
@@ -133,7 +150,7 @@ describe 'Discussion Page', ->
       page.click '.join-group-button__join-group'
       page.expectFlash 'You are now a member of Open Dirty Dancing Shoes'
 
-      page.fillIn '.comment-form__comment-field', 'I am new!'
+      page.fillIn '.comment-form textarea', 'I am new!'
       page.click '.comment-form__submit-button'
       page.expectFlash 'Comment added'
 
@@ -144,88 +161,68 @@ describe 'Discussion Page', ->
       page.click '.membership-request-form__submit-btn'
       page.expectFlash 'You have requested membership to Closed Dirty Dancing Shoes'
 
-  describe 'signing in', ->
-    it 'allows logged out users to log in and comment', ->
-      page.loadPath 'view_open_group_as_visitor'
-      page.click '.thread-preview__link'
-      page.click '.comment-form__sign-in-btn'
-      page.fillIn '#user-email', 'jennifer_grey@example.com'
-      page.fillIn '#user-password', 'gh0stmovie'
-      page.click '.sign-in-form__submit-button'
-      page.waitForReload()
-      page.expectFlash 'Signed in successfully'
-
-      page.fillIn '.comment-form__comment-field', 'I am new!'
-      page.click '.comment-form__submit-button'
-      page.expectFlash 'Comment added'
-
   describe 'commenting', ->
     beforeEach ->
       page.loadPath('setup_discussion')
-      browser.driver.manage().window().setSize(1280, 1024);
 
     it 'adds a comment', ->
-      threadPage.addComment('hi this is my comment')
-      expect(threadPage.mostRecentComment()).toContain('hi this is my comment')
+      page.fillIn '.comment-form textarea', 'hi this is my comment'
+      page.click '.comment-form__submit-button'
+      page.expectText '.new-comment', 'hi this is my comment'
 
-    it 'can add emojis', ->
-      page.fillIn '.comment-form__comment-field', 'Here is a dragon!'
-      page.click '.emoji-picker__toggle'
-      page.fillIn '.emoji-picker__search', 'drag'
-      page.clickFirst '.emoji-picker__icon'
+    xit 'can add emojis', ->
+      page.fillIn '.comment-form textarea', 'Here is a dragon!'
+      page.click '.comment-form .emoji-picker__toggle'
+      page.fillIn '.emoji-picker__search input', 'dragon_face'
+      page.click '.emoji-picker__selector:first-child'
+      page.sleep(2000)
       page.click '.comment-form__submit-button'
       page.expectText '.thread-item__body','Here is a dragon!'
       page.expectElement '.thread-item__body img'
 
     it 'replies to a comment', ->
-      threadPage.addComment('original comment right heerrr')
-      threadPage.replyLinkOnMostRecentComment().click()
-      threadPage.addComment('hi this is my comment')
-      expect(threadPage.inReplyToOnMostRecentComment()).toContain('in reply to')
-      expect(flashHelper.flashMessage()).toContain('Patrick Swayze notified of reply')
+      page.fillIn '.comment-form textarea', 'original comment right heerrr'
+      page.click '.comment-form__submit-button'
+      page.click '.action-dock__button--reply_to_comment'
+      page.fillIn '.comment-form textarea', 'hi this is my comment'
+      page.click '.comment-form__submit-button'
+      page.expectText '.activity-card__activity-list-item:last-child', 'in reply to'
+      page.expectFlash 'Patrick Swayze notified of reply'
 
-    it 'likes a comment', ->
-      threadPage.addComment('hi')
-      threadPage.likeLinkOnMostRecentComment().click()
-      expect(threadPage.likedByOnMostRecentComment()).toContain('You like this.')
+    it 'can react to a comment', ->
+      page.expectNoElement '.reaction'
+      page.click '.action-dock__button--react',
+                 '.emoji-picker__selector:first-child'
+      page.expectElement '.reaction'
 
     it 'mentions a user', ->
-      threadPage.enterCommentText('@jennifer')
-      expect(threadPage.mentionList().getText()).toContain('Jennifer Grey')
-      threadPage.firstMentionOption().click()
-      threadPage.submitComment()
-      expect(threadPage.mostRecentComment()).toContain('@jennifergrey')
+      page.fillIn '.comment-form textarea', '@jennifer'
+      page.expectText '.mentio-menu', 'Jennifer Grey'
+      page.click '.mentio-menu md-menu-item'
+      page.click '.comment-form__submit-button'
+      page.expectText '.new-comment', '@jennifergrey'
 
     it 'edits a comment', ->
-      threadPage.addComment('original comment right hur')
-      threadPage.clickThreadItemOptionsButton()
-      threadPage.selectEditCommentOption()
-      threadPage.editCommentText('edited comment right thur')
-      threadPage.submitEditedComment()
-      expect(threadPage.mostRecentComment()).toContain('edited comment right thur')
+      page.fillIn '.comment-form textarea', 'original comment right hur'
+      page.click '.comment-form__submit-button'
+      page.click '.action-dock__button--edit_comment'
+      page.fillIn '.edit-comment-form textarea', 'edited comment right thur'
+      page.click '.comment-form__submit-btn'
+      page.expectText '.new-comment', 'edited comment right thur'
 
     it 'lets you view comment revision history', ->
-      page.fillIn '.comment-form__comment-field', 'Comment!'
+      page.fillIn '.comment-form textarea', 'Comment!'
       page.click '.comment-form__submit-button'
-      page.click '.thread-item__dropdown-button',
-                 '.thread-item__edit-link'
-      page.fillIn '.edit-comment-form__comment-field', 'Revised comment!'
+      page.click '.action-dock__button--edit_comment'
+      page.fillIn '.edit-comment-form textarea', 'Revised comment!'
       page.click  '.comment-form__submit-btn'
-      browser.sleep(2000)
-      page.click '.thread-item__action--view-edits'
+      page.click '.action-dock__button--show_history'
       page.expectText '.revision-history-modal__body', 'Revised comment!'
       page.expectText '.revision-history-modal__body', 'Comment!'
 
     it 'deletes a comment', ->
-      threadPage.addComment('original comment right hur')
-      threadPage.clickThreadItemOptionsButton()
-      threadPage.selectDeleteCommentOption()
-      threadPage.confirmCommentDeletion()
-      expect(threadPage.activityPanel()).not.toContain('original comment right thur')
-
-  xdescribe 'following a link in a thread email', ->
-    it 'successfully takes you to relevant comment', ->
-      page.loadPath 'setup_reply_email'
-      emailhelper.openLastEmail()
-      staticPage.click 'a'
-      page.expectText '.activity-card', 'Hello Jennifer'
+      page.fillIn '.comment-form textarea', 'original comment right hur'
+      page.click '.comment-form__submit-button'
+      page.click '.action-dock__button--delete_comment',
+                 '.delete-comment-form__delete-button'
+      page.expectNoText '.activity-card', 'original comment right thur'

@@ -1,8 +1,7 @@
 class ContactMessageService
-
   def self.create(contact_message:, actor:)
-    contact_message.user = actor
-    ContactMessageMailer.delay(priority: 2).contact_message_email contact_message if contact_message.save
-  end
+    contact_message.save
 
+    EventBus.broadcast('contact_message_create', contact_message, actor)
+  end
 end

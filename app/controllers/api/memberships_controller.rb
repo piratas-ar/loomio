@@ -4,9 +4,9 @@ class API::MembershipsController < API::RestfulController
   def add_to_subgroup
     group = load_and_authorize(:group)
     users = group.parent.members.where('users.id': params[:user_ids])
-    @memberships = MembershipService.add_users_to_group(users: users,
-                                                        group: group,
-                                                        inviter: current_user)
+    @memberships = service.add_users_to_group(users: users,
+                                              group: group,
+                                              inviter: current_user)
     respond_with_collection
   end
 
@@ -18,7 +18,7 @@ class API::MembershipsController < API::RestfulController
 
   def for_user
     load_and_authorize :user
-    instantiate_collection { |collection| collection.where(user_id: @user.id).order('groups.full_name') }
+    instantiate_collection { |collection| collection.active.formal.where(user_id: @user.id).order('groups.full_name') }
     respond_with_collection
   end
 
@@ -74,12 +74,7 @@ class API::MembershipsController < API::RestfulController
   end
 
   def undecided
-    load_and_authorize(:poll)
-    instantiate_collection do |collection|
-      collection = collection.where(group: @poll.group)
-      collection = collection.where("memberships.user_id NOT IN (?)", @poll.participant_ids) if @poll.participant_ids.present?
-      collection
-    end
+    instantiate_collection { |collection| collection.undecided_for(load_and_authorize(:poll)) }
     respond_with_collection
   end
 

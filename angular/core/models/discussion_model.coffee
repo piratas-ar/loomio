@@ -5,7 +5,19 @@ angular.module('loomioApp').factory 'DiscussionModel', (DraftableModel, AppConfi
     @uniqueIndices: ['id', 'key']
     @indices: ['groupId', 'authorId']
     @draftParent: 'group'
+    @draftPayloadAttributes: ['title', 'description']
     @serializableAttributes: AppConfig.permittedParams.discussion
+    @memoize: [
+      'hasDecision',
+      'activePolls',
+      'isUnread',
+      'isDimissed',
+      'minLoadedSequenceId',
+      'maxLoadedSequenceId',
+      'hasUnreadActivity',
+      'hasAttachments',
+      'cookedDescription'
+    ]
 
     afterConstruction: ->
       @private = @privateDefaultValue() if @isNew()
@@ -37,47 +49,38 @@ angular.module('loomioApp').factory 'DiscussionModel', (DraftableModel, AppConfi
     relationships: ->
       @hasMany 'comments', sortBy: 'createdAt'
       @hasMany 'events', sortBy: 'sequenceId'
-      @hasMany 'proposals', sortBy: 'createdAt', sortDesc: true
       @hasMany 'polls', sortBy: 'createdAt', sortDesc: true
       @hasMany 'versions', sortBy: 'createdAt'
       @belongsTo 'group'
       @belongsTo 'author', from: 'users'
+
+    reactions: ->
+      @recordStore.reactions.find(reactableId: @id, reactableType: "Discussion")
 
     translationOptions: ->
       title:     @title
       groupName: @groupName()
 
     authorName: ->
-      @author().name
+      @author().name if @author()
 
     groupName: ->
       @group().name if @group()
-
-    activeProposals: ->
-      _.filter @proposals(), (proposal) ->
-        proposal.isActive()
-
-    closedProposals: ->
-      _.reject @proposals(), (proposal) ->
-        proposal.isActive()
-
-    anyClosedProposals: ->
-      _.some(@closedProposals())
-
-    activeProposal: ->
-      _.first(@activeProposals())
-
-    hasActiveProposal: ->
-      @activeProposal()?
 
     activePolls: ->
       _.filter @polls(), (poll) ->
         poll.isActive()
 
+    hasActivePoll: ->
+      _.any @activePolls()
+
+    hasDecision: ->
+      @hasActivePoll()
+
     closedPolls: ->
       _.filter @polls(), (poll) ->
         !poll.isActive()
-    
+
     activePoll: ->
       _.first @activePolls()
 
@@ -91,11 +94,8 @@ angular.module('loomioApp').factory 'DiscussionModel', (DraftableModel, AppConfi
     hasUnreadActivity: ->
       @isUnread() && @unreadActivityCount() > 0
 
-    hasContext: ->
+    hasDescription: ->
       !!@description
-
-    isImportant: ->
-      @starred or @hasActiveProposal()
 
     unreadActivityCount: ->
       @salientItemsCount - @readSalientItemsCount
@@ -134,20 +134,15 @@ angular.module('loomioApp').factory 'DiscussionModel', (DraftableModel, AppConfi
     isMuted: ->
       @volume() == 'mute'
 
-    saveStar: ->
-      @remote.patchMember @keyOrId(), if @starred then 'star' else 'unstar'
-
     update: (attrs) ->
       delete attrs.lastReadSequenceId    if attrs.lastReadSequenceId < @lastReadSequenceId
       delete attrs.readSalientItemsCount if attrs.readSalientItemsCount < @readSalientItemsCount
       @baseUpdate(attrs)
 
-    markAsRead: (sequenceId) ->
-      sequenceId = @lastSequenceId if isNaN(sequenceId)
-
-      if @discussionReaderId? and (_.isNull(@lastReadAt) or @lastReadSequenceId < sequenceId)
-        @remote.patchMember @keyOrId(), 'mark_as_read', sequence_id: sequenceId
-        @update(lastReadAt: moment(), lastReadSequenceId: sequenceId)
+    markAsSeen: ->
+      return unless @discussionReaderId and !@lastReadAt
+      @remote.patchMember @keyOrId(), 'mark_as_seen'
+      @update(lastReadAt: moment(), lastReadSequenceId: 0)
 
     dismiss: ->
       @remote.patchMember @keyOrId(), 'dismiss'
@@ -155,6 +150,9 @@ angular.module('loomioApp').factory 'DiscussionModel', (DraftableModel, AppConfi
 
     move: =>
       @remote.patchMember @keyOrId(), 'move', { group_id: @groupId }
+
+    savePin: =>
+      @remote.patchMember @keyOrId(), 'pin'
 
     edited: ->
       @versionsCount > 1

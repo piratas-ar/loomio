@@ -1,32 +1,21 @@
-angular.module('loomioApp').controller 'InboxPageController', ($scope, $rootScope, Records, Session, AppConfig, LoadingService, ThreadQueryService, ModalService, GroupForm) ->
-  $rootScope.$broadcast('currentComponent', {page: 'inboxPage'})
+angular.module('loomioApp').controller 'InboxPageController', ($scope, $rootScope, Records, Session, AppConfig, LoadingService, InboxService, ModalService, GroupModal) ->
+  $rootScope.$broadcast('currentComponent', {titleKey: 'inbox_page.unread_threads' ,page: 'inboxPage'})
   $rootScope.$broadcast('setTitle', 'Inbox')
   $rootScope.$broadcast('analyticsClearGroup')
 
-  filters = ['only_threads_in_my_groups', 'show_unread', 'show_not_muted']
   @threadLimit = 50
-  @views =
-    groups: {}
+  @views = InboxService.queryByGroup()
 
   @groups = ->
-    _.flatten [Session.user().parentGroups(), Session.user().orphanSubgroups()]
-
-  @init = =>
-    _.each @groups(), (group) =>
-      @views.groups[group.key] = ThreadQueryService.groupQuery(group, filter: filters)
-  $scope.$on 'currentUserMembershipsLoaded', @init
-  @init()
+    Records.groups.find(_.keys(@views))
 
   @hasThreads = ->
-    ThreadQueryService.filterQuery(filters, queryType: 'inbox').any()
-
-  @moreForThisGroup = (group) ->
-    @views.groups[group.key].length() > @threadLimit
+    InboxService.unreadCount() > 0
 
   @noGroups = ->
     !Session.user().hasAnyGroups()
 
   @startGroup = ->
-    ModalService.open GroupForm, group: -> Records.groups.build()
+    ModalService.open GroupModal, group: -> Records.groups.build()
 
   return

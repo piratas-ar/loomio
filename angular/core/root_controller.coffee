@@ -1,6 +1,11 @@
-angular.module('loomioApp').controller 'RootController', ($scope, $timeout, $location, $router, $mdMedia, KeyEventService, MessageChannelService, IntercomService, ScrollService, Session, AppConfig, Records, ModalService, SignInForm, GroupForm, AbilityService, AhoyService, ViewportService) ->
-  $scope.isLoggedIn = AbilityService.isLoggedIn
+angular.module('loomioApp').controller 'RootController', ($scope, $timeout, $translate, $location, $router, $mdMedia, AuthModal, KeyEventService, MessageChannelService, IntercomService, ScrollService, Session, AppConfig, Records, ModalService, GroupModal, AbilityService, AhoyService, ViewportService, HotkeyService) ->
+  $scope.isLoggedIn = ->
+    AbilityService.isLoggedIn()
+  $scope.isEmailVerified = ->
+    AbilityService.isEmailVerified()
   $scope.currentComponent = 'nothing yet'
+
+  $translate.onReady -> $scope.translationsLoaded = true
 
   # NB: $scope.refresh triggers the ng-if for the ng-outlet in the layout.
   # This means that we re-initialize the controller for the page, which is what we want
@@ -17,11 +22,20 @@ angular.module('loomioApp').controller 'RootController', ($scope, $timeout, $loc
 
   $scope.$on 'loggedIn', (event, user) ->
     $scope.refresh()
-    ModalService.open(GroupForm, group: -> Records.groups.build()) if $location.search().start_group?
+    if $location.search().start_group?
+      ModalService.open GroupModal, group: ->
+        Records.groups.build
+          customFields:
+            pending_emails: $location.search().pending_emails
     IntercomService.boot()
     MessageChannelService.subscribe()
 
+  setTitle = (title) ->
+    document.querySelector('title').text = _.trunc(title, 300) + ' | Loomio'
+    Session.pageTitle = title
+
   $scope.$on 'currentComponent', (event, options = {}) ->
+    setTitle(options.title or $translate.instant(options.titleKey))
     Session.currentGroup = options.group
     IntercomService.updateWithGroup(Session.currentGroup)
 
@@ -29,16 +43,11 @@ angular.module('loomioApp').controller 'RootController', ($scope, $timeout, $loc
     $scope.$broadcast('clearBackgroundImageUrl')
     ScrollService.scrollTo(options.scrollTo or 'h1') unless options.skipScroll
     $scope.links = options.links or {}
-    if AbilityService.requireLoginFor(options.page)
-      ModalService.open(SignInForm, preventClose: -> true)
-
-  $scope.$on 'setTitle', (event, title) ->
-    document.querySelector('title').text = _.trunc(title, 300) + ' | Loomio'
+    $scope.forceSignIn() if AbilityService.requireLoginFor(options.page) or AppConfig.pendingIdentity?
 
   $scope.$on 'pageError', (event, error) ->
     $scope.pageError = error
-    if !AbilityService.isLoggedIn() and error.status == 403
-      ModalService.open(SignInForm, preventClose: -> true)
+    $scope.forceSignIn() if !AbilityService.isLoggedIn() and error.status == 403
 
   $scope.$on 'setBackgroundImageUrl', (event, group) ->
     url = group.coverUrl(ViewportService.viewportSize())
@@ -47,6 +56,11 @@ angular.module('loomioApp').controller 'RootController', ($scope, $timeout, $loc
   $scope.$on 'clearBackgroundImageUrl', (event) ->
     angular.element(document.querySelector('.lmo-main-background')).removeAttr('style')
 
+  $scope.forceSignIn = ->
+    return if $scope.forcedSignIn
+    $scope.forcedSignIn = true
+    ModalService.open AuthModal, preventClose: -> true
+
   $scope.keyDown = (event) -> KeyEventService.broadcast(event)
 
   $router.config AppConfig.routes.concat AppConfig.plugins.routes
@@ -54,5 +68,6 @@ angular.module('loomioApp').controller 'RootController', ($scope, $timeout, $loc
   AppConfig.records = Records
   AhoyService.init()
   Session.login(AppConfig.bootData)
+  HotkeyService.init($scope) if AbilityService.isLoggedIn()
 
   return

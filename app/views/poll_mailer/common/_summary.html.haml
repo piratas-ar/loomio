@@ -1,20 +1,24 @@
 .poll-mailer-common-summary
+  - if @info.poll.discussion
+    = render "poll_mailer/common/discussion_info", discussion: @info.poll.discussion
 
-  %h1= link_to @info.poll.title, @info.links[:target]
+  %h1= link_to @info.poll.title, @info.links[:target], class: 'poll-mailer__poll-title'
   %p
 
   - if @info.outcome
     %h2= t(:"poll_common.outcome")
-    %p= @info.outcome.statement
+    %p= render_rich_text @info.outcome.statement
 
     %h2= t(:"poll_types.#{@info.poll_type}")
 
-  %p= @info.poll.details
+  %p= render_rich_text @info.poll.details
 
   %p
     - if @info.poll.active?
       = t(:closing)
-      = formatted_time_in_zone(@info.poll.closing_at, @info.recipient.time_zone)
+      = formatted_time_in_zone(@info.poll.closing_at, @info.time_zone)
     - else
       = t(:closed)
-      = formatted_time_in_zone(@info.poll.closed_at, @info.recipient.time_zone)
+      = formatted_time_in_zone(@info.poll.closed_at, @info.time_zone)
+
+  = render "thread_mailer/attachments", resource: @info.poll

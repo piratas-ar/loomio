@@ -27,13 +27,12 @@ describe Comment do
   end
 
   describe "#destroy" do
+    let(:reaction) { build :reaction, reactable: comment }
     it "destroys comment votes" do
-      CommentService.like(comment: comment, actor: user)
-      expect(CommentVote.where(comment_id: comment.id,
-                               user_id: user.id).exists?).to be true
+      ReactionService.update(reaction: reaction, params: {reaction: 'smiley'}, actor: user)
+      expect(Reaction.where(reactable: comment, user_id: user.id).exists?).to be true
       comment.destroy
-      expect(CommentVote.where(comment_id: comment.id,
-                               user_id: user.id).exists?).to be false
+      expect(Reaction.where(reactable: comment, user_id: user.id).exists?).to be false
     end
   end
 
@@ -48,7 +47,7 @@ describe Comment do
 
   describe "#mentioned_group_members" do
     before do
-      @group = create :group
+      @group = create :formal_group
       @member = create :user
       @group.add_member! @member
       @discussion = create :discussion, group: @group

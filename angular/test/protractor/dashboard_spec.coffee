@@ -6,12 +6,8 @@ describe 'Dashboard Page', ->
     page.loadPath('setup_dashboard')
 
   it 'displays a view of recent threads', ->
-    page.expectText('.dashboard-page__proposals','Starred proposal discussion')
-    page.expectText('.dashboard-page__proposals','Proposal discussion')
-    page.expectNoText('.dashboard-page__proposals', 'Starred discussion')
+    page.expectText('.dashboard-page__proposals','Poll discussion')
 
-    page.expectText('.dashboard-page__starred', 'Starred discussion')
-    page.expectNoText('.dashboard-page__starred', 'Starred proposal discussion')
     page.expectText('.dashboard-page__today', 'Recent discussion')
 
     page.expectNoText('.dashboard-page__collections', 'Muted discussion')
@@ -51,12 +47,3 @@ describe 'muted threads', ->
     browser.actions().mouseMove(threadPreview).perform()
     page.clickFirst '.thread-preview__mute'
     page.expectFlash 'Thread muted.'
-
-describe 'Logged out', ->
-  it 'forces visitors to log in', ->
-    page.loadPath 'setup_dashboard_as_visitor'
-    page.fillIn '#user-email', 'patrick_swayze@example.com'
-    page.fillIn '#user-password', 'gh0stmovie'
-    page.click '.sign-in-form__submit-button'
-    page.waitForReload()
-    page.expectText '.thread-previews-container', 'Recent discussion'

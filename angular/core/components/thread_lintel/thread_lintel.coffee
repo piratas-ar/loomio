@@ -9,23 +9,12 @@ angular.module('loomioApp').directive 'threadLintel', ->
     $scope.scrollToThread = ->
       ScrollService.scrollTo 'h1'
 
-    $scope.scrollToProposal = ->
-      ScrollService.scrollTo 'section.current-proposal-card'
-
     $scope.$on 'currentComponent', (event, options) ->
       $scope.currentComponent = options['page']
-
-    $scope.$on 'viewingThread', (event, discussion) ->
-      $scope.discussion = discussion
+      $scope.discussion = options.discussion
 
     $scope.$on 'showThreadLintel', (event, bool) ->
       $scope.showLintel = bool
-
-    $scope.$on 'proposalInView', (event, bool) ->
-      $scope.proposalInView = bool
-
-    $scope.$on 'proposalButtonInView', (event, bool) ->
-      $scope.proposalButtonInView = bool
 
     $scope.$on 'threadPosition', (event, discussion, position) ->
       $scope.position = position

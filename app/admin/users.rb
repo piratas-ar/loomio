@@ -32,10 +32,9 @@ ActiveAdmin.register User do
   form do |f|
     f.inputs "Details" do
       f.input :name
-      f.input :email
-      f.input :username
+      f.input :email, as: :string
+      f.input :username, as: :string
       f.input :is_admin
-      f.input :angular_ui_enabled
     end
     f.actions
   end
@@ -43,7 +42,7 @@ ActiveAdmin.register User do
   member_action :delete_spam, method: :post do
     user = User.friendly.find(params[:id])
     UserService.delete_spam(user)
-    redirect_to admin_users_url, notice: 'User and the groups they created deleted'
+    redirect_to admin_users_path, notice: 'User and the groups they created deleted'
   end
 
   member_action :update, :method => :put do
@@ -54,7 +53,7 @@ ActiveAdmin.register User do
     user.is_admin = params[:user][:is_admin]
     user.angular_ui_enabled = params[:user][:angular_ui_enabled]
     user.save
-    redirect_to admin_users_url, :notice => "User updated"
+    redirect_to admin_users_path, :notice => "User updated"
   end
 
   show do |user|
@@ -67,7 +66,7 @@ ActiveAdmin.register User do
           table_for user.adminable_groups.published.select{|g| g.admins.count == 1}.each do |group|
             column :id
             column :name do |group|
-              link_to group.name, [:admin, group]
+              link_to group.name, admin_group_path(group)
             end
           end
         end
@@ -87,13 +86,21 @@ ActiveAdmin.register User do
         column :group_id
         column :group_name do |g|
           group = g.group
-          link_to group.full_name, [:admin, group]
+          link_to group.full_name, admin_group_path(group)
         end
       end
     end
 
     panel("Reset Password") do
       button_to 'Get link to reset password', reset_password_admin_user_path(user), method: :post
+    end
+
+    panel 'Merge into another user' do
+      form action: merge_admin_user_path(user), method: :post do |f|
+        f.label "Email address of final user account"
+        f.input name: :destination_email
+        f.input type: :submit, value: "Merge user"
+      end
     end
 
     if user.deactivation_response.present?
@@ -104,22 +111,29 @@ ActiveAdmin.register User do
     active_admin_comments
   end
 
+  member_action :merge, method: :post do
+    source = User.friendly.find(params[:id])
+    destination = User.find_by!(email: params[:destination_email].strip)
+    MigrateUserService.delay.migrate!(source: source, destination: destination)
+    redirect_to admin_user_path(destination)
+  end
+
   member_action :deactivate, method: :put do
     user = User.friendly.find(params[:id])
     user.deactivate!
-    redirect_to admin_users_url, :notice => "User account deactivated"
+    redirect_to admin_users_path, :notice => "User account deactivated"
   end
 
   member_action :reactivate, method: :put do
     user = User.friendly.find(params[:id])
     user.reactivate!
-    redirect_to admin_users_url, :notice => "User account activated"
+    redirect_to admin_users_path, :notice => "User account activated"
   end
 
   member_action :reset_password, method: :post do
     user = User.friendly.find(params[:id])
     raw = user.send(:set_reset_password_token)
 
-    render text: edit_user_password_url(reset_password_token: raw)
+    render text: edit_user_password_path(reset_password_token: raw)
   end
 end

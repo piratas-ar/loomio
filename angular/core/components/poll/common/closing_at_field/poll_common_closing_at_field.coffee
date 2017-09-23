@@ -1,4 +1,4 @@
-angular.module('loomioApp').directive 'pollCommonClosingAtField', ->
+angular.module('loomioApp').directive 'pollCommonClosingAtField', (AppConfig) ->
   scope: {poll: '='}
   restrict: 'E'
   templateUrl: 'generated/components/poll/common/closing_at_field/poll_common_closing_at_field.html'
@@ -7,6 +7,7 @@ angular.module('loomioApp').directive 'pollCommonClosingAtField', ->
     $scope.hours = [1..24]
     $scope.closingHour= $scope.poll.closingAt.format('H')
     $scope.closingDate = $scope.poll.closingAt.toDate()
+    $scope.minDate = new Date()
 
     updateClosingAt = ->
       $scope.poll.closingAt = moment($scope.closingDate).startOf('day').add($scope.closingHour, 'hours')
@@ -22,4 +23,4 @@ angular.module('loomioApp').directive 'pollCommonClosingAtField', ->
       moment("2015-01-01 #{i}:00").format('h a')
 
     $scope.dateToday = moment().format('YYYY-MM-DD')
-    $scope.timeZone = jstz.determine().name()
+    $scope.timeZone = AppConfig.timeZone

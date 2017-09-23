@@ -2,7 +2,7 @@ require 'rails_helper'
 describe API::ProfileController do
 
   let(:user) { create :user }
-  let(:group) { create :group }
+  let(:group) { create :formal_group }
   let(:another_user) { create :user }
   let(:user_params) { { name: "new name", email: "new@email.com" } }
 
@@ -14,7 +14,6 @@ describe API::ProfileController do
       expect(json.keys).to include *(%w[users])
       expect(json['users'][0].keys).to include *(%w[
         id
-        key
         name
         username
         avatar_initials
@@ -126,37 +125,6 @@ describe API::ProfileController do
         expect(response.status).to_not eq 200
         expect(user.reload.avatar_kind).to eq 'gravatar'
         expect(user.reload.uploaded_avatar).to be_blank
-      end
-    end
-  end
-
-  describe 'change_password' do
-    before { sign_in user }
-    context 'success' do
-      it "changes a users password" do
-        old_password = user.encrypted_password
-        post :change_password, user: { current_password: 'complex_password', password: 'new_password', password_confirmation: 'new_password'}, format: :json
-        expect(response).to be_success
-        expect(user.reload.encrypted_password).not_to eq old_password
-        json = JSON.parse(response.body)
-        user_emails = json['users'].map { |v| v['email'] }
-        expect(user_emails).to include user.email
-      end
-    end
-
-    context 'failures' do
-      it 'does not allow a change if current password does not match' do
-        old_password = user.encrypted_password
-        post :change_password, user: { current_password: 'not right', password: 'new_password', password_confirmation: 'new_password'}, format: :json
-        expect(response).to_not be_success
-        expect(user.reload.encrypted_password).to eq old_password
-      end
-
-      it 'does not allow a change if passord confirmation doesnt match' do
-        old_password = user.encrypted_password
-        post :change_password, user: { password: 'new_password', password_confirmation: 'errwhoops'}, format: :json
-        expect(response).to_not be_success
-        expect(user.reload.encrypted_password).to eq old_password
       end
     end
   end

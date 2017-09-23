@@ -11,9 +11,20 @@ angular.module('loomioApp').factory 'UserModel', (BaseModel, AppConfig) ->
       @hasMany 'notifications'
       @hasMany 'contacts'
       @hasMany 'versions'
+      @hasMany 'identities'
+      @hasMany 'reactions'
+
+    localeName: ->
+      (_.find(AppConfig.locales, (h) => h.key == @locale) or {}).name
+
+    identityFor: (type) ->
+      _.detect @identities(), (i) -> i.identityType == type
 
     membershipFor: (group) ->
       _.first @recordStore.memberships.find(groupId: group.id, userId: @id)
+
+    adminMemberships: ->
+      _.filter @memberships(), (m) -> m.admin
 
     groupIds: ->
       _.map(@memberships(), 'groupId')
@@ -22,8 +33,17 @@ angular.module('loomioApp').factory 'UserModel', (BaseModel, AppConfig) ->
       groups = _.filter @recordStore.groups.find(id: { $in: @groupIds() }), (group) -> !group.isArchived()
       _.sortBy groups, 'fullName'
 
+    adminGroups: ->
+      _.invoke @adminMemberships(), 'group'
+
+    adminGroupIds: ->
+      _.invoke @adminMemberships(), 'groupId'
+
     parentGroups: ->
       _.filter @groups(), (group) -> group.isParent()
+
+    inboxGroups: ->
+      _.flatten [@parentGroups(), @orphanSubgroups()]
 
     hasAnyGroups: ->
       @groups().length > 0
@@ -53,7 +73,7 @@ angular.module('loomioApp').factory 'UserModel', (BaseModel, AppConfig) ->
       _.contains(group.memberIds(), @id)
 
     firstName: ->
-      @name.split(' ')[0]
+      _.first @name.split(' ') if @name
 
     lastName: ->
       @name.split(' ').slice(1).join(' ')
@@ -68,6 +88,10 @@ angular.module('loomioApp').factory 'UserModel', (BaseModel, AppConfig) ->
           thread.update(discussionReaderVolume: null)
         _.each @memberships(), (membership) ->
           membership.update(volume: volume)
+
+    remind: (model) ->
+      @remote.postMember(@id, 'remind', {"#{model.constructor.singular}_id": model.id}).then =>
+        @reminded = true
 
     hasExperienced: (key, group) ->
       if group && @isMemberOf(group)

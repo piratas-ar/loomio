@@ -3,6 +3,18 @@
   padding-left: 10px;
 }
 
+.poll-mailer-common-responses__reason p {
+  margin: 10px 0;
+}
+
+.poll-mailer-common__discussion-info {
+  margin-top: 20px;
+}
+
+.poll-mailer-common__avatar {
+  vertical-align: top;
+}
+
 .poll-mailer-common-avatar__initials {
   margin-right: 10px;
   border: 1px solid #dcdcdc;
@@ -15,6 +27,7 @@
 
 .poll-mailer-common-avatar__image {
   margin-right: 10px;
+  width: 30px;
   float: left;
 }
 
@@ -71,9 +84,6 @@
   /*color: white;*/
 }
 
-.poll-mailer__vote-buttons-list {
-}
-
 .poll-mailer__text-align-center {
   text-align: center;
 }
@@ -87,6 +97,19 @@
 .poll-mailer-proposal__chart-legend td {
   border-bottom: 2px solid;
   padding-top: 10px;
+}
+
+.poll-mailer-count__poll-options .poll-mailer__poll-option {
+  float: left;
+  margin-right: 10px;
+}
+
+.poll-mailer-count__option-name {
+  display: none;
+}
+
+.poll-mailer-count__option-icon {
+  width: 50px;
 }
 
 .poll-mailer-meeting__table {
@@ -119,4 +142,15 @@
 
 .poll-mailer-meeting__participant-name {
   padding-right: 16px;
+}
+
+.poll-mailer__button {
+  background-color: #5cb85c;
+  border-radius: 4px;
+  color: #fff;
+  display: inline-block;
+  font-size: 16px;
+  margin: 16px 0;
+  text-decoration: none;
+  padding: 12px 30px;
 }

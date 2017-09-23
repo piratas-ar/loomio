@@ -2,6 +2,7 @@ angular.module('loomioApp').factory 'NotificationModel', (BaseModel, $translate)
   class NotificationModel extends BaseModel
     @singular: 'notification'
     @plural: 'notifications'
+    @memoize: ['content']
 
     relationships: ->
       @belongsTo 'event'
@@ -13,5 +14,4 @@ angular.module('loomioApp').factory 'NotificationModel', (BaseModel, $translate)
 
     actionPath: ->
       switch @kind()
-        when 'motion_closed', 'motion_closed_by_user' then 'outcome'
         when 'invitation_accepted'                    then @actor().username

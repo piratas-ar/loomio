@@ -1,52 +1,47 @@
 .thread-preview {
+  @include md-body-1;
+  @include listTransition;
   min-height: $boxMediumSize + ($thinPaddingSize * 2);
   border-bottom: 1px solid $border-color;
   position: relative;
+  &:hover .thread-preview__actions { opacity: 1; }
   &.loading-content { padding: 10px; }
-  &:hover {
-    .thread-preview__actions { display: block; }
-    background-color: $list-hover-color;
+}
+
+.thread-preview__status-icon {
+  padding: 4px 8px;
+}
+
+.thread-preview__pin {
+  width: 32px;
+  text-align: center;
+}
+
+.thread-preview__actions {
+  position: absolute;
+  display: flex;
+  right: 40px;
+  transition: opacity 0.25s ease-in-out;
+  top: 0;
+  opacity: 0;
+  margin: $thinPaddingSize 0;
+  .md-button {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    min-width: 40px;
+    height: 28px;
+    min-height: 28px;
+    .material-icons { font-size: 14px; }
   }
 }
 
-.thread-preview__star{
-  position: absolute;
-  right: 0;
-  top: 0;
-  margin-right: $cardPaddingSize;
-  margin-top: $thinPaddingSize;
-}
-
-.thread-preview__actions{
-  position: absolute;
-  right: 40px;
-  top: -4px;
-  display: none;
-  margin-right: $thinPaddingSize;
-  margin-top: $thinPaddingSize;
-}
-
-.thread-preview__dismiss{
-  @include lmoBtnDefault;
-  @include lmoBtnSm;
+.thread-preview--left {
+  width: calc(100% - 32px);
 }
 
 .thread-preview__mute,
-.thread-preview__unmute {
-  @include lmoBtnDefault;
-  @include lmoBtnSm;
-  margin-left: 5px;
-  padding: 5px 13px;
-  .fa-volume-off{
-    padding-right: 9px;
-  }
-  .fa-times{
-    font-size: 70%;
-    position: relative;
-    right: 10px;
-    bottom: 1px;
-  }
-}
+.thread-preview__unmute { margin-left: 5px }
 
 .thread-preview__screen-only {
   overflow: hidden;
@@ -54,7 +49,7 @@
 
 .thread-preview__link {
   display: block;
-  padding: $thinPaddingSize $cardPaddingSize;
+  padding: $thinPaddingSize;
   color: $primary-text-color;
   text-decoration: none;
   @include displayFlex;
@@ -65,45 +60,27 @@
   text-decoration: none;
 }
 
-.thread-preview__icon {
-  @include boxMedium;
-  .user-avatar {
-    pointer-events: none;
-  }
-}
-
-.thread-preview__pie-canvas {
-  @include boxMedium;
+.thread-preview__icon .user-avatar {
+  pointer-events: none;
 }
 
 .thread-preview__text-container{
   @include displayFlex;
-  line-height: 22px;
   margin-right: 17px;
 }
 
 .thread-preview__title{
+  @include md-subhead;
   padding-left: $thinPaddingSize;
   vertical-align: top;
   @include truncateText;
 }
 
-.thread-preview__proposal-name{
-  font-size: 93%;
-  padding-left: $thinPaddingSize;
-  padding-right: 5px;
-  @include truncateText;
-}
-
 .thread-preview__group-name{
+  @include md-caption;
   @include truncateText;
   padding-left: $thinPaddingSize;
-  font-size: 13px;
   color: $grey-on-white;
-}
-
-.thread-preview__proposal-closing-container {
-  min-width: 130px;
 }
 
 .thread-preview__unread-count {
@@ -113,12 +90,7 @@
 }
 
 .thread-preview--unread {
-  font-weight: bold;
-}
-
-.thread-preview__proposal-closing-at {
-  @include fontTiny;
-  color: $highlight-red;
+  font-weight: 500;
 }
 
 .thread-preview__position-icon-container {
@@ -139,28 +111,8 @@
   width: 21px;
 }
 
-.thread-preview__position-icon--yes {
-  background-image: url(/img/agree.svg);
-}
-
-.thread-preview__position-icon--no {
-  background-image: url(/img/disagree.svg);
-}
-
-.thread-preview__position-icon--block {
-  background-image: url(/img/block.svg);
-}
-
-.thread-preview__position-icon--abstain {
-  background-image: url(/img/abstain.svg);
-}
-
 .thread-preview__undecided-icon {
   font-size: 14px;
   line-height: 24px;
   text-align: center;
-}
-
-.thread-preview__actions button {
-  width: 40px;
 }

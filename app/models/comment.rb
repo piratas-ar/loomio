@@ -1,5 +1,6 @@
 class Comment < ActiveRecord::Base
   include Translatable
+  include Reactable
   include HasMentions
 
   has_paper_trail only: [:body]
@@ -7,25 +8,25 @@ class Comment < ActiveRecord::Base
   is_mentionable  on: :body
 
   belongs_to :discussion
+  has_one :group, through: :discussion
   belongs_to :user
   belongs_to :parent, class_name: 'Comment'
 
   alias_attribute :author, :user
   alias_attribute :author_id, :user_id
 
-  has_many :comment_votes, -> { joins('INNER JOIN users ON comment_votes.user_id = users.id AND users.deactivated_at IS NULL' )}, dependent: :destroy
-
   has_many :events, as: :eventable, dependent: :destroy
-  has_many :likers, through: :comment_votes, source: :user
   has_many :attachments, as: :attachable, dependent: :destroy
 
   validates_presence_of :user
   validate :has_body_or_attachment
   validate :parent_comment_belongs_to_same_discussion
   validate :attachments_owned_by_author
+  validates :body, {length: {maximum: Rails.application.secrets.max_message_length}}
 
   default_scope { includes(:user).includes(:attachments).includes(:discussion) }
 
+  scope :in_organisation, ->(group) { joins(:discussion).where("discussions.group_id": group.id) }
   scope :chronologically, -> { order('created_at asc') }
 
   delegate :name, to: :user, prefix: :user
@@ -33,7 +34,6 @@ class Comment < ActiveRecord::Base
   delegate :email, to: :user, prefix: :user
   delegate :author, to: :parent, prefix: :parent, allow_nil: true
   delegate :participants, to: :discussion, prefix: :discussion
-  delegate :group, to: :discussion
   delegate :full_name, to: :group, prefix: :group
   delegate :title, to: :discussion, prefix: :discussion
   delegate :locale, to: :user
