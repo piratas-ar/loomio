@@ -1,5 +1,5 @@
-angular.module('loomioApp').factory 'OutcomeModel', (DraftableModel, AppConfig, MentionLinkService) ->
-  class OutcomeModel extends DraftableModel
+angular.module('loomioApp').factory 'OutcomeModel', (BaseModel, HasDrafts, HasDocuments, AppConfig, MentionLinkService) ->
+  class OutcomeModel extends BaseModel
     @singular: 'outcome'
     @plural: 'outcomes'
     @indices: ['pollId', 'authorId']
@@ -10,6 +10,10 @@ angular.module('loomioApp').factory 'OutcomeModel', (DraftableModel, AppConfig, 
     defaultValues: ->
       statement: ''
       customFields: {}
+
+    afterConstruction: ->
+      HasDrafts.apply @
+      HasDocuments.apply @
 
     relationships: ->
       @belongsTo 'author', from: 'users'

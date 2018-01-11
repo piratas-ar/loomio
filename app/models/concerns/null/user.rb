@@ -6,11 +6,11 @@ module Null::User
   end
 
   def ability
-    @ability ||= Ability.new(self)
+    @ability ||= Ability::Base.new(self)
   end
 
   def nil_methods
-    [:key, :username, :short_bio, :selected_locale, :deactivated_at, :time_zone,
+    [:key, :username, :short_bio, :city, :region, :country, :selected_locale, :deactivated_at, :time_zone,
      :default_membership_volume, :unsubscribe_token, :slack_identity, :location,
      :encrypted_password, :associate_with_identity, :update_attribute, :last_seen_at]
   end

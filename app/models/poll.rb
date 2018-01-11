@@ -1,4 +1,5 @@
 class Poll < ActiveRecord::Base
+  include CustomCounterCache::Model
   extend  HasCustomFields
   include ReadableUnguessableUrls
   include HasMentions
@@ -8,6 +9,7 @@ class Poll < ActiveRecord::Base
   include SelfReferencing
   include UsesOrganisationScope
   include Reactable
+  include HasCreatedEvent
 
   set_custom_fields :meeting_duration, :time_zone, :dots_per_person, :pending_emails, :minimum_stance_choices
 
@@ -42,7 +44,6 @@ class Poll < ActiveRecord::Base
   has_many :stances, dependent: :destroy
   has_many :stance_choices, through: :stances
   has_many :participants, through: :stances, source: :participant
-  has_many :attachments, as: :attachable, dependent: :destroy
 
   has_many :poll_unsubscriptions, dependent: :destroy
   has_many :unsubscribers, through: :poll_unsubscriptions, source: :user
@@ -51,11 +52,13 @@ class Poll < ActiveRecord::Base
 
   has_many :events, -> { includes(:eventable) }, as: :eventable, dependent: :destroy
 
-  has_many :poll_options, -> { order(priority: :asc) },  dependent: :destroy
+  has_many :poll_options, dependent: :destroy
   accepts_nested_attributes_for :poll_options, allow_destroy: true
 
   has_many :poll_did_not_votes, dependent: :destroy
   has_many :poll_did_not_voters, through: :poll_did_not_votes, source: :user
+
+  has_many :documents, as: :model, dependent: :destroy
 
   has_paper_trail only: [:title, :details, :closing_at, :group_id]
 
@@ -74,6 +77,10 @@ class Poll < ActiveRecord::Base
     undecided_user_count + guest_group.pending_invitations_count
   end
 
+  def time_zone
+    custom_fields.fetch('time_zone', author.time_zone)
+  end
+
   scope :active, -> { where(closed_at: nil) }
   scope :closed, -> { where("closed_at IS NOT NULL") }
   scope :search_for, ->(fragment) { where("polls.title ilike :fragment", fragment: "%#{fragment}%") }
@@ -83,7 +90,7 @@ class Poll < ActiveRecord::Base
   scope :authored_by, ->(user) { where(author: user) }
   scope :chronologically, -> { order('created_at asc') }
   scope :with_includes, -> { includes(
-    :attachments,
+    :documents,
     :poll_options,
     :outcomes,
     {stances: [:stance_choices]})
@@ -110,6 +117,14 @@ class Poll < ActiveRecord::Base
   validate :require_custom_fields
 
   alias_method :user, :author
+
+  def parent_event
+    if discussion
+      discussion.created_event
+    else
+      created_event
+    end
+  end
 
   # creates a hash which has a PollOption as a key, and a list of stance
   # choices associated with that PollOption as a value
@@ -156,10 +171,7 @@ class Poll < ActiveRecord::Base
         GROUP BY poll_options.name
       }).map { |row| [row['name'], row['total'].to_i] }.to_h))
 
-    update_attribute(:stance_counts,
-      poll_options.order(:priority)
-                  .pluck(:name)
-                  .map { |name| stance_data[name] })
+    update_attribute(:stance_counts, ordered_poll_options.pluck(:name).map { |name| stance_data[name] })
 
     # TODO: convert this to a SQL query (CROSS JOIN?)
     update_attribute(:matrix_counts,
@@ -181,6 +193,14 @@ class Poll < ActiveRecord::Base
 
   def is_single_vote?
     AppConfig.poll_templates.dig(self.poll_type, 'single_choice') && !self.multiple_choice
+  end
+
+  def ordered_poll_options
+    if self.dates_as_options
+      self.poll_options.order(name: :asc)
+    else
+      self.poll_options.order(priority: :asc)
+    end
   end
 
   def poll_option_names
@@ -256,7 +276,7 @@ class Poll < ActiveRecord::Base
   end
 
   def prevent_empty_options
-    if self.poll_options.empty?
+    if (self.poll_options.map(&:name) - Array(@poll_option_removed_names)).empty?
       self.errors.add(:poll_options, I18n.t(:"poll.error.must_have_options"))
     end
   end

@@ -1,23 +1,18 @@
-angular.module('loomioApp').factory 'PollModel', (DraftableModel, AppConfig, MentionLinkService) ->
-  class PollModel extends DraftableModel
+angular.module('loomioApp').factory 'PollModel', (BaseModel, HasDocuments, HasDrafts, AppConfig, MentionLinkService) ->
+  class PollModel extends BaseModel
     @singular: 'poll'
     @plural: 'polls'
     @indices: ['discussionId', 'authorId']
     @serializableAttributes: AppConfig.permittedParams.poll
     @draftParent: 'draftParent'
     @draftPayloadAttributes: ['title', 'details']
-    @memoize: [
-      'latestStances',
-      'cookedDescription',
-      'memberIds',
-      'participantIds'
-    ]
+
+    afterConstruction: ->
+      HasDocuments.apply @, showTitle: true
+      HasDrafts.apply @
 
     draftParent: ->
       @discussion() or @author()
-
-    afterConstruction: ->
-      @newAttachmentIds = _.clone(@attachmentIds) or []
 
     poll: -> @
 
@@ -40,11 +35,6 @@ angular.module('loomioApp').factory 'PollModel', (DraftableModel, AppConfig, Men
       pollOptionIds: []
       customFields: {}
 
-    serialize: ->
-      data = @baseSerialize()
-      data.poll.attachment_ids = @newAttachmentIds
-      data
-
     relationships: ->
       @belongsTo 'author', from: 'users'
       @belongsTo 'discussion'
@@ -57,17 +47,8 @@ angular.module('loomioApp').factory 'PollModel', (DraftableModel, AppConfig, Men
     reactions: ->
       @recordStore.reactions.find(reactableId: @id, reactableType: "Poll")
 
-    newAttachments: ->
-      @recordStore.attachments.find(@newAttachmentIds)
-
-    attachments: ->
-      @recordStore.attachments.find(attachableId: @id, attachableType: 'Poll')
-
-    hasAttachments: ->
-      _.some @attachments()
-
     announcementSize: (action) ->
-      return @group().announcementRecipientsCount if @isNew()
+      return @group().announcementRecipientsCount if @group() and @isNew()
       switch action or @notifyAction()
         when 'publish' then @stancesCount + @undecidedUserCount
         when 'edit'    then @stancesCount
@@ -109,7 +90,7 @@ angular.module('loomioApp').factory 'PollModel', (DraftableModel, AppConfig, Men
       @stancesCount + @undecidedCount
 
     percentVoted: ->
-      return 0 if @undecidedUserCount == 0
+      return 0 if @membersCount() == 0
       (100 * @stancesCount / (@membersCount())).toFixed(0)
 
     outcome: ->
@@ -142,7 +123,7 @@ angular.module('loomioApp').factory 'PollModel', (DraftableModel, AppConfig, Men
       @closedAt?
 
     goal: ->
-      @customFields.goal or @membersCount().length
+      @customFields.goal or @membersCount()
 
     close: =>
       @remote.postMember(@key, 'close')
@@ -163,3 +144,7 @@ angular.module('loomioApp').factory 'PollModel', (DraftableModel, AppConfig, Men
         'publish'
       else
         'edit'
+
+    removeOrphanOptions: ->
+      _.each @pollOptions(), (option) =>
+        option.remove() unless _.includes(@pollOptionNames, option.name)

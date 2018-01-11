@@ -27,7 +27,7 @@ describe UserMailer do
     end
 
     it 'renders the subject' do
-      expect(@mail.subject).to eq "Your request to join #{@group.full_name} on Loomio has been approved"
+      expect(@mail.subject).to eq "Your request to join #{@group.full_name} has been approved"
     end
 
     it 'assigns confirmation_url for email body' do
@@ -47,7 +47,7 @@ describe UserMailer do
     end
 
     it 'renders the subject' do
-      expect(@mail.subject).to eq "#{@inviter.name} has added you to #{@group.full_name} on Loomio"
+      expect(@mail.subject).to eq "#{@inviter.name} has added you to #{@group.full_name} on #{AppConfig.theme[:site_name]}"
     end
 
     it 'uses group.full_name in the email body' do

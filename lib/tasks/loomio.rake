@@ -2,7 +2,7 @@ namespace :loomio do
   task :generate_test_error do
     raise "this is a generated test error"
   end
-  
+
   task :version do
     puts Loomio::Version.current
   end
@@ -20,13 +20,6 @@ namespace :loomio do
     end
   end
 
-  task generate_static_translations: :environment do
-    Loomio::I18n::SELECTABLE_LOCALES.each do |locale|
-      puts "Writing public/translations/#{locale}.json..."
-      File.write("public/translations/#{locale}.json", ClientTranslationService.new(locale).to_json)
-    end
-  end
-
   task hourly_tasks: :environment do
     PollService.delay.expire_lapsed_polls
     PollService.delay.publish_closing_soon
@@ -37,6 +30,15 @@ namespace :loomio do
       # daily tasks
       UsageReportService.send
     end
+  end
+
+  task migrate_attachments: :environment do
+    MigrateAttachmentService.migrate!(attachments: Attachment.where(attachable_type: [
+      "Discussion",
+      "Poll",
+      "Comment",
+      "Outcome"
+    ]))
   end
 
   task resend_ignored_invitations: :environment do

@@ -66,16 +66,19 @@ describe API::DiscussionsController do
     context 'logged in' do
       before do
         sign_in user
-        reader.viewed!(reader.discussion.last_activity_at)
+        reader.viewed!
         group.add_member! another_user
       end
 
       it 'returns unread threads' do
         CommentService.create(comment: new_comment, actor: another_user)
+        reader
         get :inbox
         json = JSON.parse(response.body)
         discussion_ids = json['discussions'].map { |d| d['id'] }
+        reader_ids     = json['discussions'].map { |d| d['discussion_reader_id'] }
         expect(discussion_ids).to include discussion.id
+        expect(reader_ids).to include reader.id
       end
 
       it 'does not return read threads' do
@@ -106,6 +109,15 @@ describe API::DiscussionsController do
         get :inbox
         json = JSON.parse(response.body)
         expect(json['discussions']).to be_blank
+      end
+
+      it 'includes active polls' do
+        poll
+        CommentService.create(comment: new_comment, actor: another_user)
+        get :inbox
+        json = JSON.parse(response.body)
+        poll_ids = json['polls'].map { |p| p['id'] }
+        expect(poll_ids).to include poll.id
       end
     end
   end
@@ -356,7 +368,7 @@ describe API::DiscussionsController do
 
   describe 'update' do
     before { sign_in user }
-    let(:attachment) { create(:attachment) }
+    let(:document) { create(:document) }
 
     context 'success' do
       it "updates a discussion" do
@@ -365,23 +377,21 @@ describe API::DiscussionsController do
         expect(discussion.reload.title).to eq discussion_params[:title]
       end
 
-      it 'adds attachments' do
-        discussion_params[:attachment_ids] = attachment.id
+      it 'adds documents' do
+        discussion_params[:document_ids] = document.id
         post :update, id: discussion.id, discussion: discussion_params, format: :json
-        expect(discussion.reload.attachments).to include attachment
-        json = JSON.parse(response.body)
-        attachment_ids = json['attachments'].map { |a| a['id'] }
-        expect(attachment_ids).to include attachment.id
+        expect(discussion.reload.documents).to include document
+        expect(response.status).to eq 200
+        expect(discussion.reload.document_ids).to include document.id
       end
 
-      it 'removes attachments' do
-        attachment.update(attachable: discussion)
-        discussion_params[:attachment_ids] = []
-        post :update, id: discussion.id, discussion: discussion_params, format: :json
-        expect(discussion.reload.attachments).to be_empty
-        json = JSON.parse(response.body)
-        attachment_ids = json['attachments'].map { |a| a['id'] }
-        expect(attachment_ids).to_not include attachment.id
+      it 'removes documents' do
+        document.update(model: discussion)
+        discussion_params[:document_ids] = []
+        expect { post :update, id: discussion.id, discussion: discussion_params, format: :json }.to change { Document.count }.by(-1)
+        expect(discussion.reload.documents).to be_empty
+        expect(response.status).to eq 200
+        expect(discussion.reload.document_ids).to_not include document.id
       end
     end
 
@@ -492,11 +502,107 @@ describe API::DiscussionsController do
       dr = DiscussionReader.last
       expect(dr.discussion).to eq discussion
       expect(dr.last_read_at).to be_present
-      expect(dr.last_read_sequence_id).to eq 0
+      expect(dr.read_items_count).to eq 0
     end
 
     it 'does not allow non-users to mark discussions as seen' do
       post :mark_as_seen, id: discussion.id
+      expect(response.status).to eq 403
+    end
+  end
+
+  describe 'mark_as_read' do
+    let!(:event) { create :event, sequence_id: 2, discussion: discussion, user: another_user }
+    let!(:another_event) { create :event, sequence_id: 3 }
+
+    context 'signed out' do
+      it 'does not attempt to mark discussions as read while logged out' do
+        patch :mark_as_read, id: discussion.id, ranges: "2-2"
+        expect(response.status).to eq 403
+      end
+    end
+
+    context 'signed in' do
+      before do
+        sign_in user
+        group.add_admin! user
+        reader.update(volume: DiscussionReader.volumes[:normal])
+        reader.reload
+      end
+
+      it "Marks thread item as read" do
+        patch :mark_as_read, id: discussion.id, ranges: "2-2"
+        expect(reader.reload.last_read_at).to be_within(2.seconds).of Time.now
+        expect(reader.read_items_count).to eq 1
+        expect(reader.has_read?(2)).to be true
+        expect(response.status).to eq 200
+      end
+      #
+      # it 'does not mark an inaccessible discussion as read' do
+      #   patch :mark_as_read, id: another_event.sequence_id
+      #   expect(response.status).to eq 403
+      #   expect(reader.reload.read_items_count).to eq 0
+      # end
+
+      it 'responds with reader fields' do
+        # also testing accumulation
+        new_comment.discussion = discussion
+        CommentService.create(comment: new_comment, actor: user)
+        patch :mark_as_read, id: discussion.id, ranges: "2-2"
+        patch :mark_as_read, id: discussion.id, ranges: "3-3"
+        json = JSON.parse(response.body)
+        reader.reload
+
+        expect(json['discussions'][0]['id']).to eq discussion.id
+        expect(json['discussions'][0]['discussion_reader_id']).to eq reader.id
+        expect(json['discussions'][0]['read_ranges']).to eq [[2,3]]
+        # expect(json['discussions'][0]['read_items_count']).to eq 2
+      end
+    end
+  end
+
+  describe 'close' do
+    it 'allows admins to close a thread' do
+      sign_in user
+      discussion.group.add_admin! user
+      post :close, id: discussion.id
+      expect(discussion.reload.closed_at).to be_present
+      json = JSON.parse(response.body)
+      expect(json.keys).to include 'events'
+    end
+
+    it 'does not allow non-admins to close a thread' do
+      sign_in another_user
+      post :close, id: discussion.id
+      expect(response.status).to eq 403
+    end
+
+    it 'does not allow logged out users to close a thread' do
+      post :close, id: discussion.id
+      expect(response.status).to eq 403
+    end
+  end
+
+  describe 'reopen' do
+    before { discussion.update(closed_at: 1.day.ago) }
+
+    it 'allows admins to reopen a thread' do
+      sign_in user
+      discussion.group.add_admin! user
+      post :reopen, id: discussion.id
+      expect(discussion.reload.closed_at).to be_blank
+      json = JSON.parse response.body
+      expect(json.keys).to include 'events'
+    end
+
+    it 'does not allow non-admins to reopen a thread' do
+      sign_in another_user
+      post :reopen, id: discussion.id
+      expect(response.status).to eq 403
+    end
+
+    it 'does not allow logged out users to reopen a thread' do
+      post :reopen, id: discussion.id
       expect(response.status).to eq 403
     end
   end

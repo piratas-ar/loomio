@@ -1,4 +1,4 @@
-angular.module('loomioApp').directive 'pollCreated', (TranslationService, ReactionService, AbilityService, ModalService, PollCommonFormModal) ->
+angular.module('loomioApp').directive 'pollCreated', (TranslationService, ReactionService, AbilityService, ModalService, PollCommonEditModal) ->
   scope: {eventable: '='}
   restrict: 'E'
   templateUrl: 'generated/components/thread_page/thread_item/outcome_created.html'
@@ -6,15 +6,15 @@ angular.module('loomioApp').directive 'pollCreated', (TranslationService, Reacti
   controller: ($scope) ->
     $scope.actions = [
       name: 'react'
-      canPerform: -> AbilityService.canParticipateInPoll($scope.eventable.poll())
+      canPerform: -> AbilityService.canReactToPoll($scope.eventable.poll())
     ,
       name: 'edit_poll'
-      icon: 'edit'
+      icon: 'mdi-pencil'
       canPerform: -> AbilityService.canEditPoll($scope.eventable)
-      perform:    -> ModalService.open PollCommonFormModal, poll: -> $scope.eventable
+      perform:    -> ModalService.open PollCommonEditModal, poll: -> $scope.eventable
     ,
       name: 'translate_outcome'
-      icon: 'translate'
+      icon: 'mdi-translate'
       canPerform: -> AbilityService.canTranslate($scope.eventable)
       perform:    -> TranslationService.inline($scope, $scope.eventable)
     ]

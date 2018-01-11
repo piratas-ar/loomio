@@ -1,5 +1,5 @@
-angular.module('loomioApp').directive 'newComment', ($rootScope, Session, Records, AbilityService, ReactionService, TranslationService, ModalService, DeleteCommentForm, EditCommentForm, RevisionHistoryModal) ->
-  scope: {eventable: '='}
+angular.module('loomioApp').directive 'newComment', ($rootScope, clipboard, AbilityService, ReactionService, LmoUrlService, FlashService, TranslationService, ModalService, DeleteCommentForm, EditCommentForm, RevisionHistoryModal) ->
+  scope: {event: '=', eventable: '='}
   restrict: 'E'
   templateUrl: 'generated/components/thread_page/thread_item/new_comment.html'
   replace: true
@@ -9,27 +9,34 @@ angular.module('loomioApp').directive 'newComment', ($rootScope, Session, Record
       canPerform: -> AbilityService.canAddComment($scope.eventable.discussion())
     ,
       name: 'reply_to_comment'
-      icon: 'reply'
+      icon: 'mdi-reply'
       canPerform: -> AbilityService.canRespondToComment($scope.eventable)
-      perform:    -> $rootScope.$broadcast 'replyToCommentClicked', $scope.eventable
+      perform:    -> $rootScope.$broadcast 'replyToEvent', $scope.event.surfaceOrSelf()
     ,
       name: 'edit_comment'
-      icon: 'edit'
+      icon: 'mdi-pencil'
       canPerform: -> AbilityService.canEditComment($scope.eventable)
       perform:    -> ModalService.open EditCommentForm, comment: -> $scope.eventable
     ,
       name: 'translate_comment'
-      icon: 'translate'
+      icon: 'mdi-translate'
       canPerform: -> $scope.eventable.body && AbilityService.canTranslate($scope.eventable) && !$scope.translation
       perform:    -> TranslationService.inline($scope, $scope.eventable)
     ,
+      name: 'copy_url_comment'
+      icon: 'mdi-link'
+      canPerform: -> clipboard.supported
+      perform:    ->
+        clipboard.copyText(LmoUrlService.comment($scope.eventable, {}, absolute: true))
+        FlashService.success("action_dock.comment_copied")
+    ,
       name: 'show_history'
-      icon: 'history'
+      icon: 'mdi-history'
       canPerform: -> $scope.eventable.edited()
       perform:    -> ModalService.open RevisionHistoryModal, model: -> $scope.eventable
     ,
       name: 'delete_comment'
-      icon: 'delete'
+      icon: 'mdi-delete'
       canPerform: -> AbilityService.canDeleteComment($scope.eventable)
       perform:    -> ModalService.open DeleteCommentForm, comment: -> $scope.eventable
     ]

@@ -1,13 +1,15 @@
-@mixin displayFlex {
-  display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
-  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
-  display: -ms-flexbox;      /* TWEENER - IE 10 */
-  display: -webkit-flex;     /* NEW - Chrome */
-  display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+.lmo-flex {
+  display: flex;
 }
 
-.lmo-flex {
-  @include displayFlex;
+.lmo-flex--row {
+  display: flex;
+  flex-direction: row;
+}
+
+.lmo-flex--column {
+  display: flex;
+  flex-direction: column;
 }
 
 .lmo-flex__flex-end {

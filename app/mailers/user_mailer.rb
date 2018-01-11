@@ -6,7 +6,8 @@ class UserMailer < BaseMailer
     @token = user.login_tokens.create!
     send_single_mail to: @user.email,
                      subject_key: "user_mailer.accounts_merged.subject",
-                     locale: locale_for(@user)
+                     subject_params: { site_name: AppConfig.theme[:site_name] },
+                     locale: @user.locale
   end
 
   def missed_yesterday(user, time_since = nil)
@@ -28,7 +29,8 @@ class UserMailer < BaseMailer
       @discussions_by_group = @discussions.group_by(&:group)
       send_single_mail to: @user.email,
                        subject_key: "email.missed_yesterday.subject",
-                       locale: locale_for(@user)
+                       subject_params: { site_name: AppConfig.theme[:site_name] },
+                       locale: @user.locale
     end
   end
 
@@ -40,7 +42,7 @@ class UserMailer < BaseMailer
                      reply_to: @group.admin_email,
                      subject_key: "email.group_membership_approved.subject",
                      subject_params: {group_name: @group.full_name},
-                     locale: locale_for(@user)
+                     locale: @user.locale
   end
 
   def user_added_to_group(recipient, event)
@@ -52,8 +54,8 @@ class UserMailer < BaseMailer
                      from: from_user_via_loomio(@inviter),
                      reply_to: @inviter.try(:name_and_email),
                      subject_key: "email.user_added_to_group.subject",
-                     subject_params: { which_group: @group.full_name, who: @inviter.name },
-                     locale: locale_for(@user, @inviter)
+                     subject_params: { which_group: @group.full_name, who: @inviter.name, site_name: AppConfig.theme[:site_name] },
+                     locale: [@user.locale, @inviter.locale]
   end
 
   def login(user:, token:)
@@ -61,14 +63,15 @@ class UserMailer < BaseMailer
     @token = token
     send_single_mail to: @user.email,
                      subject_key: "email.login.subject",
-                     locale: locale_for(@user)
+                     subject_params: {site_name: AppConfig.theme[:site_name]},
+                     locale: @user.locale
   end
 
   def start_decision(received_email:)
     @email = received_email
     send_single_mail to: @email.sender_email,
                      subject_key: "email.start_decision.subject",
-                     locale: locale_for(@email)
+                     locale: @email.locale
   end
 
   def contact_request(contact_request:)
@@ -78,7 +81,8 @@ class UserMailer < BaseMailer
                      from: from_user_via_loomio(@contact_request.sender),
                      reply_to: @contact_request.sender.name_and_email,
                      subject_key: "email.contact_request.subject",
-                     subject_params: { name: @contact_request.sender.name },
-                     locale: locale_for(@contact_request.recipient, @contact_request.sender)
+                     subject_params: { name: @contact_request.sender.name,
+                                       site_name: AppConfig.theme[:site_name]},
+                     locale: [@contact_request.recipient.locale, @contact_request.sender.locale]
   end
 end

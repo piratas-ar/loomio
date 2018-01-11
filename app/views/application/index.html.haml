@@ -1,10 +1,11 @@
 !!!
 %html{'ng-app' => 'loomioApp', 'ng-controller' => 'RootController as app'}
   %head
-    %title Loomio
+    %title= AppConfig.theme[:site_name]
     %meta{charset: 'utf-8'}
     %meta{content: 'IE=Edge', 'http-equiv' => 'X-UA-Compatible'}
     %meta{content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no', name: "viewport"}
+    %meta{content: AppConfig.theme[:text_on_primary_color], name: "theme-color"}
     %base{href: '/'}
 
     %link{rel: 'canonical', 'ng-if' => 'links.canonical', 'ng-href' => '{{links.canonical}}'}
@@ -13,8 +14,10 @@
     %link{rel: 'next', 'ng-if' => 'links.next', 'ng-href' => '{{links.next}}'}
     %link{rel: 'manifest', href: '/manifest.json'}
     %link{rel: "shortcut icon", href: AppConfig.theme[:icon_src]}
+    %link{rel: "apple-touch-icon", href: AppConfig.theme[:icon_src]}
 
     %link{href: client_asset_path(:"app.min.css"), rel: 'stylesheet'}
+    %link{href: client_asset_path(:"plugin.min.css"), rel: 'stylesheet'}
 
     = render 'angular/metadata'
     = render 'application/google_analytics', code: ENV['GOOGLE_TAG_MANAGER_ID']
@@ -38,5 +41,6 @@
       window.Loomio.emojis.source = (emojione.shortnames || "").split("|")
       window.Loomio.emojis.render = emojione.shortnameToImage
     %script{src: client_asset_path(:"app.js")}
+    %script{src: client_asset_path(:"plugin.js")}
 
-    = javascript_include_tag 'angular_ahoy' if hosted_by_loomio?
+    = javascript_include_tag 'angular_ahoy' if AppConfig.app_features[:ahoy_tracking]

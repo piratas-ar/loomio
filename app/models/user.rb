@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  include CustomCounterCache::Model
   include ReadableUnguessableUrls
   include MessageChannel
   include HasExperiences
@@ -33,6 +34,7 @@ class User < ActiveRecord::Base
     content_type: { content_type: /\Aimage/ },
     file_name: { matches: [/png\Z/i, /jpe?g\Z/i, /gif\Z/i] }
 
+  validates_uniqueness_of :email, conditions: -> { where(email_verified: true) }, if: :email_verified?
   validates_uniqueness_of :username
   validates_length_of :username, maximum: 30
   validates_length_of :short_bio, maximum: 500
@@ -56,7 +58,7 @@ class User < ActiveRecord::Base
            source: :group
 
   has_many :adminable_groups,
-           -> { where( archived_at: nil) },
+           -> { where(archived_at: nil, type: "FormalGroup") },
            through: :admin_memberships,
            class_name: 'Group',
            source: :group
@@ -98,7 +100,7 @@ class User < ActiveRecord::Base
 
   has_many :notifications, dependent: :destroy
   has_many :comments, dependent: :destroy
-  has_many :attachments, dependent: :destroy
+  has_many :documents, foreign_key: :author_id, dependent: :destroy
   has_many :drafts, dependent: :destroy
   has_many :login_tokens, dependent: :destroy
 
@@ -182,7 +184,7 @@ class User < ActiveRecord::Base
 
   # Provide can? and cannot? as methods for checking permissions
   def ability
-    @ability ||= Ability.new(self)
+    @ability ||= Ability::Base.new(self)
   end
 
   delegate :can?, :cannot?, :to => :ability

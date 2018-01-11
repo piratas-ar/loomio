@@ -2,14 +2,14 @@
   .navbar__logo-bg {
     background-repeat: no-repeat;
     background-position: center;
-    background-size: auto 20px;
+    background-size: auto 32px;
   }
 
   .md-toolbar-tools {
     background-color: #fff;
-    box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
+    box-shadow: $whiteframe-shadow-4dp;
+
     max-height: 48px;
-    -webkit-justify-content: space-between;
     justify-content: space-between;
   }
 
@@ -26,6 +26,9 @@
   }
   .navbar__middle{
     flex-grow: 1;
+    height: 100%;
+    a, img { height: 100%; }
+    img { padding: 8px; }
   }
 
   .navbar__left {

@@ -33,6 +33,7 @@ describe Event do
   before do
     ActionMailer::Base.deliveries = []
     parent_comment
+    DiscussionService.create(discussion: discussion, actor: discussion.author)
     discussion.group.add_member!(mentioned_user)
     discussion.group.add_member!(parent_comment.author)
 
@@ -174,7 +175,7 @@ describe Event do
   describe 'poll_edited' do
     it 'makes an announcement to participants' do
       FactoryGirl.create(:stance, poll: poll, choice: poll.poll_options.first.name, participant: user_thread_loud)
-      expect { Events::PollEdited.publish!(poll.versions.last, poll.author, true) }.to change { emails_sent }
+      expect { Events::PollEdited.publish!(poll, poll.author, true) }.to change { emails_sent }
       email_users = Events::PollEdited.last.send(:email_recipients)
       email_users.should      include user_thread_loud
       email_users.should_not  include user_membership_loud
@@ -206,7 +207,7 @@ describe Event do
     end
 
     it 'notifies mentioned users' do
-      expect { Events::PollEdited.publish!(poll.versions.last, poll.author) }.to change { emails_sent }
+      expect { Events::PollEdited.publish!(poll, poll.author) }.to change { emails_sent }
       email_users = Events::PollEdited.last.send(:email_recipients)
       expect(email_users.length).to eq 1
       expect(email_users).to include user_mentioned
@@ -319,8 +320,7 @@ describe Event do
     it 'notifies everyone if announcement' do
       poll.make_announcement = true
       Events::PollCreated.publish!(poll, poll.author)
-      Events::PollExpired.publish!(poll)
-      event = Events::PollExpired.last
+      event = Events::PollExpired.publish!(poll)
 
       expect(event.announcement).to eq true
       email_users = event.send(:email_recipients)
@@ -480,6 +480,24 @@ describe Event do
       outcome.make_announcement = true
       Events::OutcomeCreated.publish!(outcome)
       expect(ActionMailer::Base.deliveries.map(&:to).flatten).to include outcome.author.email
+    end
+  end
+
+  describe 'invitation_accepted' do
+    let(:poll) { create :poll }
+    let(:guest_membership) { create :membership, group: poll.guest_group }
+    let(:formal_membership) { create :membership, group: create(:formal_group) }
+
+    it 'links to a group for a formal group invitation' do
+      event = Events::InvitationAccepted.publish!(guest_membership)
+      expect(event.send(:notification_url)).to match "p/#{poll.key}"
+      expect(event.send(:notification_translation_title)).to eq poll.title
+    end
+
+    it 'links to an invitation target for a guest group invitation' do
+      event = Events::InvitationAccepted.publish!(formal_membership)
+      expect(event.send(:notification_url)).to match "g/#{formal_membership.group.key}"
+      expect(event.send(:notification_translation_title)).to eq formal_membership.group.full_name
     end
   end
 

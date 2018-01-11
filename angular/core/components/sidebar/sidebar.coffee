@@ -1,4 +1,4 @@
-angular.module('loomioApp').directive 'sidebar', ($rootScope, $mdMedia, $mdSidenav, $window, Session, InboxService, RestfulClient, UserHelpService, AppConfig, IntercomService, LmoUrlService, Records, ModalService, GroupModal, DiscussionForm, AbilityService)->
+angular.module('loomioApp').directive 'sidebar', ($rootScope, $mdMedia, $mdSidenav, $window, Session, InboxService, RestfulClient, UserHelpService, AppConfig, IntercomService, LmoUrlService, Records, ModalService, GroupModal, DiscussionModal, AbilityService)->
   scope: false
   restrict: 'E'
   templateUrl: 'generated/components/sidebar/sidebar.html'
@@ -6,6 +6,7 @@ angular.module('loomioApp').directive 'sidebar', ($rootScope, $mdMedia, $mdSiden
   controller: ($scope) ->
     $scope.currentState = ""
     $scope.showSidebar = true
+    InboxService.load()
 
     $scope.hasAnyGroups = ->
       Session.user().hasAnyGroups()
@@ -17,7 +18,6 @@ angular.module('loomioApp').directive 'sidebar', ($rootScope, $mdMedia, $mdSiden
     $scope.currentGroup = ->
       return _.first(availableGroups()) if availableGroups().length == 1
       _.find(availableGroups(), (g) -> g.id == Session.currentGroupId()) || Records.groups.build()
-
 
     $scope.$on 'toggleSidebar', (event, show) ->
       if !_.isUndefined(show)
@@ -37,23 +37,8 @@ angular.module('loomioApp').directive 'sidebar', ($rootScope, $mdMedia, $mdSiden
     $scope.groupUrl = (group) ->
       LmoUrlService.group(group)
 
-    $scope.signOut = ->
-      Session.logout()
-
-    $scope.helpLink = ->
-      UserHelpService.helpLink()
-
     $scope.unreadThreadCount = ->
       InboxService.unreadCount()
-
-    $scope.showContactUs = ->
-      IntercomService.available()
-
-    $scope.showHelp = ->
-      AppConfig.features.help_link
-
-    $scope.contactUs = ->
-      IntercomService.contactUs()
 
     $scope.sidebarItemSelected = ->
       if !$mdMedia("gt-md")
@@ -72,4 +57,4 @@ angular.module('loomioApp').directive 'sidebar', ($rootScope, $mdMedia, $mdSiden
       ModalService.open GroupModal, group: -> Records.groups.build()
 
     $scope.startThread = ->
-      ModalService.open DiscussionForm, discussion: -> Records.discussions.build(groupId: $scope.currentGroup().id)
+      ModalService.open DiscussionModal, discussion: -> Records.discussions.build(groupId: $scope.currentGroup().id)

@@ -20,44 +20,18 @@ he:
       cancel: 'ביטול'
   error_page:
     forbidden: 'אין לך הרשאות לעשות זאת.'
-  proposal_outcome_panel:
-    heading: תוצאה
-  proposal_outcome_form:
-    outcome_label: תוצאת ההצעה
   inbox:
     clear: 'נקה/י'
     unread: 'לא-נקרא'
   comment_form:
     delete_comment: 'מחקו תגובה'
     confirm_delete_message: 'למחוק את התגובה? בטוחים?'
-  sidebar:
-    edit_profile: 'עריכת פרופיל'
-    email_settings: 'הגדרות דוא״ל'
-    help: 'עזרה'
-    sign_out: 'התנתקות'
   navbar:
     search:
       placeholder: 'חיפוש'
       discussions: 'דיונים'
   notifications:
     header: "התרעות"
-  vote_form:
-    i_agree: 'אני מסכימ/ה'
-    i_abstain: 'אני נמנע/ת'
-    i_abstain_details: 'אעדיף שהקבוצה תחליט בלעדיי'
-    i_disagree: 'אני לא מסכימ/ה'
-    i_disagree_details: 'אני מאמינ/ה שאנחנו יכולים למצוא פתרון טוב יותר'
-    i_block: 'אני חוסמ/ת'
-    submit_position: 'הגשת עמדה'
-  proposal_positions_panel:
-    heading: עמדות
-  close_proposal_form:
-    close_proposal: 'סגירת הצעה'
-  proposal_form:
-    start_proposal: 'התחלת הצעה'
-    edit_proposal: 'עריכת הצעה'
-    title_label: 'תואר'
-    details_label: 'פרטים'
   discussion_form:
     group_label: 'קבוצה'
     title_label: 'תואר'
@@ -70,10 +44,12 @@ he:
     name_label: שם
     email_label: דואל
   group_page:
-    discussions: 'דיונים'
     options_label: 'אפשרויות'
     options:
       label: 'אפשרויות'
+  document:
+    form:
+      title_label: שם
   membership_requests_page:
     approve: אישור
     ignore: התעלמ/י
@@ -93,8 +69,12 @@ he:
     mark_as_read: סמן כנקרא
     threads_from:
       today: 'היום'
+  activity_card:
+    unread: לא-נקרא
   thread_group:
     aria_label: 'שם הקבוצה'
+  thread_context:
+    close_thread: 'סגירה'
   delete_comment_dialog:
     title: 'מחקו תגובה'
     question: 'למחוק את התגובה? בטוחים?'
@@ -106,9 +86,5 @@ he:
     name_label: 'שמך'
     email_label: 'כתובת הדוא״ל שלך'
     message_label: 'ההודעה שלך'
-  help_page:
-    getting_started: "מתחילים"
-    help: "עזרה"
-    start_discussion: "מתחיל בדיון מרתק"
   hint:
     discussion: 'טיפים להתחלת דיון מרתק'

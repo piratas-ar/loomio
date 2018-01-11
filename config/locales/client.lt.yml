@@ -41,14 +41,6 @@ lt:
   error_page:
     forbidden: 'Jūs neturite leidimo tai padaryti.'
     internal_server_error: 'Atleiskite, bet įvyko kažkokia klaida. Prašome bandyti dar kartą.'
-  start_proposal_card:
-    title: 'Pateikti pasiūlymą'
-  previous_proposals_card:
-    heading: Ankstesni pasiūlymai
-  previous_proposals_page:
-    heading: Ankstesni pasiūlymai
-  proposal_collapsed:
-    expand: Išskleisti
   volume_levels:
     loud: 'Garsus'
     normal: 'Normalus'
@@ -73,10 +65,6 @@ lt:
     submit_button:
       label: 'Išsiųsti'
     private_privacy_notice: 'Jūsų komentaras bus matomas tik {{groupName}} grupės nariams.'
-  sidebar:
-    email_settings: 'El. pašto nustatymai'
-    help: 'Pagalba'
-    sign_out: 'Atsijungti'
   navbar:
     recent_title: 'Pereiti į skydelį'
     unread_title: 'Žiūrėti neskaitytas veiklas'
@@ -93,27 +81,6 @@ lt:
     header: "Pranešimai"
   position_buttons_panel:
     heading: Tarkite savo žodį
-  vote_form:
-    heading: Tarkite savo žodį
-    i_agree: 'Aš pritariu'
-    i_abstain: 'Aš susilaikau'
-    i_disagree: 'Aš nepritariu'
-    submit_position: 'Pateikti nuomonę'
-    statement_placeholder: 'Pasidalinkite savo mintimis su grupe.'
-    aria_statement_label: 'Pasirinktinai įveskite teiginį, kuris bus įrašytas kartu su jūsų nuomone'
-  proposal_positions_panel:
-    heading: Nuomonės
-  proposal_pie_chart:
-    participation_statement: '{{percentage}}% narių išreiškė savo nuomonę ({{number}}/{{total}})'
-  proposal_form:
-    messages:
-      updated: 'Pasiūlymas atnaujintas'
-    start_proposal: 'Pateikti pasiūlymą'
-    start_a_proposal: 'Pateikti pasiūlymą'
-    edit_proposal: 'Redaguoti pasiūlymą'
-    what_does_a_proposal_do: 'Pasiūlymai parodo, ką kiekvienas žmogus mano apie tam tikrą veiksmų planą.'
-    title_label: 'Antraštė'
-    details_label: 'Išsamesnė Informacija'
   discussion_form:
     new_discussion_title: 'Kurti naują giją'
     edit_discussion_title: 'Redaguoti giją'
@@ -128,21 +95,12 @@ lt:
   membership_request_form:
     email_label: El. paštas
   group_page:
-    thread_list:
-      empty:
-        no_discussions_in_group: "Šioje grupėje kol kas nėra jokių gijų."
-        no_public_discussions: "Šioje grupėje nėra viešų gijų."
-        discussions_are_private: "Šioje grupėje visos gijos yra privačios."
-        join_group: "Tam, kad matytumėte privačias gijas, turėsite prisijungti prie grupės."
-        membership_is_invitation_only: "Tam, kad prisijungtumėte prie šios grupės, jus turi pakviesti šios grupės narys."
-        membership_is_invitation_by_admin_only: "Tam, kad prisijungtumėte prie šios grupės, jus turi pakviesti koordinatorius."
     messages:
       privacy:
         members: 'Dabar ši grupė yra matoma tik nariams'
         parent_members: 'Dabar ši grupė yra matoma tik jūsų organizacijos nariams'
         public: 'Dabar ši grupė yra matoma viešai'
     group_logo: 'Grupės logotipas'
-    discussions: 'Gijos'
     discussions_placeholder: 'Gija - tai vieta, kurioje visi gali diskutuoti tam tikra tema ir kartu priiminėti sprendimus.'
     members_placeholder: 'Čia esate tik jūs: pakvieskite žmones prisjungti prie jūsų!'
     subgroups: 'Pogrupiai'
@@ -163,8 +121,8 @@ lt:
     members_can_create_subgroups: 'Nariai gali kurti pogrupius.'
     members_can_edit_comments: 'Nariai gali bet kuriuo metu redaguoti savo komentarus.'
     submit_update: 'Atnaujinti nustatymus'
-  group_help_card:
-    title: Pagalba
+  documents_page:
+    confirm_remove_title: Šalinti priedą
   group_previous_proposals_card:
     heading: Ankstesni pasiūlymai
   invitation_form:
@@ -226,25 +184,20 @@ lt:
       yesterday: 'Vakar'
   inbox_page:
     unread_threads: Neskaitytos gijos
-  groups_page:
-    page_header: Jūsų grupės
   discussion:
     activity: 'Veikla'
-    proposals: 'Pasiūlymai'
-    previous_proposals: 'Ankstesni pasiūlymai'
     load_previous: 'Įkelti ankstesnę veiklą'
   thread_group:
     aria_label: 'Grupės pavadinimas'
   thread_context:
     thread_options: 'Gijos parinktys'
+    close_thread: 'Užverti'
     delete_thread: 'Ištrinti'
   delete_thread_form:
     title: Ištrinti giją
     body: Ar tikrai norite ištrinti šią giją?
     messages:
       success: Gija ištrinta
-  activity_card:
-    new_activity: Nauja veikla
   delete_comment_dialog:
     title: 'Ištrinti komentarą'
     question: 'Jūs tikrai norite ištrinti šį komentarą?'
@@ -256,15 +209,3 @@ lt:
   contact_message_form:
     email_label: 'Jūsų el. pašto adresas'
     email_placeholder: 'Įveskite savo el. pašto adresą...'
-  help_page:
-    getting_started: "Darbo pradžia"
-    have_your_say: "Tarkite savo žodį"
-    help: "Pagalba"
-    join_the_community_description_html: "Visi yra kviečiami prisijungti prie Loomio Bendruomenės, kurioje mes aptarinėjame, kaip geriausiai išnaudoti įrankį ir kaip jis gali būti patobulintas.<br /><br /><a href='https://www.loomio.org/g/WmPCB3IR'>Spustelkite čia, kad pereitumėte į Loomio Bendruomenės grupę</a>."
-    positions_agree_description: "<span>Pritariu</span> reiškia, kad jums patinka pasiūlymas."
-    positions_disagree_description: "<span>Nepritariu</span> reiškia, kad jūs galvojate, jog gali būti geresnių alternatyvų, tačiau neprieštarausite grupės sprendimui."
-  angular:
-    switch_back: 'Perjungti atgal į senąją Loomio'
-    give_feedback: 'Siųsti atsiliepimus'
-    disable:
-      button_text: 'Perjungti atgal į senąją Loomio'

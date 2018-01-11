@@ -1,9 +1,11 @@
 class API::GroupsController < API::RestfulController
   include UsesFullSerializer
-  load_and_authorize_resource only: :show, find_by: :key
-  load_resource only: [:upload_photo], find_by: :key
   after_action :track_visit, only: :show
-  skip_before_action :authenticate_user!, only: [:index]
+
+  def show
+    self.resource = load_and_authorize(:formal_group)
+    respond_with_resource
+  end
 
   def index
     instantiate_collection { |collection| collection.search_for(params[:q]).order(recent_activity_count: :desc) }
@@ -26,13 +28,13 @@ class API::GroupsController < API::RestfulController
   end
 
   def subgroups
-    self.collection = load_and_authorize(:group).subgroups.select { |g| can? :show, g }
+    self.collection = load_and_authorize(:group).subgroups.select { |g| current_user.can? :show, g }
     respond_with_collection
   end
 
   def upload_photo
     ensure_photo_params
-    service.update group: resource, actor: current_user, params: { params[:kind] => params[:file] }
+    service.update group: load_resource, actor: current_user, params: { params[:kind] => params[:file] }
     respond_with_resource
   end
 

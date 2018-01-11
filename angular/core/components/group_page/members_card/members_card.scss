@@ -1,9 +1,12 @@
+members_card {
+  order: 60;
+}
 .members-card{
   @include card;
 }
 
 .members-card__list {
-  @include displayFlex;
+  display: flex;
   flex-wrap: wrap;
 }
 
