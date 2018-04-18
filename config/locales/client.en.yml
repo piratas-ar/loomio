@@ -30,6 +30,8 @@ en:
     metal: Metal
     ok_hand: Ok
     wave: Wave
+    thumbsup: Thumb up
+    thumbsdown: Thumb down
 
   poll_types:
     proposal: Proposal
@@ -91,6 +93,7 @@ en:
       back: 'Back'
       next: 'Next'
       close: 'Close'
+      reopen: 'Reopen'
       save: 'Save'
       save_changes: 'Save changes'
       update_settings: 'Update settings'
@@ -124,6 +127,7 @@ en:
       resend: Resend
       send: Send
       resent: Invitation resent
+      export: Export
     formatting_help:
       label: 'Formatting'
       title: 'Learn how to use Markdown to format your text'
@@ -331,6 +335,12 @@ en:
     start_poll: 'Start Poll'
     invite_people: 'Invite People'
 
+  notification_models:
+    discussion: 'thread: '
+    comment: 'comment in '
+    poll: 'decision: '
+    outcome: 'outcome: '
+
   notifications:
     header: "Notifications"
     no_notifications: "You don't have any notifications"
@@ -343,7 +353,7 @@ en:
     new_vote: "<strong>{{name}}</strong> {{position}} on the proposal <strong>{{title}}</strong>"
     new_comment: "<strong>{{name}}</strong> commented on <strong>{{title}}</strong>"
     comment_replied_to: "<strong>{{name}}</strong> replied to your comment in <strong>{{title}}</strong>"
-    reaction_created: "<strong>{{name}}</strong> reacted <img class='emojione' src='{{reaction_src}}' alt='{{reaction}}'/> to your comment in <strong>{{title}}</strong>"
+    reaction_created: "<strong>{{name}}</strong> reacted <img class='emojione' src='{{reaction_src}}' alt='{{reaction}}'/> to your {{model}}<strong>{{title}}</strong>"
     user_mentioned: "<strong>{{name}}</strong> mentioned you in <strong>{{title}}</strong>"
     user_reminded: "<strong>{{name}}</strong> is waiting on you to participate in <strong>{{title}}</strong>"
     membership_requested: "<strong>{{name}}</strong> requested membership to <strong>{{title}}</strong>"
@@ -497,8 +507,8 @@ en:
     members: 'Members'
     members_placeholder: 'You''re the only one here: invite some people to join you!'
     member_options: Member options
-    see_all_members: 'See all: ({{count}}) members'
-    pending_invitations: '+ ({{count}}) pending'
+    see_all_members: 'See all {{count}} members'
+    pending_invitations: '+ {{count}} pending'
     subgroups: 'Subgroups'
     subgroups_placeholder: 'Subgroups give teams their own space and keep notifications focused to the right people.'
     invite_people: 'Invite'
@@ -564,7 +574,7 @@ en:
     description: 'Description'
     description_placeholder: 'Describe the purpose of your group so your group members know why they are here.'
     privacy_statement:
-      public_on_web: 'Name and description will be public on the web'
+      public_on_web: 'Name, description, and attachments to the group context will be visible to the public'
       private_to_group: 'Name and description will only be visible to members.'
       private_to_parent_members: 'Name and description will be visible to members of {{parent}}'
     privacy: 'Privacy'
@@ -656,7 +666,7 @@ en:
       file_helptext: Upload files from your computer
     form:
       url_label: URL
-      helptext: Click here, paste, or drop files to upload
+      helptext: Click here, paste, or drop file to upload
       url_placeholder: E.g. https://www.example.com/attachment.zip
       title_helptext: What should we call this attachment?
       title_label: Name
@@ -786,6 +796,7 @@ en:
     picture_label: 'Picture'
     name_label: 'Name'
     username_label: 'Username'
+    username_helptext: 'All lowercase letters and numbers, maximum 30 characters'
     email_label: 'Email'
     short_bio_label: 'Introduction'
     locale_label: 'Language'
@@ -844,7 +855,7 @@ en:
     on_participation_label: Subscribe on participation
     on_participation_description: "When you participate in a thread, all further activity will be emailed to you immediately."
     mentioned_label: Mentions
-    mentioned_description: "When someone wants to get you're attention, they'll @mention you. We recommend you leave this on, so that you'll get an email when this happens."
+    mentioned_description: "When someone wants to get your attention, they'll @mention you. We recommend you leave this on, so that you'll get an email when this happens."
     update_settings: Save changes
     specific_groups: Settings for specific groups
     default_settings:
@@ -872,7 +883,8 @@ en:
     load_more: Load more threads
     mark_as_read: Mark as read
     dismiss: Dismiss
-    thread_dismissed: Thread dismissed.
+    thread_dismissed: Thread dismissed
+    thread_recalled: Thread recalled
     explain_mute:
       title: You haven't muted any threads yet.
       explanation_html: |
@@ -1058,7 +1070,7 @@ en:
 
   contact_message_form:
     helptext: "Want to get in touch? Just enter a message below and you'll hear from us shortly."
-    contact_us_email: "(You can also always reach us at <a href=\"mailto:contact@loomio.org\">contact@loomio.org</a>)"
+    contact_us_email: "(You can also always reach us at <a href=\"mailto:{{email}}\">{{email}}</a>)"
     contact_us: 'Contact Us'
     name_label: 'Your name'
     name_placeholder: 'Enter your name...'
@@ -1067,7 +1079,7 @@ en:
     message_label: 'Your message'
     message_placeholder: 'Your message...'
     send_message: 'Send Message'
-    new_contact_message: "Thanks for getting in touch; we''ll get back to you soon!"
+    new_contact_message: "Thanks for getting in touch; we'll get back to you soon!"
 
   hint:
     context: 'Tips for using the context panel'
@@ -1155,6 +1167,8 @@ en:
     reason_placeholder: Any additional comments?
     message: Message
     results: Results
+    responses: Responses
+    totals: Totals
     vote: Vote
     votes: Votes
     update_outcome: Update outcome
@@ -1230,16 +1244,31 @@ en:
     location: Location
     location_placeholder: Where will this meeting take place?
 
-  poll_common_notify_on_participate:
-    notify_on_participate: Notify me when people participate
-    helptext_on: You will be notified whenever someone participates
-    helptext_off: You will receive results when this activity closes
-
-  poll_common_anonymous:
-    anonymous: Anonymous Participants
-    helptext_on: Participant info will not be shown with each response
-    helptext_off: Participants will be shown with their responses
-
+  poll_common_settings:
+    multiple_choice:
+      title: Multiple choice
+      helptext_on: Participants will be able to select multiple options.
+      helptext_off: Participants must select only one option.
+    anyone_can_participate:
+      title: Anyone can participate
+      helptext_on: Anyone with the link to the poll can participate.
+      helptext_off: Only people who are invited, or part of this group can participate.
+    notify_on_participate:
+      title: Notify me when people participate
+      helptext_on: You will be notified whenever someone participates.
+      helptext_off: You will receive results when this activity closes.
+    anonymous:
+      title: Anonymous participants
+      helptext_on: Participant info will not be shown with each response.
+      helptext_off: Participants will be shown with their responses.
+    voters_can_add_options:
+      title: Voters may add options
+      helptext_on: Participants may add their own options when voting.
+      helptext_off: Participants will select from the options you provide.
+    can_respond_maybe:
+      title: Voters can respond "if need be"
+      helptext_on:  Voters can indicate times as "If need be"
+      helptext_off: Voters will indicate yes or no for each time
   poll_common_close_form:
     title: Close a poll early
     helptext: Are you sure you're ready to close early?
@@ -1255,6 +1284,16 @@ en:
     dot_vote_closed: Dote vote closed
     meeting_closed: Time poll closed
     ranked_choice_closed: Ranked choice poll closed
+
+  poll_common_reopen_form:
+    title: Reopen a closed decision
+    helptext: Did a decision close before you were ready? Reopen to gather more stances from the group.
+    proposal_reopened: Proposal reopened
+    poll_reopened: Poll reopened
+    count_reopened: Check reopened
+    dot_vote_reopened: Dote vote reopened
+    meeting_reopened: Time poll reopened
+    ranked_choice_reopened: Ranked choice poll reopened
 
   poll_common_closing_at_field:
     closing: Closing
@@ -1324,6 +1363,7 @@ en:
     options_placeholder: Enter a new option...
     no_options: You haven't added any options yet.
     closing: Closing
+    closed: Closed
     start: Start
     update: Update
     loomio_school_link: |
@@ -1392,6 +1432,7 @@ en:
     details_placeholder: Provide any clarifying details people might need to participate
     add_option_placeholder: Add option
     dots_per_person: Dots per person
+    dots_per_person_helptext: How many points to allocate to each participant
     dot_vote_created: Dot vote created
     dot_vote_updated: Dot vote updated
 
@@ -1466,6 +1507,8 @@ en:
     block_meaning: The urgent attention of the group is required to address a deep concern
 
   poll_count_options:
+    'yes': 'Yes'
+    'no': 'No'
     yes_meaning: I volunteer, give my consent, or have completed the given task
     no_meaning: I am unable to contribute or to participate in this decision
 
@@ -1489,6 +1532,9 @@ en:
     stance_updated: Vote updated
 
   poll_meeting_vote_form:
+    can_attend: "Can attend"
+    unable: "Unable"
+    if_need_be: If need be
     your_response: When can you attend?
     stance_created: Availability saved
     stance_updated: Availability updated
@@ -1517,6 +1563,7 @@ en:
     discussion_reopened:           "<strong><a href='u/{{username}}'>{{author}}</a></strong> reopened the thread"
     new_comment:                   "<strong><a href='u/{{username}}'>{{author}}</a></strong>"
     outcome_created:               "<strong><a href='u/{{username}}'>{{author}}</a></strong> shared an outcome for <strong>{{title}}</strong>"
+    poll_reopened:                 "<strong><a href='u/{{username}}'>{{author}}</a></strong> reopened the {{polltype}}: <strong>{{title}}</strong>"
     poll_closed_by_user:           "<strong><a href='u/{{username}}'>{{author}}</a></strong> closed the {{polltype}}: <strong>{{title}}</strong>"
     poll_created:                  "<strong><a href='u/{{username}}'>{{author}}</a></strong> started a {{polltype}}: <strong>{{title}}</strong>"
     poll_edited:                   "<strong><a href='u/{{username}}'>{{author}}</a></strong> edited the {{polltype}}: <strong>{{title}}</strong>"
@@ -1619,6 +1666,7 @@ en:
       If you'd like to use a password to log in in the future, you can set one from your profile page.
     login_link_helptext_with_password: "Enter your password, or sign in via email."
     sign_up_helptext: "Just enter the name you'd like to be known by, and we'll send you a link to log in."
+    sign_up_helptext_with_token: "Just enter the name you'd like to be known by, and click Sign In to get started."
     oauth_confirm_helptext: "Just confirm your details below, and we'll send you a link to log in."
     name_required: Please enter a name
     account_inactive: Uh-oh, it looks like the account for {{email}} has been deactivated! Please contact us to reactivate your account.
@@ -1627,6 +1675,8 @@ en:
     welcome_back: Welcome back, {{name}}!
     login_link: Sign in via email
     set_password: Set password
+    set_password_helptext: Tired of logging in via email?
+    set_password_link: Set a password
 
     hello: "Hello, {{name}}!"
     new_to_loomio: New to {{site_name}}? Create a new account
@@ -1635,7 +1685,10 @@ en:
     link_accounts: Link accounts
 
     check_your_email: Check your email!
-    login_link_sent: "Ok, We've sent an email to {{email}} with a link to instantly log in. See you soon!"
+    login_link_sent: "Ok, We've sent an email to {{email}}."
+    instructions: "Click the link to sign in, or enter the code below:"
+    too_many_attempts: "Too many attempts; try clicking the link in the email to log in."
+    invalid_code: "Sorry, that code didn't match. Check the email and try again."
     password_link_sent: "We've sent an email to {{email}} with instructions on how to set your password."
     signed_in: Signed in successfully
     email_verified: Email verified successfully
@@ -1699,6 +1752,10 @@ en:
 
     common:
       do_it_later: I'll do this later
+
+  browser_warning:
+    message: "IMPORTANT! You are using an outdated browser ({{name}} {{version}}) which is not supported by {{site}}."
+    link: Please switch to another browser
 
   slack_added_modal:
     title: Success!

@@ -37,7 +37,7 @@ module Dev::PollsScenarioHelper
     scenario[:poll].make_announcement = true
     PollService.add_options(poll: scenario[:poll],
                             actor: scenario[:actor],
-                            params: {poll_option_names: option_names[poll_type]})
+                            params: {poll_option_names: option_names(2)[poll_type]})
 
     scenario.merge(observer: scenario[:voter])
   end
@@ -260,5 +260,24 @@ module Dev::PollsScenarioHelper
   def poll_with_guest_as_author_scenario(poll_type:)
     scenario = poll_with_guest_scenario(poll_type: poll_type)
     scenario.merge(observer: scenario[:poll].author)
+  end
+
+  def alternative_poll_option_selection (poll_option_ids, i)
+    poll_option_ids.each_with_index.map {|id, j| {poll_option_id: id, score: (i+j)%3}}
+  end
+
+  def poll_meeting_populated_scenario(poll_type:)
+    user = saved fake_user
+
+    poll = fake_poll(poll_type: poll_type, option_count: 5)
+    PollService.create(poll: poll, actor: user)
+
+    5.times do |i|
+      choices = alternative_poll_option_selection(poll.poll_option_ids, i)
+      stance = saved fake_stance(poll:poll, participant:saved(fake_user), stance_choices_attributes: choices)
+    end
+
+    { poll: poll,
+      observer: user}
   end
 end

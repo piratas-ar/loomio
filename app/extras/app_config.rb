@@ -10,6 +10,7 @@ class AppConfig
     notifications
     doctypes
     locales
+    moment_locales
     group_features
   )
 
@@ -43,7 +44,6 @@ class AppConfig
       icon192_src:                       ENV.fetch('THEME_ICON192_SRC',             '/theme/icon192.png'),
       icon512_src:                       ENV.fetch('THEME_ICON512_SRC',             '/theme/icon512.png'),
       app_logo_src:                      ENV.fetch('THEME_APP_LOGO_SRC',            '/theme/logo.svg'),
-      default_group_logo_src:            ENV.fetch('THEME_DEFAULT_GROUP_LOGO_SRC',  '/theme/default_group_logo.png'),
       default_group_cover_src:           ENV.fetch('THEME_DEFAULT_GROUP_COVER_SRC', '/theme/default_group_cover.png'),
 
       # used in emails
@@ -65,32 +65,25 @@ class AppConfig
       custom_accent_palette:   json_parse_or_false('THEME_CUSTOM_ACCENT_PALETTE'),
       custom_warn_palette:     json_parse_or_false('THEME_CUSTOM_WARN_PALETTE')
     }
-   end
+  end
 
-   def self.app_features
-     {
-       create_user:                !ENV['FEATURES_DISABLE_CREATE_USER'],
-       create_group:               !ENV['FEATURES_DISABLE_CREATE_GROUP'],
-       public_groups:              !ENV['FEATURES_DISABLE_PUBLIC_GROUPS'],
-       ahoy_tracking:              !ENV['FEATURES_DISABLE_AHOY_TRACKING'],
-       help_link:                  !ENV['FEATURES_DISABLE_HELP_LINK'],
-       nested_comments:            ENV.fetch('FEATURES_NESTED_COMMENTS_FOR_ALL',    false),
-       default_thread_render_mode: ENV.fetch('FEATURES_DEFAULT_THREAD_RENDER_MODE', 'chronological')
-     }
-   end
+  def self.app_features
+    {
+      create_user:                !ENV['FEATURES_DISABLE_CREATE_USER'],
+      create_group:               !ENV['FEATURES_DISABLE_CREATE_GROUP'],
+      public_groups:              !ENV['FEATURES_DISABLE_PUBLIC_GROUPS'],
+      ahoy_tracking:              !ENV['FEATURES_DISABLE_AHOY_TRACKING'],
+      help_link:                  !ENV['FEATURES_DISABLE_HELP_LINK'],
+      nested_comments:            ENV.fetch('FEATURES_NESTED_COMMENTS_FOR_ALL',    false),
+      default_thread_render_mode: ENV.fetch('FEATURES_DEFAULT_THREAD_RENDER_MODE', 'chronological')
+    }
+  end
 
-   def self.errbit
-     {
-       key: ENV['ERRBIT_JS_KEY'],
-       url: "https://#{ENV['ERRBIT_HOST']}"
-     }
-   end
-
-   def self.json_parse_or_false(name)
-     if ENV[name]
-       JSON.parse(ENV[name])
-     else
-       false
-     end
-   end
+  def self.json_parse_or_false(name)
+    if ENV[name]
+      JSON.parse(ENV[name])
+    else
+      false
+    end
+  end
 end

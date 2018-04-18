@@ -1,10 +1,10 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   include CustomCounterCache::Model
   include ReadableUnguessableUrls
   include MessageChannel
   include HasExperiences
   include HasAvatar
-  include UsesWithoutScope
+  # include UsesWithoutScope
   include SelfReferencing
   include NoForbiddenEmails
 
@@ -31,8 +31,7 @@ class User < ActiveRecord::Base
 
   validates_attachment :uploaded_avatar,
     size: { in: 0..MAX_AVATAR_IMAGE_SIZE_CONST.kilobytes },
-    content_type: { content_type: /\Aimage/ },
-    file_name: { matches: [/png\Z/i, /jpe?g\Z/i, /gif\Z/i] }
+    content_type: { content_type: /\Aimage/ }
 
   validates_uniqueness_of :email, conditions: -> { where(email_verified: true) }, if: :email_verified?
   validates_uniqueness_of :username
@@ -45,11 +44,18 @@ class User < ActiveRecord::Base
   validates :password, nontrivial_password: true, allow_nil: true
   validate  :ensure_recaptcha, if: :recaptcha
 
-  has_many :contacts, dependent: :destroy
   has_many :admin_memberships,
            -> { where('memberships.admin = ? AND memberships.is_suspended = ?', true, false) },
            class_name: 'Membership',
            dependent: :destroy
+
+  has_many :memberships,
+           -> { where(is_suspended: false, archived_at: nil) },
+           dependent: :destroy
+
+  has_many :archived_memberships,
+           -> { where('archived_at IS NOT NULL') },
+           class_name: 'Membership'
 
   has_many :formal_groups,
            -> { where(type: "FormalGroup") },
@@ -62,14 +68,6 @@ class User < ActiveRecord::Base
            through: :admin_memberships,
            class_name: 'Group',
            source: :group
-
-  has_many :memberships,
-           -> { where(is_suspended: false, archived_at: nil) },
-           dependent: :destroy
-
-  has_many :archived_memberships,
-           -> { where('archived_at IS NOT NULL') },
-           class_name: 'Membership'
 
   has_many :membership_requests,
            foreign_key: 'requestor_id',
@@ -148,6 +146,7 @@ class User < ActiveRecord::Base
       identities.push(identity)
       identity.assign_logo! if avatar_kind == 'initials'
     end
+    self
   end
 
   def identity_for(type)

@@ -108,7 +108,7 @@ module Plugins
       return unless Rails.env.test?
       raise NoCodeSpecifiedError.new unless block_given?
       @actions.add Proc.new {
-        FactoryGirl.define { factory(name, &block) } unless FactoryGirl.factories.registered?(name)
+        FactoryBot.define { factory(name, &block) } unless FactoryBot.factories.registered?(name)
       }.to_proc
     end
 
@@ -142,6 +142,12 @@ module Plugins
     def use_asset(path)
       raise InvalidAssetType.new unless VALID_ASSET_TYPES.include? path.split('.').last.to_sym
       @assets.add path_prefix(path, rails_root: false)
+    end
+
+    def use_e2e(path)
+      @actions.add Proc.new {
+        system("cp #{path_prefix(path)} #{Rails.root}/client/angular/test/nightwatch/plugins/#{path.split('/').last}")
+      }.to_proc
     end
 
     private

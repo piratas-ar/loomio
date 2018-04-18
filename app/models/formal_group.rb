@@ -1,6 +1,7 @@
 class FormalGroup < Group
   include HasTimeframe
   include MakesAnnouncements
+  include HasDrafts
 
   validates_presence_of :name
   validates :name, length: { maximum: 250 }
@@ -26,14 +27,18 @@ class FormalGroup < Group
 
   has_many :requested_users, through: :membership_requests, source: :user
   has_many :comments, through: :discussions
-  has_many :motions, through: :discussions
-  has_many :votes, through: :motions
+  has_many :public_comments, through: :public_discussions, source: :comments
+
   has_many :group_identities, dependent: :destroy, foreign_key: :group_id
   has_many :identities, through: :group_identities
+
   has_many :documents, as: :model, dependent: :destroy
-  has_many :discussion_documents, through: :discussions, source: :documents
-  has_many :poll_documents,       through: :polls,       source: :documents
-  has_many :comment_documents,    through: :comments,    source: :documents
+  has_many :discussion_documents,        through: :discussions,        source: :documents
+  has_many :poll_documents,              through: :polls,              source: :documents
+  has_many :comment_documents,           through: :comments,           source: :documents
+  has_many :public_discussion_documents, through: :public_discussions, source: :documents
+  has_many :public_poll_documents,       through: :public_polls,       source: :documents
+  has_many :public_comment_documents,    through: :public_comments,    source: :documents
 
   belongs_to :cohort
   belongs_to :default_group_cover
@@ -66,7 +71,7 @@ class FormalGroup < Group
   has_attached_file    :logo,
                        url: "/system/groups/:attachment/:id_partition/:style/:filename",
                        styles: { card: "67x67#", medium: "100x100#" },
-                       default_url: AppConfig.theme[:default_group_logo_src]
+                       default_url: AppConfig.theme[:icon_src]
 
   validates_attachment :cover_photo,
     size: { in: 0..100.megabytes },
@@ -79,6 +84,12 @@ class FormalGroup < Group
     file_name: { matches: [/png\Z/i, /jpe?g\Z/i, /gif\Z/i] }
 
   validates :description, length: { maximum: Rails.application.secrets.max_message_length }
+
+  alias_method :draft_parent, :parent
+
+  def pending_invitation_limit
+    self.memberships_count + ENV.fetch('MAX_PENDING_INVITATIONS', 100).to_i
+  end
 
   def update_undecided_user_count
     # NOOP: only guest groups have an invitation target
@@ -152,9 +163,9 @@ class FormalGroup < Group
     Array(id) | subgroup_ids
   end
 
-  def subdomain
+  def handle
     if is_subgroup?
-      parent.subdomain
+      parent.handle
     else
       super
     end

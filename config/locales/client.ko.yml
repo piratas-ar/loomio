@@ -299,7 +299,6 @@ ko:
     description: '설명'
     description_placeholder: '그룹의 멤버들이 왜 여기에 모여 있는지 인식할 수 있도록 이 그룹의 목적을 설명해주세요.'
     privacy_statement:
-      public_on_web: '이름과 설명이 웹에 공개됩니다.'
       private_to_group: '이름과 설명은 멤버만 볼 수 있습니다.'
       private_to_parent_members: '{{parent}}의 멤버가 이름과 설명을 볼 수 있습니다. '
     privacy: '개인정보'
@@ -455,7 +454,6 @@ ko:
     daily_summary_label: 일별 요약 이메일
     on_participation_description: "모둠에 참여하면, 더욱 많은 행동들이 즉시 당신에게 이메일로 전송됩니다. "
     mentioned_label: 말하기
-    mentioned_description: "누군가 당신과 이야기하고 싶을 경우 @언급할 겁니다. 사람들이 언급할 때마다 이메일을 받게 되기 때문에 사용하는게 좋습니다."
     specific_groups: 특별한 그룹에 적용
     default_settings:
       loud_description: "새로운 그룹에 참여하면, 당신은 <strong>행동이 있을 때마다</strong>이메일을 받을 수 있습니다."
@@ -480,7 +478,6 @@ ko:
     load_more: 주제 더보기
     mark_as_read: 읽음으로 표시
     dismiss: 기각합니다
-    thread_dismissed: 주제가 기각됐습니다.
     explain_mute:
       title: 대기중인 주제가 아직 없습니다.
     filtering:
@@ -612,3 +609,5 @@ ko:
       reload: '다시 불러오기'
   emoji_picker:
     search: "이모티콘을 찾으세요."
+  poll_common_form:
+    closed: 종료

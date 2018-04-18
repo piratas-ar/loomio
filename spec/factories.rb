@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
 
   factory :blacklisted_password do
     string "MyString"
@@ -12,7 +12,6 @@ FactoryGirl.define do
   factory :user do
     sequence(:email) { Faker::Internet.email }
     sequence(:name) { Faker::Name.name }
-    angular_ui_enabled false
     password 'complex_password'
     time_zone "Pacific/Tarawa"
     email_verified true
@@ -101,7 +100,7 @@ FactoryGirl.define do
     association :group, :factory => :formal_group
     title { Faker::Name.name }
     description 'A description for this discussion. Should this be *rich*?'
-    uses_markdown false
+    uses_markdown true
     private true
     after(:build) do |discussion|
       discussion.group.parent&.add_member!(discussion.author)
@@ -240,12 +239,23 @@ FactoryGirl.define do
     association :guest_group, factory: :guest_group
   end
 
+  factory :poll_dot_vote, class: Poll do
+    poll_type "dot_vote"
+    title "This is a dot vote"
+    details "with a description"
+    association :author, factory: :user
+    poll_option_names %w(apple banana orange)
+    custom_fields dots_per_person: 8
+    association :guest_group, factory: :guest_group
+  end
+
   factory :poll_meeting, class: Poll do
     poll_type "meeting"
     title "This is a meeting"
     details "with a description"
     association :author, factory: :user
     poll_option_names ['01-01-2015']
+    custom_fields can_respond_maybe: false
     association :guest_group, factory: :guest_group
   end
 

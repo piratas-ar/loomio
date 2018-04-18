@@ -1,4 +1,11 @@
 ca:
+  poll:
+    export:
+      title: Títol
+      author: Autor
+      details: Detalls
+      group_name: Nom del grup
+      total: Total
   validate:
     motion:
       one_at_a_time: Hi ha una altra proposta activa.
@@ -28,6 +35,7 @@ ca:
     missed_yesterday:
       headlines: Capçaleres
       mark_as_read: Marca com a llegit
+      click_here: Fes click aquí
     membership_request:
       subject: "%{who} ha demanat unir-se a %{which_group}"
       view_group: Pots aprovar o denegar la sol·licitud aquí
@@ -55,3 +63,4 @@ ca:
     links:
       title: |
         ## Enllaços i imatges
+  comment_by: Comentari per %{comment_author}

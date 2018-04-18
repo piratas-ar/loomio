@@ -25,6 +25,11 @@ class API::PollsController < API::RestfulController
     respond_with_resource
   end
 
+  def reopen
+    @event = service.reopen(poll: load_resource, params: resource_params, actor: current_user)
+    respond_with_resource
+  end
+
   def add_options
     @event = service.add_options(poll: load_resource, params: params.slice(:poll_option_names), actor: current_user)
     respond_with_resource
@@ -36,7 +41,7 @@ class API::PollsController < API::RestfulController
   end
 
   def search_results_count
-    render json: poll_search.perform(search_filters).count
+    render json: { count: poll_search.perform(search_filters).count }
   end
 
   def toggle_subscription
@@ -71,9 +76,9 @@ class API::PollsController < API::RestfulController
   end
 
   def accessible_records
-    Poll.where.any_of(
+    Queries::UnionQuery.for(:polls, [
       current_user.polls,
       Poll.where(id: Queries::VisiblePolls.new(user: current_user).pluck(:id))
-    )
+    ])
   end
 end

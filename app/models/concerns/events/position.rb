@@ -3,6 +3,7 @@ module Events::Position
 
   included do
     before_save :set_depth
+    before_create :set_position, if: :discussion_id
     after_destroy :reorder
     after_save :reorder, if: :parent_or_discussion_id_changed?
     belongs_to :parent, class_name: "Event", required: false
@@ -13,11 +14,15 @@ module Events::Position
 
   private
   def parent_or_discussion_id_changed?
-    parent_id_changed? || discussion_id_changed?
+    saved_change_to_attribute?(:parent_id) || saved_change_to_attribute?(:discussion_id)
+  end
+
+  def set_position
+    self.position = self.class.where(discussion_id: self.discussion_id).maximum(:position).to_i + 1
   end
 
   def set_depth
-    self.depth = parent_id ? (parent.depth + 1) : 0
+    self.depth = parent ? (parent.depth + 1) : 0
   end
 
   def refresh_order_value

@@ -1,10 +1,11 @@
-class Discussion < ActiveRecord::Base
+class Discussion < ApplicationRecord
   include CustomCounterCache::Model
   include ReadableUnguessableUrls
   include Translatable
   include Reactable
   include HasTimeframe
   include HasMentions
+  include HasDrafts
   include HasImportance
   include MessageChannel
   include MakesAnnouncements
@@ -28,7 +29,6 @@ class Discussion < ActiveRecord::Base
   validate :private_is_not_nil
   validates :title, length: { maximum: 150 }
   validates :description, length: { maximum: Rails.application.secrets.max_message_length }
-  validates_inclusion_of :uses_markdown, in: [true,false]
   validate :privacy_is_permitted_by_group
 
   is_mentionable on: :description
@@ -44,8 +44,8 @@ class Discussion < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   has_many :commenters, -> { uniq }, through: :comments, source: :user
   has_many :documents, as: :model, dependent: :destroy
-
-  has_many :events, -> { includes :user }, as: :eventable, dependent: :destroy
+  has_many :poll_documents,    through: :polls,    source: :documents
+  has_many :comment_documents, through: :comments, source: :documents
 
   has_many :items, -> { includes(:user).thread_events.order('events.id ASC') }, class_name: 'Event'
 
@@ -57,8 +57,8 @@ class Discussion < ActiveRecord::Base
   end
 
   scope :weighted_search_for, ->(query, user, opts = {}) do
-    query = sanitize(query)
-     select(:id, :key, :title, :result_group_name, :description, :last_activity_at, :rank, "#{query}::text as query")
+    query = connection.quote(query)
+    select(:id, :key, :title, :result_group_name, :description, :last_activity_at, :rank, "#{query}::text as query")
     .select("ts_headline(discussions.description, plainto_tsquery(#{query}), 'ShortWord=0') as blurb")
     .from(SearchVector.search_for(query, user, opts))
     .joins("INNER JOIN discussions on subquery.discussion_id = discussions.id")
@@ -74,6 +74,8 @@ class Discussion < ActiveRecord::Base
   delegate :name_and_email, to: :author, prefix: :author
   delegate :locale, to: :author
 
+  alias_method :draft_parent, :group
+
   after_create :set_last_activity_at_to_created_at
 
   define_counter_cache(:closed_polls_count)   { |discussion| discussion.polls.closed.count }
@@ -86,6 +88,10 @@ class Discussion < ActiveRecord::Base
   update_counter_cache :group, :open_discussions_count
   update_counter_cache :group, :closed_discussions_count
   update_counter_cache :group, :closed_polls_count
+
+  def groups
+    Array(group)
+  end
 
   def created_event_kind
     :new_discussion

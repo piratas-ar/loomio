@@ -273,7 +273,6 @@ tr:
     description: 'Tanım'
     description_placeholder: 'Grubunuzun amacını açıklayın ki grup üyeleriniz neden burada olduklarını bilsin.'
     privacy_statement:
-      public_on_web: 'Ad ve açıklama web üzerinde herkese açık olacaktır.'
       private_to_group: 'Ad ve açıklama sadece grup üyelerine görünür olacaktır.'
       private_to_parent_members: 'Ad ve açıklama sadece {{parent}} grubunun üyelerine görünür olacaktır.'
     privacy: 'Gizlilik'
@@ -399,7 +398,6 @@ tr:
   email_settings_page:
     header: E-posta ayarları
     daily_summary_label: Günlük özet e-postası
-    mentioned_description: "Birisi dikkatinizi çekmek istediğinde, sizden @bahsedeceklerdir. Size bunu açık bırakmanızı öneririz, böylece her bahsedildiğizde bir e-posta alırsınız."
     messages:
       updated: E-posta ayarları güncellendi
   dashboard_page:
@@ -557,6 +555,7 @@ tr:
   poll_common_close_form:
     close_proposal: Öneriyi kapat
   poll_common_form:
+    closed: Kapalı
     start: Başla
   polls_page:
     heading: Kararlar

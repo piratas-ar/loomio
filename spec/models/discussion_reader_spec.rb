@@ -2,11 +2,11 @@ require 'rails_helper'
 
 describe DiscussionReader do
 
-  let(:user) { FactoryGirl.create :user }
-  let(:other_user) { FactoryGirl.create :user }
-  let(:group) { FactoryGirl.create :formal_group }
-  let(:discussion) { FactoryGirl.create :discussion, group: group }
-  let(:membership) { FactoryGirl.create :membership, user: user, group: group, volume: :normal }
+  let(:user) { FactoryBot.create :user }
+  let(:other_user) { FactoryBot.create :user }
+  let(:group) { FactoryBot.create :formal_group }
+  let(:discussion) { FactoryBot.create :discussion, group: group }
+  let(:membership) { FactoryBot.create :membership, user: user, group: group, volume: :normal }
   let(:reader) { DiscussionReader.for(user: user, discussion: discussion) }
 
   describe 'volume' do
@@ -25,7 +25,7 @@ describe DiscussionReader do
     let(:newer_item) { CommentService.create(comment: build(:comment, discussion: discussion, created_at: 2.days.ago), actor: user) }
     before do
       group.add_member! user
-      reader.update(last_read_at: 6.days.ago, read_items_count: 0)
+      reader.update(last_read_at: 6.days.ago)
     end
 
     it 'updates the counts correctly from existing last_read_at' do

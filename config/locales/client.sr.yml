@@ -252,7 +252,6 @@ sr:
     description: 'Opis'
     description_placeholder: 'Opiši svrhu svoje grupe tako da tvoji članovi grupe znaju zašto su ovde.'
     privacy_statement:
-      public_on_web: 'Naziv i opis će biti javni na mreži'
       private_to_group: 'Naziv i opis će biti vidljivi samo članovima.'
       private_to_parent_members: 'Naziv i opis će biti vidljivi samo članovima  {{parent}}'
     privacy: 'Privatnost'
@@ -382,7 +381,6 @@ sr:
     on_participation_label: Pretplati se na učešće
     on_participation_description: "Kada se priključite niti, sve dalje aktivnosti biće Vam odmah poslate ePorukom."
     mentioned_label: Pominjanja
-    mentioned_description: "Kada neko želi da Vam skrene pažnju, @pomenuće Vas. Preporučujemo da ostavite ovo uključeno, tako da dobijete jednu ePoruku kada se ovo dogodi."
     specific_groups: Opcije određenih grupa
     default_settings:
       loud_description: "Kada se pridružite novoj grupi, bićete obavešteni ePorukom <strong>kada god bude aktivnosti u njoj</strong>."
@@ -590,3 +588,5 @@ sr:
     submit: Ukini pristup
     messages:
       success: "'{{name}}' ne može više koristiti Vaš nalog."
+  poll_common_form:
+    closed: Zatvoreno

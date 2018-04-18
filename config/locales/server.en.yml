@@ -10,6 +10,8 @@ en:
         invalid: is not a valid value
 
   errors:
+    return_home: Return home
+    not_found: 404 file not found.
     messages:
       email: Not a valid email address
       spoofed_media_type: The contents of that file don't match its filename
@@ -17,6 +19,7 @@ en:
   user:
     error:
       recaptcha: "We weren't able to verify that you're not a robot. Please try again!"
+      bad_login: "Unable to log you in. Please try again."
       username_must_be_alphanumeric: "Usernames must be lower case letters and numbers only"
 
   attachment:
@@ -28,18 +31,31 @@ en:
       cannot_add_options: Cannot add options to this poll
       cannot_remove_options: Cannot remove options from this poll
       must_have_options: Must have at least one poll option
-
+    export:
+      percent_voted: "%{num}/%{denom} (%{percent}) members have stated their position"
+      title: Title
+      author: Author
+      created_at: Created At
+      closing_at: Closing At
+      closed_at: Closed At
+      is_latest: Is Latest
+      engagement: Engagement
+      stances: Stances
+      participants: Participants
+      details: Details
+      group_name: Group Name
+      discussion_title: Thread Title
+      outcome_author: Outcome Author
+      outcome_created_at: Outcome Created At
+      outcome_statement: Outcome Statement
+      poll_url: Poll URL
+      reason: Reason
+      participant: Participant
+      also_available: Also available in
+      total: Total
   stance:
     error:
       too_short: Please make a selection
-
-  user:
-    error:
-      username_must_be_alphanumeric: Username must contain only lowercase letters and digits.
-
-  user:
-    error:
-      username_must_be_alphanumeric: Username must contain only lowercase letters and digits.
 
   invitation:
     invitation_cancelled: Sorry, this invitation has been revoked by the group cooordinator. Please request another invitation from your group.
@@ -77,6 +93,7 @@ en:
       subject: Sign in to %{site_name}
       intro: Hi %{name}, here is a link to sign in to your %{site_name} account.
       login: Sign in as %{name}
+      or_enter_code: Or, enter the code below
       resend: This link will expire in 24 hours and can only be used once.
 
     contact_request:
@@ -135,6 +152,7 @@ en:
       thanks_for_reading: Thanks for reading, have a great day!
       heres_what_happened: "Here’s what happened on %{site_name} yesterday."
       marked_as_read_success: Everything from the email has been marked as read
+      click_here: Click here
 
     group_membership_approved:
       intro: "Your request for access to the group %{group_name} has been approved."
@@ -172,6 +190,7 @@ en:
     reply_or_view_online_html: Reply to this email directly or <a href='%{url}'>view it on %{hostname}</a>.
     turn_off_notifications_html: "<a href='%{url}'>Turn off emails</a> for this discussion."
     change_email_preferences_html: "Change your <a href='%{email_preferences_url}'>email preferences</a>."
+    discussion_closed: "%{actor} closed the discussion"
 
   footer:
     about: About
@@ -188,7 +207,7 @@ en:
     error:
       too_many_pending: "You have more than the maximum %{count} pending invitations for this group"
       too_many_cancelled: "You have more than the maximum %{count} cancelled invitations for this group"
-      all_email_addresses_belong_to_members: "We didn't send invitations to the email addresses provided because they belong to people already in the group."
+      all_email_addresses_belong_to_members: "These people are already members of the group."
 
   password_reset:
     change_your_password: Change your password
@@ -536,6 +555,12 @@ en:
       body:
         voted: '<strong>%{participant}</strong>:'
 
+  comment_by: Comment by %{comment_author}
+
+  personal_data:
+    title: Personal data of %{user_name} in on %{host_name}
+
+
   poll_generator:
     proposal:
       title: "Extend offer letters to Shelley and Jack"
@@ -612,7 +637,7 @@ en:
       'proposal': Seek collective agreement
       'count':      Track participation and find volunteers
       'poll':         Measure popularity of options
-      'dot vote': Prioritise a list of options
+      'dot_vote': Prioritise a list of options
       'meeting': Find a time to meet
 
       For example:

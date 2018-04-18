@@ -1,25 +1,27 @@
-class Poll < ActiveRecord::Base
+class Poll < ApplicationRecord
   include CustomCounterCache::Model
   extend  HasCustomFields
   include ReadableUnguessableUrls
   include HasMentions
+  include HasDrafts
   include HasGuestGroup
   include MakesAnnouncements
   include MessageChannel
   include SelfReferencing
   include UsesOrganisationScope
   include Reactable
+  include HasEvents
   include HasCreatedEvent
 
-  set_custom_fields :meeting_duration, :time_zone, :dots_per_person, :pending_emails, :minimum_stance_choices
+  set_custom_fields :meeting_duration, :time_zone, :dots_per_person, :pending_emails, :minimum_stance_choices, :can_respond_maybe
 
   TEMPLATE_FIELDS = %w(material_icon translate_option_name
                        can_add_options can_remove_options author_receives_outcome
                        must_have_options chart_type has_option_icons
                        has_variable_score voters_review_responses
                        dates_as_options required_custom_fields
-                       require_stance_choices require_all_choices
-                       poll_options_attributes experimental).freeze
+                       require_stance_choices require_all_choices prevent_anonymous
+                       poll_options_attributes experimental has_score_icons).freeze
   TEMPLATE_FIELDS.each do |field|
     define_method field, -> { AppConfig.poll_templates.dig(self.poll_type, field) }
   end
@@ -50,8 +52,6 @@ class Poll < ActiveRecord::Base
 
   has_many :guest_invitations, through: :guest_group, source: :invitations
 
-  has_many :events, -> { includes(:eventable) }, as: :eventable, dependent: :destroy
-
   has_many :poll_options, dependent: :destroy
   accepts_nested_attributes_for :poll_options, allow_destroy: true
 
@@ -72,6 +72,10 @@ class Poll < ActiveRecord::Base
   end
 
   delegate :locale, to: :author
+
+  def groups
+    [group, guest_group].compact
+  end
 
   def undecided_count
     undecided_user_count + guest_group.pending_invitations_count
@@ -117,6 +121,7 @@ class Poll < ActiveRecord::Base
   validate :require_custom_fields
 
   alias_method :user, :author
+  alias_method :draft_parent, :discussion
 
   def parent_event
     if discussion
@@ -153,7 +158,7 @@ class Poll < ActiveRecord::Base
   end
 
   def undecided
-    reload.members.without(participants)
+    reload.members.where.not(id: participants)
   end
 
   def invitations
@@ -175,9 +180,10 @@ class Poll < ActiveRecord::Base
 
     # TODO: convert this to a SQL query (CROSS JOIN?)
     update_attribute(:matrix_counts,
-      poll_options.limit(5).map do |option|
-        stances.latest.limit(5).map do |stance|
-          stance.poll_options.include?(option)
+      poll_options.order(:name).limit(5).map do |option|
+        stances.latest.order(:created_at).limit(5).map do |stance|
+          # the score of the stance choice which has this poll option in this stance
+          stance.stance_choices.find_by(poll_option:option)&.score.to_i
         end
       end
     ) if chart_type == 'matrix'
@@ -193,6 +199,16 @@ class Poll < ActiveRecord::Base
 
   def is_single_vote?
     AppConfig.poll_templates.dig(self.poll_type, 'single_choice') && !self.multiple_choice
+  end
+
+  def meeting_score_tallies
+    ordered_poll_options.map do |option|
+      [option.id, {
+        maybe:    option.stance_choices.latest.where(score: 1).count,
+        yes:      option.stance_choices.latest.where(score: 2).count
+      }]
+    end
+
   end
 
   def ordered_poll_options
@@ -287,7 +303,7 @@ class Poll < ActiveRecord::Base
 
   def require_custom_fields
     Array(required_custom_fields).each do |field|
-      errors.add(field, I18n.t(:"activerecord.errors.messages.blank")) if custom_fields[field].blank?
+      errors.add(field, I18n.t(:"activerecord.errors.messages.blank")) if custom_fields[field].nil?
     end
   end
 end

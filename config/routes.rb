@@ -1,5 +1,7 @@
 Loomio::Application.routes.draw do
 
+  mount ActionCable.server => '/cable'
+
   use_doorkeeper do
     skip_controllers :applications, :authorized_applications
   end
@@ -14,6 +16,10 @@ Loomio::Application.routes.draw do
   get '/groups/:id',      to: 'redirect#group'
 
   root to: 'root#index'
+
+  get '/gdpr', to: 'personal_data#gdpr'
+  get '/personal_data', to: 'personal_data#index'
+  get '/personal_data/:table', to: 'personal_data#show'
 
   namespace :dev do
     namespace :discussions do
@@ -97,6 +103,7 @@ Loomio::Application.routes.draw do
     resources :login_tokens, only: [:create]
 
     resources :events, only: :index do
+      get :comment, on: :collection
       patch :remove_from_thread, on: :member
     end
 
@@ -112,6 +119,7 @@ Loomio::Application.routes.draw do
     resources :discussions, only: [:show, :index, :create, :update, :destroy] do
       patch :mark_as_seen, on: :member
       patch :dismiss, on: :member
+      patch :recall, on: :member
       patch :set_volume, on: :member
       patch :pin, on: :member
       patch :unpin, on: :member
@@ -136,6 +144,7 @@ Loomio::Application.routes.draw do
 
     resources :polls,       only: [:show, :index, :create, :update, :destroy] do
       post :close, on: :member
+      post :reopen, on: :member
       post :add_options, on: :member
       post :toggle_subscription, on: :member
       get  :closed, on: :collection
@@ -160,6 +169,7 @@ Loomio::Application.routes.draw do
 
     resources :documents, only: [:create, :update, :destroy, :index] do
       get :for_group, on: :collection
+      get :for_discussion, on: :collection
     end
 
     resource :translations, only: [] do
@@ -183,7 +193,6 @@ Loomio::Application.routes.draw do
       get :authorized, on: :collection
     end
 
-    namespace(:message_channel) { post :subscribe }
     namespace(:sessions)        { get :unauthorized }
     devise_scope :user do
       resource :sessions, only: [:create, :destroy]
@@ -210,7 +219,6 @@ Loomio::Application.routes.draw do
 
   namespace :email_actions do
     get 'unfollow_discussion/:discussion_id/:unsubscribe_token', action: 'unfollow_discussion', as: :unfollow_discussion
-    get 'follow_discussion/:discussion_id/:unsubscribe_token',   action: 'follow_discussion',   as: :follow_discussion
     get 'mark_summary_email_as_read', action: 'mark_summary_email_as_read', as: :mark_summary_email_as_read
     get 'mark_discussion_as_read/:discussion_id/:event_id/:unsubscribe_token', action: 'mark_discussion_as_read', as: :mark_discussion_as_read
   end
@@ -246,8 +254,9 @@ Loomio::Application.routes.draw do
   get 'p/example(/:type)'                  => 'polls#example',               as: :example_poll
 
   get 'g/:key/export'                      => 'groups#export',               as: :group_export
+  get 'p/:key/export'                      => 'polls#export',                as: :poll_export
   get 'g/:key(/:slug)'                     => 'groups#show',                 as: :group
-  get 'd/:key(/:slug)'                     => 'discussions#show',            as: :discussion
+  get 'd/:key(/:slug)(/:sequence_id)'      => 'discussions#show',            as: :discussion
   get 'd/:key/comment/:comment_id'         => 'discussions#show',            as: :comment
   get 'p/:key/unsubscribe'                 => 'polls#unsubscribe',           as: :poll_unsubscribe
   get 'p/:key(/:slug)'                     => 'polls#show',                  as: :poll
@@ -274,10 +283,18 @@ Loomio::Application.routes.draw do
     end
   end
 
+  scope :facebook do
+    get :webhook,                         to: 'identities/facebook#verify',   as: :facebook_verify
+    post :webhook,                        to: 'identities/facebook#webhook',  as: :facebook_webhook
+    get :webview,                         to: 'identities/facebook#webview',  as: :facebook_webview
+  end
+
   scope :slack do
     get  :install,                        to: 'identities/slack#install',     as: :slack_install
     get  :authorized,                     to: 'identities/slack#authorized',  as: :slack_authorized
     post :participate,                    to: 'identities/slack#participate', as: :slack_participate
     post :initiate,                       to: 'identities/slack#initiate',    as: :slack_initiate
   end
+
+  get ":id", to: 'groups#show', as: :group_handle
 end

@@ -7,6 +7,7 @@ describe 'DiscussionService' do
   let(:group) { create(:formal_group) }
   let(:another_group) { create(:formal_group, is_visible_to_public: false) }
   let(:discussion) { create(:discussion, author: user, group: group) }
+  let(:poll) { create(:poll, discussion: discussion, group: group) }
   let(:comment) { double(:comment,
                          save!: true,
                          valid?: true,
@@ -16,7 +17,7 @@ describe 'DiscussionService' do
                          destroy: true,
                          author: user) }
   let(:document) { create(:document) }
-  let(:discussion_params) { {title: "new title", description: "new description", private: true, uses_markdown: true} }
+  let(:discussion_params) { {title: "new title", description: "new description", private: true} }
 
   describe 'create' do
     it 'authorizes the user can create the discussion' do
@@ -281,6 +282,14 @@ describe 'DiscussionService' do
       group.members << user
       expect { DiscussionService.move(discussion: discussion, params: { group_id: another_group.id }, actor: user) }.to raise_error CanCan::AccessDenied
       expect(discussion.reload.group).to_not eq another_group.id
+    end
+
+    it 'updates the group for any polls in the discussion' do
+      group.add_member! user
+      another_group.add_member! user
+      poll
+      DiscussionService.move(discussion: discussion, params: { group_id: another_group.id }, actor: user)
+      expect(discussion.polls.first.group).to eq another_group
     end
   end
 

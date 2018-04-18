@@ -1,4 +1,4 @@
-class Outcome < ActiveRecord::Base
+class Outcome < ApplicationRecord
   extend  HasCustomFields
   include MakesAnnouncements
   include HasMentions
@@ -12,13 +12,13 @@ class Outcome < ActiveRecord::Base
   belongs_to :poll_option, required: false
   belongs_to :author, class_name: 'User', required: true
   has_many :stances, through: :poll
-  has_many :events, as: :eventable
   has_many :documents, as: :model, dependent: :destroy
 
   delegate :title, to: :poll
   delegate :dates_as_options, to: :poll
   delegate :group, to: :poll
   delegate :group_id, to: :poll
+  delegate :groups, to: :poll
   delegate :discussion, to: :poll
   delegate :discussion_id, to: :poll
   delegate :locale, to: :poll

@@ -1,5 +1,6 @@
 pt_BR:
   reactions:
+    slight_smile: Gosto
     heart: Amor
     laughing: Gargalhada
     clap: Bater palma
@@ -10,9 +11,14 @@ pt_BR:
     relieved: Alivio
     worried: Preocupado
     confused: Confuso
+    confounded: Confuso
     neutral_face: Neutra
+    slight_frown: Olhar severo
     disappointed: Desapontada
     angry: Bravo
+    weary: Cansado
+    astonished: Atônito
+    rolling_eyes: Virando os olhos
     cry: Chorando
     scream: Gritando
     sleeping: Entediada
@@ -28,6 +34,11 @@ pt_BR:
     proposal: Proposta
     count: Checar
     poll: Votação
+    dot_vote: Voto de ponto
+    meeting: Tempo de votação
+    ranked_choice: Escolha classificada
+  timezones:
+    local: Hora local ({{value}})
   common:
     you: Você
     expand: Expandir
@@ -112,6 +123,18 @@ pt_BR:
       resent: Convide reenviado
     formatting_help:
       label: 'Formatação'
+      title: 'Aprenda como usar Markdown para formatar seu texto'
+  ordinal:
+    _1: 1°
+    _2: 2°
+    _3: 3°
+    _4: 4°
+    _5: 5°
+    _6: 6°
+    _7: 7°
+    _8: 8°
+    _9: 9°
+    _10: 10°
   devise:
     failure:
       inactive: 'Há uma conta desativada associada com esse endereço de email. Caso deseje reativar sua conta, entre em contato conosco.'
@@ -180,18 +203,23 @@ pt_BR:
         loud: "Você receberá e-mail de todas as atividades em novos grupos."
         normal: "Você receberá emails sobre anúncios em novos grupos."
         quiet: "Você não receberá e-mail sobre novos grupos."
+  close_explanation_modal:
+    aria_label: Fechar discussão
+    close_thread: Fechar discussão
+    body_header: |
+        <p>Fechar discussões antigas ou irrelevantes para removê-las da visualização e indicar que a discussão foi fechada.</p>
   mute_explanation_modal:
     aria_label: Silenciar tópico
     mute_thread: Calar tópico
     body_html: |
-      <p>Silenciar significa que você <strong>não será notificado sobre propostas</strong>, ou qualquer outra atividade neste tópico, a menos que alguém  <strong>@mencione você</strong>.</p>
-      <p>Tópicos silenciados estão ocultados das páginas <strong>Recentes</strong> e <strong>Não-lidos</strong> também. Para encontrar os seus tópicos silenciados, selecione a opção <strong>Silenciados</strong> na barra lateral:</p>
+        <p>Silenciar significa que você <strong>não será notificado sobre propostas</strong>, ou qualquer outra atividade neste tópico, a menos que alguém  <strong>@mencione você</strong>.</p>
+        <p>Tópicos silenciados estão ocultados das páginas <strong>Recentes</strong> e <strong>Não-lidos</strong> também. Para encontrar os seus tópicos silenciados, selecione a opção <strong>Silenciados</strong> na barra lateral:</p>
     image_alt: Opção de tópicos silenciados na barra lateral
   dismiss_explanation_modal:
     aria_label: Dispensar tópico
     dismiss_thread: Dispensar tópico
     body_html: |
-      <p>Ao dispensar um tópico, o mesmo é removido dos itens não-lidos. Caso ocorra qualquer nova atividade no tópico, o mesmo será novamente marcado como não-lido.</p>
+        <p>Ao dispensar um tópico, o mesmo é removido dos itens não-lidos. Caso ocorra qualquer nova atividade no tópico, o mesmo será novamente marcado como não-lido.</p>
   inbox:
     clear: 'Limpar'
     latest: 'Último'
@@ -264,6 +292,7 @@ pt_BR:
     email_settings: 'Configurações de email'
     help: 'Ajuda'
     contact_site_name: 'Contato {{site_name}}'
+    sign_out: 'Sair'
   start_menu:
     label: 'Ações do usuário'
     title: 'Ação'
@@ -308,6 +337,7 @@ pt_BR:
     add_resource: Adicionar como anexo
     edit_group: Editar contexto do grupo
     add_comment: 'Comentario '
+    copy_url_comment: Copiar URL
     edit_thread: Editar contexto
     translate_thread: Traduzir contexto
     edit_stance: Mudar seu voto
@@ -375,8 +405,6 @@ pt_BR:
     members: 'Membros ({{count}})'
     members_placeholder: 'Você é a única pessoa aqui: convide outras para se juntar a você!'
     member_options: Opçoes de membros
-    see_all_members: 'Veja todos: ({{count}}) membros'
-    pending_invitations: '+ ({{count}}) pendentes'
     subgroups: 'Subgrupos'
     invite_people: 'Convidar'
     visibility_label: 'Visibilidade'
@@ -437,7 +465,6 @@ pt_BR:
     description: 'Descrição'
     description_placeholder: 'Descreva o propósito do seu grupo para que seus membros saibam a razão de estarem aqui.'
     privacy_statement:
-      public_on_web: 'Nome e descrição estarão públicos na web'
       private_to_group: 'Nome e descrição estarão visíveis apenas para membros'
       private_to_parent_members: 'Nome e descrição estarão visíveis para membros de {{parent}}'
     privacy: 'Privacidade'
@@ -566,6 +593,7 @@ pt_BR:
     email: E-mail
     invitation_link: Link do convite
     sent: Enviar
+    copy_url: Copiar URL
   cancel_invitation_form:
     heading: Cancelar convite
     question: Você tem certeza que deseja cancelar este convite?
@@ -637,7 +665,6 @@ pt_BR:
     on_participation_label: Inscrever-se na participação
     on_participation_description: "Quando você participar de uma discussão, todas as atividades serão enviadas por e-mail para você imediatamente."
     mentioned_label: Menções
-    mentioned_description: "Quando alguém quer chamar sua atenção, vai @mencionar você. Recomendamos que você deixe esta opção marcada para que receba um e-mail quando isso acontecer."
     update_settings: Salvar mudanças
     specific_groups: Configurações para grupos específicos
     default_settings:
@@ -663,13 +690,12 @@ pt_BR:
     load_more: Carregar mais tópicos
     mark_as_read: Marcar como lida
     dismiss: Dispensar
-    thread_dismissed: Tópico dispensado.
     explain_mute:
       title: Você ainda não silenciou nenhum tópico.
       explanation_html: |
-        Silenciar é uma forma de ocultar os tópicos que não te interessam.
-        Silenciar significa que você não verá o tópico em <strong>Recentes</strong> ou <strong>Não-lidos</strong>, e você não será notificado sobre as atividades deste tópico, como propostas.
-        Você somente será alertado se alguém  <strong>@mencionar</strong> o seu nome.
+          Silenciar é uma forma de ocultar os tópicos que não te interessam.
+          Silenciar significa que você não verá o tópico em <strong>Recentes</strong> ou <strong>Não-lidos</strong>, e você não será notificado sobre as atividades deste tópico, como propostas.
+          Você somente será alertado se alguém  <strong>@mencionar</strong> o seu nome.
       instructions: 'Para silenciar um tópico, passe o mouse sobre ele e clique no ícone silenciar.'
       see_muted_html: 'Para ver seus tópicos silenciados, clique <strong>"Silenciado"</strong>. Você pode ativar o som passando o mouse sobre e clicando no mesmo ícone.'
     filtering:
@@ -717,6 +743,7 @@ pt_BR:
     volume:
       unmute_message: 'Ativado o som do tópico'
   activity_card:
+    beginning: Início
     unread: Não lida
     latest: Último
     attachment_display:
@@ -731,6 +758,8 @@ pt_BR:
     edit: 'Editar'
     edit_thread: 'Editar'
     close_thread: 'Encerrar'
+    pin_thread: 'Fixar'
+    unpin_thread: 'Desafixar'
     mute_thread: 'Silenciar'
     move_thread: 'Mover'
     print_thread: 'Imprimir'
@@ -870,10 +899,16 @@ pt_BR:
     proposal_title: Proposta
     count_title: Checar
     poll_title: Votação
+    meeting_title: Tempo de votação
+    ranked_choice_title: Escolha classificada
   poll_common:
     your_response: Sua resposta
     change_your_response: Modifique sua resposta
+    reason: Motivo
+    reason_placeholder: Algum comentário a mais?
+    message: Mensagem
     results: Resultados
+    vote: Votar
     votes: Votos
     update_outcome: Atualizar resultado
     outcome: Resultado
@@ -887,15 +922,21 @@ pt_BR:
     label: Anexos
   poll_common_card:
     show_results: Mostrar resultados
+  poll_common_select_group:
+    loomio_group: Grupo
   poll_common_notify_group:
     notify_group: Anúncio
     members_helptext: Seu grupo não será notificado
     members_count: "{{count}} pessoas serão notificadas"
+  poll_common_calendar_invite:
+    event_summary: Resumo
   poll_common_close_form:
     close_proposal: Encerrar proposta
     proposal_closed: Proposta encerrada
   poll_common_closing_at_field:
     closing: Encerrando
+  poll_card:
+    started_by: Iniciado por {{name}}
   poll_common_votes_panel:
     change_results_order: Mudar ordem dos resultados
   poll_common_set_outcome_panel:
@@ -911,6 +952,7 @@ pt_BR:
     details: Detalhes
     options: Opções
     closing: Encerrando
+    closed: Fechado
     start: Começo
     update: Atualizar
   poll_proposal_form:
@@ -934,13 +976,20 @@ pt_BR:
     agree_reason_placeholder: O que você gosta na proposta e como ela pode beneficiar o grupo?
     block_reason_placeholder: Explique sua objeção a esta proposta e por que ela não deveria ir adiante
     stance_updated: Voto atualizado
+    vote: Votar
   poll_proposal_options:
+    agree: Concordo
     agree_verb: "concordou"
     agree_meaning: Esta proposta é suficientemente boa para ser adotada pelo grupo
+    abstain: Abstenção
     abstain_verb: "absteve"
+    disagree: Discordo
     disagree_verb: "discordou"
     disagree_meaning: Eu não apoio a proposta. Ela não deveria ir adiante.
+    block: Bloqueio
+    block_verb: "bloqueada"
   poll_count_vote_form:
+    reason_label: Mensagem
     reason_placeholder: Deixe uma mensagem caso queira
     stance_updated: Voto atualizado
   poll_meeting_chart_panel:
@@ -951,14 +1000,18 @@ pt_BR:
     your_response: Quando você pode participar?
   poll_dot_vote_vote_form:
     stance_updated: Voto atualizado
+  poll_admin_page:
+    title: Administrador - {{title}}
   poll_common_share_form:
     no_group_selected: Nenhum grupo selecionado
     share_a_link: Compartilhar link
     anyone_can_participate: Qualquer pessoa com o link pode participar
     anyone_can_participate_true: Link compartilhável criado
     get_link: Copiar link
+    send_email: Enviar e-mail
     shareable_link: Link compartilhável
     reminded: Lembrete enviado!
+    share_group: Grupo
   poll_common_publish_facebook_preview:
     link: link
   poll_common_participant_form:
@@ -969,8 +1022,22 @@ pt_BR:
   polls_page:
     heading: Decisões
     start_new_poll: Nova decisão
+    groups_placeholder: (Todos os grupos)
   auth_form:
+    more_providers: Mais
+    hello: "Olá, {{name}}!"
+    create_account: Criar conta
+    check_your_email: Consulte o seu e-mail!
     name: Nome
+    email: E-mail
+    password: Senha
   install_slack:
+    modal_title: Instalar Slack
     progress:
       invite: Convidar
+    install:
+      group_name: Nome do grupo
+      install_slack: Instalar Slack agora
+      start_new_group: Criar um novo grupo
+  slack_added_modal:
+    title: Sucesso!

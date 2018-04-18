@@ -4,8 +4,8 @@ class Events::ReactionCreated < Event
   include PrettyUrlHelper
 
   def self.publish!(reaction)
-    return unless reaction.reactable.is_a?(Comment)
     create(kind: "reaction_created",
+           user: reaction.author,
            eventable: reaction,
            created_at: reaction.created_at).tap { |e| EventBus.broadcast('reaction_created_event', e) }
   end
@@ -13,20 +13,21 @@ class Events::ReactionCreated < Event
   private
 
   def notification_recipients
-    return User.none if !comment ||                # there is no comment
-                         user == comment.author || # you liked your own comment
-                         !comment.group.memberships.find_by(user: comment.author) # the author has left the group
-    User.where(id: comment.author_id)
+    return User.none if !reactable ||                             # there is no reactable
+                         eventable.author == reactable.author ||  # you liked your own reactable
+                         !reactable.group.memberships.find_by(user: reactable.author) # the author has left the group
+    User.where(id: reactable.author_id)
   end
 
   def notification_translation_values
     super.merge(
       reaction:     eventable.reaction.downcase,
+      model:        I18n.t(:"notification_models.#{reactable.class.to_s.downcase}"),
       reaction_src: Emojifier.emojify_src!(eventable.reaction.downcase)
     )
   end
 
-  def comment
-    @comment ||= eventable&.reactable
+  def reactable
+    @reactable ||= eventable&.reactable
   end
 end

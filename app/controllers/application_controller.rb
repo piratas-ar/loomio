@@ -5,14 +5,17 @@ class ApplicationController < ActionController::Base
   include ErrorRescueHelper
   include CurrentUserHelper
   include ForceSslHelper
+  include SentryRavenHelper
 
-  around_filter :process_time_zone
-  around_filter :use_preferred_locale   # LocalesHelper
-  before_filter :set_invitation_token   # CurrentUserHelper
-  before_filter :set_last_seen_at       # CurrentUserHelper
+  around_action :process_time_zone
+  around_action :use_preferred_locale   # LocalesHelper
+  before_action :set_invitation_token   # CurrentUserHelper
+  before_action :set_last_seen_at       # CurrentUserHelper
+  before_action :set_raven_context
 
   helper_method :current_user
   helper_method :client_asset_path
+  helper_method :bundle_asset_path
   helper_method :supported_locales
 
   # this boots the angular app
@@ -26,7 +29,7 @@ class ApplicationController < ActionController::Base
   end
 
   protected
-
+  
   def initial_payload
     @payload ||= InitialPayload.new(current_user).payload.merge(
       flash:           flash.to_h,

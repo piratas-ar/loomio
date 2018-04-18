@@ -1,4 +1,9 @@
 sl:
+  poll:
+    export:
+      title: Naslov
+      author: Avtor
+      details: Podrobnosti
   email:
     group_email:
       intro: "%{who} je sporočil/a skupini %{group}:"
@@ -11,6 +16,7 @@ sl:
       mark_as_read: Označi kot prebrano
       thanks_for_reading: Super, prebral/a si vse novice. Lep dan!
       marked_as_read_success: Vse iz emaila je bilo označeno kot prebrano
+      click_here: Klikni sem
     membership_request:
       subject: "%{who} je zaprosil za vstop v %{which_group}"
       view_group: Prošnjo lahko odobriš ali zavrneš tukaj
@@ -24,3 +30,4 @@ sl:
     public_groups: Javne skupine
     terms: Pogoji
     independent_install_html: '%{hostname} uporablja neodvisno kopijo Loomia: <a href="http://github.com/loomio/loomio">več informacij</a>.'
+  comment_by: Komentiral/a %{comment_author}

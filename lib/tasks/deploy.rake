@@ -65,7 +65,7 @@ namespace :deploy do
   task :build do
     puts "Building clientside assets..."
     run_commands(
-      "cd angular && yarn && node_modules/gulp/bin/gulp.js compile && cd ../",
+      "cd client && yarn && node_modules/gulp/bin/gulp.js compile && cd ../",
       "mkdir -p public/client/#{loomio_version}",
       "cp -r public/client/development/* public/client/#{loomio_version}")
   end
@@ -79,7 +79,7 @@ namespace :deploy do
       "find plugins/fetched -name '*.*' | xargs git add -f",
       "find public/img/emojis -name '*.png' | xargs git add -f",
       "git add -f plugins",
-      "git add public/client/#{loomio_version} public/client/fonts -f",
+      "git add public/client/#{loomio_version} -f",
       "git commit -m 'Add compiled assets / plugin code'",
       "git checkout master")
   end
@@ -94,8 +94,7 @@ namespace :deploy do
   task :cleanup do
     puts "Migrating heroku..."
     run_commands(
-      "#{heroku_cli} run rake db:migrate -a #{heroku_remote}",
-      "#{heroku_cli} restart -a #{heroku_remote}")
+      "#{heroku_cli} run rake db:migrate -a #{heroku_remote}")
   end
 end
 

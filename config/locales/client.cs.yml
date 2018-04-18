@@ -312,7 +312,6 @@ cs:
     discussions_placeholder: 'Vlákno je místem, kde každý může diskutovat o tématu a tvořit společně rozhodnutí.'
     members: 'Členové'
     members_placeholder: 'Jste tu jediná/ý: pozvěte někoho, aby se k Vám přidal!'
-    see_all_members: 'Zobrazit všechny: ({{count}}) členy'
     subgroups: 'Podskupiny'
     invite_people: 'Pozvat'
     visibility_label: 'Viditelnost'
@@ -343,8 +342,6 @@ cs:
     subgroup_name: 'Název podskupiny'
     description: 'Popis'
     description_placeholder: 'Můžete popsat účel vaší skupiny, takže Vaši členové skupiny budou vědět, proč jsou tady.'
-    privacy_statement:
-      public_on_web: 'Název a popis budou zveřejněny na webu'
     privacy: 'Soukromí'
     group_privacy_is_open_description: "Kdokoli může najít skupinu a požádat o členství. Pouze členové mohou vidět, kdo je ve skupině. Všechny vlákna jsou veřejná."
     group_privacy_is_closed_public_threads_description: "Kdokoli může najít skupinu a požádat o členství. Pouze členové mohou vidět, kdo je ve skupině. Vlákna mohou být veřejná nebo soukromá."
@@ -480,7 +477,6 @@ cs:
     load_more: Nahrát více vláken
     mark_as_read: Označit jako přečtené
     dismiss: Odmítnout
-    thread_dismissed: Vlákno odmítnuto.
     filtering:
       filter_threads: Filtrovat vlákna
       all: Aktuální vlákna
@@ -625,6 +621,7 @@ cs:
     submit: Sdílet výsledek
   poll_common_form:
     details: Podrobnosti
+    closed: Zavřená
     start: Zahájit
   poll_proposal_form:
     start_header: Vytvořit návrh

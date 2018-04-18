@@ -18,12 +18,16 @@ it:
       cannot_add_options: Impossibile aggiungere opzioni a questo sondaggio
       cannot_remove_options: Impossibile rimuovere opzioni da questo sondaggio
       must_have_options: Ci deve essere almeno una opzione di sondaggio
+    export:
+      title: Titolo
+      author: Autore
+      details: Dettagli
+      group_name: Nome del gruppo
+      reason: Motivo
+      total: Totale
   stance:
     error:
       too_short: Fai una selezione
-  user:
-    error:
-      username_must_be_alphanumeric: Il Nome utente deve contenere solo lettere in minuscolo e numeri.
   invitation:
     invitation_cancelled: 'Questo invito è stato revocato dal coordinatore del gruppo. Chiedi un altro invito al tuo gruppo. '
     invitation_already_used: L'invito è già stato usato. Iscriviti a Loomio per andare al tuo gruppo.
@@ -93,6 +97,7 @@ it:
       mark_as_read: Contrassegnato come letto
       thanks_for_reading: Grazie per aver letto, buona giornata!
       marked_as_read_success: Tutte le email sono state contrassegnate come lette
+      click_here: Clicca qui
     group_membership_approved:
       join_group: "Iscriviti al gruppo"
     membership_request:
@@ -169,3 +174,4 @@ it:
       create_outcome: Condividi risultati
       more_undecided: "%{count}ancora.."
       vote_now: Vota ora
+  comment_by: Commento di %{comment_author}

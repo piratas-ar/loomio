@@ -10,6 +10,14 @@ pt_BR:
     messages:
       email: 'Não é um endereço de email válido '
       spoofed_media_type: 'O conteúdo daquele arquivo não corresponde ao nome do arquivo '
+  poll:
+    export:
+      title: Título
+      author: Autor(a)
+      engagement: Engajamento
+      details: Detalhes
+      group_name: Nome do Grupo
+      total: Total
   stance:
     error:
       too_short: Por favor, selecione uma opção
@@ -61,6 +69,7 @@ pt_BR:
       mark_as_read: Marcar como lida
       thanks_for_reading: Obrigado por ler, tenha um ótimo dia!
       marked_as_read_success: Tudo no e-mail foi marcado como lido
+      click_here: Clique aqui
     group_membership_approved:
       intro: "Sua solicitação para ter acesso ao grupo %{group_name} foi aprovada."
       intro_html: "Sua solicitação para ter acesso ao grupo <strong>%{group_name}</strong> foi aprovada."
@@ -83,9 +92,6 @@ pt_BR:
     public_groups: Grupos públicos
     terms: Termos
     independent_install_html: '%{hostname} está executando uma cópia independente do Loomio: <a href="http://github.com/loomio/loomio">saiba mais</a>.'
-  invitation_form:
-    error:
-      all_email_addresses_belong_to_members: "Não enviamos convites para os endereços de e-mail fornecidos porque pertencem a pessoas que já estão no grupo."
   password_reset:
     change_your_password: Mude sua senha
     change_my_password: Mudar senha
@@ -189,6 +195,7 @@ pt_BR:
       your_response: "Você votou:"
       please_respond: Por favor responda
       vote_now: Vote agora
+  comment_by: Comentário por %{comment_author}
   poll_generator:
     poll:
       title: "Alguma alergia alimentar que deveríamos saber pro nosso jantar na quinta?"

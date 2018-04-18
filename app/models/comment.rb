@@ -1,8 +1,9 @@
-class Comment < ActiveRecord::Base
+class Comment < ApplicationRecord
   include CustomCounterCache::Model
   include Translatable
   include Reactable
   include HasMentions
+  include HasDrafts
   include HasCreatedEvent
 
   has_paper_trail only: [:body]
@@ -16,8 +17,8 @@ class Comment < ActiveRecord::Base
 
   alias_attribute :author, :user
   alias_attribute :author_id, :user_id
+  alias_method :draft_parent, :discussion
 
-  has_many :events, as: :eventable, dependent: :destroy
   has_many :documents, as: :model, dependent: :destroy
 
   validates_presence_of :user
@@ -41,6 +42,7 @@ class Comment < ActiveRecord::Base
   delegate :title, to: :discussion, prefix: :discussion
   delegate :locale, to: :user
   delegate :id, to: :group, prefix: :group
+  delegate :groups, to: :discussion
 
   define_counter_cache(:versions_count) { |comment| comment.versions.count }
 
@@ -57,6 +59,9 @@ class Comment < ActiveRecord::Base
     next_parent.created_event
   end
 
+  def purge_drafts_asynchronously?
+    false
+  end
 
   def created_event_kind
     :new_comment

@@ -3,13 +3,28 @@ class Dev::MainController < Dev::BaseController
   include Dev::NintiesMoviesHelper
   include PrettyUrlHelper
 
-  before_filter :cleanup_database, except: [:last_email, :use_last_login_token, :index, :accept_last_invitation]
+  before_action :cleanup_database, except: [
+    :last_email,
+    :use_last_login_token,
+    :index,
+    :accept_last_invitation,
+    :sign_in_as_jennifer
+  ]
+
+  skip_around_action :dont_send_emails, only: [
+    :setup_thread_missed_yesterday
+  ]
 
   def index
     @routes = self.class.action_methods.select do |action|
       action.starts_with?('setup') || action.starts_with?('view')
     end
     render layout: false
+  end
+
+  def sign_in_as_jennifer
+    sign_in jennifer
+    redirect_to dashboard_path
   end
 
   def setup_thread_mailer_new_discussion_email
@@ -86,12 +101,12 @@ class Dev::MainController < Dev::BaseController
   end
 
   def setup_login_token
-    login_token = FactoryGirl.create(:login_token, user: patrick)
+    login_token = FactoryBot.create(:login_token, user: patrick)
     redirect_to(login_token_url(login_token.token))
   end
 
   def setup_used_login_token
-    login_token = FactoryGirl.create(:login_token, user: patrick, used: true)
+    login_token = FactoryBot.create(:login_token, user: patrick, used: true)
     redirect_to(login_token_url(login_token.token))
   end
 
@@ -128,6 +143,7 @@ class Dev::MainController < Dev::BaseController
       recipient_email: jennifer.email,
       recipient_name: jennifer.name
     )
+    jennifer.memberships.find_by(group: create_group).destroy
     redirect_to invitation_url(invitation.token)
   end
 
@@ -141,6 +157,13 @@ class Dev::MainController < Dev::BaseController
     redirect_to explore_path
   end
 
+  def setup_spanish_discussion
+    patrick.update(selected_locale: :es)
+    jennifer.update(selected_locale: :en)
+    sign_in patrick
+    redirect_to discussion_path(create_discussion)
+  end
+
   def setup_logged_out_group_member
     patrick
     create_group
@@ -151,18 +174,8 @@ class Dev::MainController < Dev::BaseController
     patrick
     create_group
     create_another_group
-    redirect_to new_user_session_url
-  end
 
-  def setup_non_angular_login
-    patrick.update(angular_ui_enabled: false)
     redirect_to new_user_session_url
-  end
-
-  def setup_non_angular_logged_in_user
-    patrick.update(angular_ui_enabled: false)
-    sign_in patrick
-    redirect_to dashboard_url
   end
 
   def setup_dashboard
@@ -173,6 +186,12 @@ class Dev::MainController < Dev::BaseController
     # old_discussion
     muted_discussion
     muted_group_discussion
+    redirect_to dashboard_url
+  end
+
+  def setup_dashboard_with_one_thread
+    sign_in patrick
+    recent_discussion
     redirect_to dashboard_url
   end
 
@@ -232,6 +251,20 @@ class Dev::MainController < Dev::BaseController
     redirect_to group_url create_group
   end
 
+  def setup_group_with_documents
+    sign_in patrick
+    create_group
+
+    (params[:times]||1).to_i.times do |i|
+      FactoryBot.create :document, model: create_group, created_at: 3.days.ago, author: patrick
+      FactoryBot.create :document, model: create_group
+      FactoryBot.create :document, model: create_group, title: "a really outragously long title you wouldn't really use exept for in some really extraneous circumstances"
+    end
+
+    redirect_to   group_url(create_group)
+  end
+
+
   def setup_subgroup
     create_subgroup.add_member! jennifer
     sign_in jennifer
@@ -261,9 +294,9 @@ class Dev::MainController < Dev::BaseController
   end
 
   # to test subdomains in development
-  def setup_group_with_subdomain
+  def setup_group_with_handle
     sign_in patrick
-    create_group.update_attributes(name: 'Ghostbusters', subdomain: 'ghostbusters')
+    create_group.update_attributes(name: 'Ghostbusters', handle: 'ghostbusters')
     redirect_to "http://ghostbusters.lvh.me:3000/"
   end
 
@@ -522,6 +555,7 @@ class Dev::MainController < Dev::BaseController
     create_discussion
     create_closed_discussion
     sign_in patrick
+    patrick.update(experiences: { closingThread: true })
     redirect_to group_url(create_group)
   end
 
@@ -602,4 +636,11 @@ class Dev::MainController < Dev::BaseController
     redirect_to discussion_url(create_discussion)
   end
 
+  def setup_thread_missed_yesterday
+    jennifer.update(email_missed_yesterday: true)
+    CommentService.create(comment: FactoryBot.create(:comment, discussion: create_discussion), actor: patrick)
+    DiscussionService.close(discussion: create_discussion, actor: patrick)
+    UserMailer.missed_yesterday(jennifer, 1.hour.ago).deliver_now
+    last_email
+  end
 end

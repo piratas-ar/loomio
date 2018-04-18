@@ -1,4 +1,4 @@
-class Event < ActiveRecord::Base
+class Event < ApplicationRecord
   include CustomCounterCache::Model
   include HasTimeframe
   include Events::Position
@@ -25,6 +25,7 @@ class Event < ActiveRecord::Base
   validates :eventable, presence: true
 
   delegate :group, to: :eventable, allow_nil: true
+  delegate :groups, to: :eventable, allow_nil: true
 
   acts_as_sequenced scope: :discussion_id, column: :sequence_id, skip: lambda {|e| e.discussion.nil? || e.discussion_id.nil? }
 
@@ -54,7 +55,7 @@ class Event < ActiveRecord::Base
   end
 
   def ensure_parent_present!
-    return if self.parent_id || !should_have_parent?
+    return if self.parent || !should_have_parent?
     self.update(parent: eventable.parent_event)
   end
 
