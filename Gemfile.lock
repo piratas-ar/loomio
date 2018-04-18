@@ -426,7 +426,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
-    rbnacl (5.0.0)
+    rbnacl (4.0.2)
       ffi
     redcarpet (3.3.4)
     redis (4.0.1)
@@ -644,7 +644,7 @@ DEPENDENCIES
   rails_12factor
   rails_serve_static_assets
   rake
-  rbnacl
+  rbnacl (>= 3.2, < 5.0)
   redcarpet (~> 3.3.4)
   redis-rails
   rinku

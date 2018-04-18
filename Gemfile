@@ -61,7 +61,6 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'shoulda-matchers'
-  gem 'dotenv-rails'
   gem 'database_cleaner'
   gem 'gemrat'
   gem 'derailed'
@@ -69,7 +68,7 @@ group :development, :test do
 end
 
 group :development do
-  gem 'rbnacl'
+  gem 'rbnacl', '>= 3.2', '<5.0'
   gem 'bcrypt_pbkdf'
   gem 'net-ssh'
   gem 'net-scp'
