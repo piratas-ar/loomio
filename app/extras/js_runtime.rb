@@ -5,7 +5,6 @@ module JSRuntime
   def eval(command, input)
     cleanup perform build(command, input)
   rescue => e
-    Raven.capture_exception(e)
     input
   end
 

@@ -508,8 +508,6 @@ GEM
       nori (~> 2.4)
       uuid (~> 2.3.7)
       wasabi (~> 3.4)
-    sentry-raven (2.7.2)
-      faraday (>= 0.7.6, < 1.0)
     sequenced (2.0.0)
       activerecord (>= 3.0)
       activesupport (>= 3.0)
@@ -654,7 +652,6 @@ DEPENDENCIES
   rspec-rails (~> 3.7.2)
   s3_uploader
   sass-rails
-  sentry-raven
   sequenced (~> 2.0.0)
   shoulda-matchers
   simplecov

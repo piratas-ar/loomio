@@ -28,7 +28,6 @@ gem 'friendly_id', '~> 5.1.0'
 gem 'httparty', '~> 0.15.6'
 gem 'browser', '~> 2.3.0'
 gem 'fog-aws'
-gem "sentry-raven"
 gem 'sequenced', '~> 2.0.0'
 gem 'bing_translator', '~> 5.2.0'
 gem 'http_accept_language'

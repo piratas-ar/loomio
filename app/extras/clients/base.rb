@@ -85,7 +85,6 @@ class Clients::Base
 
   def default_failure
     ->(response) {
-      Raven.capture_message "Failed #{self.class.name.demodulize} api request. response: #{response} token: #{@token}"
       response
     }
   end
