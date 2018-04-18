@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 ruby '2.5.0'
+gem 'dotenv-rails', require: 'dotenv/rails-now'
 gem 'rails', '~> 5.1.5'
 gem 'actioncable'
 gem 'rake'
@@ -68,6 +69,14 @@ group :development, :test do
 end
 
 group :development do
+  gem 'rbnacl'
+  gem 'bcrypt_pbkdf'
+  gem 'net-ssh'
+  gem 'net-scp'
+  gem 'capistrano-rails'
+  gem 'capistrano-passenger'
+  gem 'capistrano3-delayed-job'
+  gem 'capistrano-rbenv'
   gem "stackprof"
   gem 'spring'
   gem "spring-commands-rspec"
