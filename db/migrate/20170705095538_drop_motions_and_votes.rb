@@ -1,6 +1,6 @@
 require_relative './legacy/convert_motions_to_polls.rb'
 
-class DropMotionsAndVotes < ActiveRecord::Migration
+class DropMotionsAndVotes < ActiveRecord::Migration[4.2]
   def up
     ConvertMotionsToPolls.convert(motions: Motion.order(:id).all)
     drop_table :motions

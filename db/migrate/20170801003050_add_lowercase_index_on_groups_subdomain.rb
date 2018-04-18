@@ -1,4 +1,4 @@
-class AddLowercaseIndexOnGroupsSubdomain < ActiveRecord::Migration
+class AddLowercaseIndexOnGroupsSubdomain < ActiveRecord::Migration[4.2]
   def change
     enable_extension :citext
     Group.where(subdomain: '').update_all(subdomain: nil)

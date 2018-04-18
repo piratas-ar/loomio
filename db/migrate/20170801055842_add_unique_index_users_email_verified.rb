@@ -1,4 +1,4 @@
-class AddUniqueIndexUsersEmailVerified < ActiveRecord::Migration
+class AddUniqueIndexUsersEmailVerified < ActiveRecord::Migration[4.2]
   def change
     remove_index :users, name: 'index_email_verified'
     add_index :users, :email

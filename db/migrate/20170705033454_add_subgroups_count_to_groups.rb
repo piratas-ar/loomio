@@ -1,4 +1,4 @@
-class AddSubgroupsCountToGroups < ActiveRecord::Migration
+class AddSubgroupsCountToGroups < ActiveRecord::Migration[4.2]
   def change
     add_column :groups, :subgroups_count, :integer, null: false, default: 0
   end

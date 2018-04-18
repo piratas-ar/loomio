@@ -1,4 +1,4 @@
-class RemoveVisitorStuff < ActiveRecord::Migration
+class RemoveVisitorStuff < ActiveRecord::Migration[4.2]
   def change
     drop_table :visitors
     remove_column :polls, :visitors_count
