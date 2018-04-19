@@ -275,7 +275,7 @@ Loomio::Application.routes.draw do
   get '/favicon.ico'                       => 'application#ok'
   get '/wp-login.php'                      => 'application#ok'
 
-  Identities::Base::PROVIDERS.each do |provider|
+  Identities::Base::PROVIDERS.try(:each) do |provider|
     scope provider do
       get :oauth,                           to: "identities/#{provider}#oauth",       as: :"#{provider}_oauth"
       get :authorize,                       to: "identities/#{provider}#create",      as: :"#{provider}_authorize"

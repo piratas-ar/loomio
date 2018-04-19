@@ -58,9 +58,9 @@ InitialPayload = Struct.new(:user) do
       pollTypes:         AppConfig.poll_types,
       pollColors:        AppConfig.colors,
       timeZones:         AppConfig.timezones,
-      identityProviders: AppConfig.providers.fetch('identity', []).map do |provider|
+      identityProviders: AppConfig.providers.fetch('identity', []).try(:map) do |provider|
         ({ name: provider, href: send("#{provider}_oauth_path") } if ENV["#{provider.upcase}_APP_KEY"])
-      end.compact,
+      end.try(:compact),
       intercom: {
         appId: Rails.application.secrets.intercom_app_id,
         userHash: (OpenSSL::HMAC.hexdigest(
