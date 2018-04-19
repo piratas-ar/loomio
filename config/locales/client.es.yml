@@ -927,10 +927,12 @@ es:
     in_reply_to: 'en respuesta a <strong>{{recipient}}</strong>'
     edited: 'Editado'
   new_vote_item:
+    commited: 'compromiso'
     agree: 'de acuerdo'
     abstain: 'abstiene'
     disagree: 'en desacuerdo'
     block: 'bloqueado'
+    commited_with_statement: 'compromiso: <span>{{statement}}</span>'
     agree_with_statement: 'de acuerdo: <span>{{statement}}</span>'
     abstain_with_statement: 'abstiene: <span>{{statement}}</span>'
     disagree_with_statement: 'en desacuerdo: <span>{{statement}}</span>'
@@ -1309,12 +1311,16 @@ es:
     default_reason_placeholder: Por favor explique su razonamiento
     abstain_reason_placeholder: Deje a la gente saber porqué usted se está omitiendo de esta decisión
     agree_reason_placeholder: ¿Qué te gusta de la propuesta y cómo va a beneficiar al grupo?
+    commited_reason_placeholder: ¿En qué te comprometes a llevarla a cabo?
     disagree_reason_placeholder: ¿Cómo podría mejorarse esta propuesta para que pueda apoyarla?
     block_reason_placeholder: Explique su objeción a esta propuesta y por qué no debe seguir adelante
     stance_created: Voto creado
     stance_updated: Voto actualizado
     vote: Votar
   poll_proposal_options:
+    commited: Compromiso
+    commited_verb: "se compromete"
+    commited_meaning: Estoy de acuerdo con esta propuesta y me comprometo a llevarla a cabo
     agree: De acuerdo
     agree_verb: "acordado"
     agree_meaning: Esta propuesta es suficientemente buena para ser adoptada por el grupo

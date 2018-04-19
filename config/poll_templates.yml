@@ -1,5 +1,6 @@
 proposal:
   poll_options_attributes:
+    - name:                "commited"
     - name:                "agree"
     - name:                "abstain"
     - name:                "disagree"

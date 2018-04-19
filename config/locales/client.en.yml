@@ -1023,10 +1023,12 @@ en:
     edited: 'Edited'
 
   new_vote_item:
+    commited: 'commited'
     agree: 'agreed'
     abstain: 'abstained'
     disagree: 'disagreed'
     block: 'blocked'
+    commited_with_statement: 'commited: <span>{{statement}}</span>'
     agree_with_statement: 'agreed: <span>{{statement}}</span>'
     abstain_with_statement: 'abstained: <span>{{statement}}</span>'
     disagree_with_statement: 'disagreed: <span>{{statement}}</span>'
@@ -1485,6 +1487,7 @@ en:
   poll_proposal_vote_form:
     default_reason_placeholder: Please explain your reasoning
     abstain_reason_placeholder: Let people know why you’re opting out of this decision
+    commited_reason_placeholder: In which way do you commit to this proposal?
     agree_reason_placeholder: What do you like about the proposal and how will it benefit the group?
     disagree_reason_placeholder: How could this proposal be improved so that you can support it?
     block_reason_placeholder: Explain your objection to this proposal and why it should not go ahead
@@ -1493,6 +1496,9 @@ en:
     vote: Vote
 
   poll_proposal_options:
+    commited: commited
+    commited_verb: "commited"
+    commited_meaning: I commit to this proposal
     agree: Agree
     agree_verb: "agreed"
     agree_meaning: This proposal is good enough to be adopted by the group
