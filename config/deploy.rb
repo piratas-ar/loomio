@@ -1,6 +1,6 @@
 set :application, 'loomio'
 set :repo_url, 'https://github.com/piratas-ar/loomio'
-set :linked_files, %w{.env}
+set :linked_files, %w{.env config/database.yml}
 set :linked_dirs, %w{public/system log tmp/pids db/backups angular/node_modules}
 
 set :rbenv_type, :user
@@ -49,33 +49,6 @@ namespace :loomio do
   end
 end
 
-namespace :faye do
-  desc 'Iniciar faye'
-  task :start do
-    on roles(:web) do
-      within release_path do
-        execute :bundle, 'exec rackup --pid tmp/pids/faye.pid --daemonize -s thin -E production private_pub.ru'
-      end
-    end
-  end
-
-  desc 'Detener faye'
-  task :stop do
-    on roles(:web) do
-      within release_path do
-        execute :pkill, '--signal INT --pidfile tmp/pids/faye.pid'
-      end
-    end
-  end
-
-  desc 'Reiniciar faye'
-  task :restart do
-    invoke 'faye:stop'
-    invoke 'faye:start'
-  end
-end
-
 before 'deploy:migrate', 'deploy:backup'
 before 'deploy:compile_assets', 'loomio:deploy'
 after 'deploy:publishing', 'deploy:restart'
-after 'deploy:publishing', 'faye:restart'
