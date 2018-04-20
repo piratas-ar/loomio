@@ -1,0 +1,554 @@
+es-AHR:
+  explore:
+    header: Explorar barcos públicos
+  activerecord:
+    errors:
+      messages:
+        blank: no puede estar vacío
+        invalid: No es un valor válido.
+  errors:
+    not_found: 404 archivo no encontrado
+    messages:
+      email: No es una dirección de email válida
+      spoofed_media_type: El contenido de ese archivo no se asemeja al nombre del mismo
+  user:
+    error:
+      recaptcha: "No pudimos verificar que no eres un robot. Por favor intenta de nuevo"
+      username_must_be_alphanumeric: "El nombre de usuario debe contener solamente letras y dígitos en minúscula "
+  attachment:
+    error:
+      too_large: 'El archivo que tratas de adjuntar es mayor de 100MB, escoge uno mas pequeño. '
+  poll:
+    error:
+      cannot_add_options: No puedes añadir opciones en esta encuesta
+      cannot_remove_options: No puedes remover opciones de esta encuesta
+      must_have_options: 'Debes tener al menos una opción '
+    export:
+      title: Título
+      author: Autor
+      engagement: Participación
+      details: Detalles
+      group_name: Nombre del Barco
+      reason: Razón
+      total: Total
+  stance:
+    error:
+      too_short: Por favor seleccione
+  invitation:
+    invitation_cancelled: Perdón pero esta invitación ha sido revocada por el coordinador del barco. Por favor, pide una nueva invitación a tu barco.
+    invitation_already_used: Esta invitación ya ha sido usada. Por favor inicia sesión para ingresar en tu barco.
+  date:
+    formats:
+      for_this_year: "%e %b"
+      for_another_year: "%-d/%-m/%Y"
+  time:
+    formats:
+      closing_soon_subject: "%d %b %H:%M"
+      for_today: "%l:%M %P"
+  validate:
+    motion:
+      must_close_in_future: La propuesta debe cerrar en el futuro.
+      one_at_a_time: Ya hay una propuesta activa.
+  subscriptions:
+    gift_plan_selected_for_group_html: |
+      <h1>Listo!</h1>
+      <p>Seleccionaste el plan Gratis para tu barco <a href="/g/%{group_key}">%{group}</a></p>
+  user_mailer:
+    accounts_merged:
+      subject: "Tus %{site_name} cuentas de usuario han sido unificadas. "
+      body_html: |
+        Hola %{name},
+        Tus dos cuentas de Loomio han sido integradas en una sola.
+        Para acceder a Loomio desde ahora por favor usa <strong>%{email}</strong> cuando ingreses.
+  email:
+    login:
+      subject: Ingresa a %{site_name}
+      intro: Hola %{name}, aquí esta el enlace para ingresar en tu cuenta en %{site_name}
+      login: Ingresa como %{name}
+      resend: 'Este enlace perderá validez en 24hrs y solo puede ser usado una vez. '
+    contact_request:
+      subject: "%{name}quiere conectarse contigo en %{site_name}"
+      intro: "%{name} (%{email}) Te ha enviado una solicitud de conexión."
+      footer: "Puedes responder a %{name} directamente respondiendo a este email. "
+    reset_password:
+      greeting: |
+        Hola %{name}
+        Aquí esta el enlace que puedes usar para restablecer tu contraseña en tu cuenta de Loomio:
+      link_text: Restablece tu contraseña
+      signoff: |
+        Recibes este email porque tu dirección de correo electrónico fue ingresada en el formulario "Olvidaste tu contraseña" en %{hostname}.
+        Tu contraseña no será cambiada hasta que sigas el enlace y completes el formulario.
+        Si continúas teniendo problemas para acceder a tu cuenta, responde a este email para contactar nuestro equipo de soporte técnico.
+    start_decision:
+      subject: Iniciar una decisión en Loomio
+      intro: Hola <strong>%{name}</strong>
+      action: ¿Qué te gustaría hacer?
+      proposal: Iniciar una propuesta
+      count: 'Iniciar Comprobación '
+      poll: Iniciar una encuesta
+      dot_vote: Iniciar voto de puntos
+      meeting: Encontrar un horario en común
+      ranked_choice: 'Inicia una opción priorizada '
+    custom: "%{text}"
+    group_email:
+      intro: "%{who} hizo un anuncio en %{group}:"
+    by_who: por %{person}
+    reply_to_this_discussion: Contestar a esta discusión
+    value_proposition: "%{site_name} es un espacio para que barcos tomen decisiones juntos. "
+    view_group: Ver barco
+    to_join_group:
+      subject: "%{member} te ha invitado a unirte a %{group_name} en %{site_name}"
+      invitation_text: "%{member} te ha invitado a unirte a su barco %{group_name} "
+      invitation_text_html: "te ha invitado a unirte a su barco"
+      link_help: "Haz clic en el enlace para unirte al barco:"
+      accept_invitation: "Aceptar invitación\n "
+    resend_to_join_group:
+      subject: "%{member} está esperando que te sumes a %{group_name} en %{site_name}"
+    user_added_to_group:
+      subject: "%{who} te ha adherido a %{which_group} en %{site_name}"
+      content: "%{who} te ha adherido a %{which_group}"
+      content_html: "<strong>%{who}</strong> te ha añadido a <strong>%{which_group}</strong>."
+      link_help: "Haz clic en el enlace para ir al barco:"
+    unsubscribe: 'Da de baja o cambia las preferencias de tu correo electrónico:   '
+    unsubscribe_html: "<a href='%{link_path}'>%{link_text}</a> para dar de baja o cambiar las preferencias de correo electrónico."
+    missed_yesterday:
+      subject: Ayer en %{site_name}
+      do_not_reply: Por favor no respondas a este email
+      headlines: 'Titulo '
+      mark_as_read: Marcar como leído
+      thanks_for_reading: Gracias por leer, ¡que tengas un buen día!
+      heres_what_happened: "Esto es lo que paso en %{site_name} ayer. "
+      marked_as_read_success: Todo el contenido del correo ha sido marcado como leído
+      click_here: Haz clic aquí
+    group_membership_approved:
+      intro: "Tu solicitud para acceder al barco %{group_name} ha sido aprobada."
+      intro_html: "Tu solicitud para acceder al barco <strong>%{group_name}</strong> ha sido aprobada."
+      link_help: "Haz clic en el siguiente enlace para unirte a %{group_name} y comenzar:"
+      subject: "Tu solicitud para unirte a  %{group_name}  ha sido aprobada."
+      join_group: "Unirte al barco"
+    membership_request:
+      intro_html: ha solicitado el acceso a uno de tus barcos.
+      subject: "%{who} solicitó el acceso a %{which_group}"
+      view_group: Puedes aceptar o denegar la solicitud aquí
+      button_text: Ver solicitudes
+  email_actions:
+    unfollowed_discussion: 'Has desactivado los emails para este hilo '
+  thread_mailer:
+    new_discussion:
+      subject: "[%{group}] %{discussion}"
+      subject_html: "<strong>%{actor}</strong> inició un hilo: %{discussion}"
+    new_comment:
+      subject: "[%{group}] %{discussion} "
+      subject_html: "<strong>%{actor}</strong> comentó en: %{discussion}"
+    comment_replied_to:
+      subject: '%{actor} respondió a tu comentario en: %{discussion}'
+      subject_html: '<strong>%{actor}</strong> respondió a tu comentario en: %{discussion}'
+    user_mentioned:
+      subject: '%{actor} te mencionó en:%{discussion}'
+      subject_html: "<strong>%{actor}</strong> te mencionó en:%{discussion}"
+    reply_or_view_online_html: Responde a este correo electrónico directamente o <a href='%{url}'>velo en %{hostname}</a>.
+    turn_off_notifications_html: "<a href='%{url}'>Desactivar emails </a> para esta discusión."
+    change_email_preferences_html: "Cambia tus <a href='%{email_preferences_url}'>preferencias de email </a>"
+  footer:
+    about: Sobre Loomio
+    blog: Blog
+    contact: Contacto
+    help: Ayuda
+    privacy: Privacidad
+    pricing: Precio
+    public_groups: Barcos Públicos
+    terms: Términos
+    independent_install_html: '%{hostname} esta utilizando una copia independiente de Loomio: <a href="http://github.com/loomio/loomio">enterate de más</a>.'
+  invitation_form:
+    error:
+      too_many_pending: "Tienes más del máximo de %{count} de invitaciones pendientes para este barco"
+      too_many_cancelled: "Tienes más del máximo de %{count} de invitaciones canceladas para este barco"
+      all_email_addresses_belong_to_members: "Estas personas ya son piratas de tu barco "
+  password_reset:
+    change_your_password: Cambia tu contraseña
+    change_my_password: Cambiar la contraseña
+    confirm_new_password: Confirma la contraseña
+    new_password: Nueva contraseña
+    email_guidelines_html: |
+      <p>Introduce la dirección de email y se te enviará un enlace para restablecer tu contraseña.</p>
+      <p>Si normalmente inicias sesión mediante Facebook o Google, introduce el email asociado con esa cuenta.</p>
+    reset_email_timeframe: Puede tardar hasta 5 minutos para que llegue el correo electrónico. si no lo recibes asegúrate de mirar en tu carpeta de correo no deseado.
+    length_restriction: La contraseña debe tener al menos 8 caracteres.
+    forbidden_passwords: Contraseñas comunes como "contraseña' están prohibidas para mantener tu cuenta segura.
+  introduction_thread:
+    title: Bienvenid@! Por favor  preséntate al barco
+    description: |
+      Tomate un momento para dejarle saber al barco algo sobre ti. Añade un comentario debajo.
+
+      ¿Cuál es tu rol o porque te unes al barco? ¿Qué es lo que la gente debería saber sobre ti para entender de donde vienes?
+  how_it_works_thread:
+    title: Cómo usar Loomio
+    description: |+
+      Bienvenida/o a Loomio, un lugar online donde tomar decisiones juntos.
+
+      Este es un **Hilo** de discusión de ejemplo. Usa este espacio para dar la información relevante que el barco necesite para tener una discusión productiva. Este hilo es sobre como Loomio funciona, así que añade cualquier pregunta al respecto aquí.
+
+      Estas leyendo el **Contexto** del hilo, un espacio para la información relevante. Puedes cambiarlo a medida que la discusión avanza.
+
+      Para comenzar en Loomio:
+      1. Añade una [foto de perfil](/profile)
+      2. Preséntate al barco en el [Hilo de bienvenida](%{thread_url})
+      3. Comenta en hilos existentes o inicia uno nuevo
+
+      Consejos para comentar en Loomio:
+      * Para notificar a una persona en particular escribe @seguido de su nombre
+      * Haz clic en el icono del sujetapapeles para añadir adjuntos
+
+      Si tienes preguntas lee el [Manual de Usuario](http://help.loomio.org).
+
+  first_proposal:
+    name: Propuesta de demostración
+    description: |
+      Esta es una **Propuesta**, donde tomas las decisiones juntos. Puedes iniciar un propuesta una vez que la discusión está en camino.
+
+      Se les pide a todos que **tomen una posición** antes de la **fecha de cierre**. Puedes extender la fecha de cierre si lo necesitas o puedes cerrar la propuesta con anticipación.
+
+      Puede que reconsideres tu posición al escuchar a otros, podrás **cambiar tu posición** en cualquier momento mientras la propuesta aún esté activa.
+
+      A veces barco trabajan con una **serie de propuestas** para construir una solución juntos. Puedes crear propuestas en secuencia en este hilo.
+
+      **Prueba participar, haz clic en uno de los 4 botones**
+  markdown:
+    intro:
+      title: |
+        # ¿Qué es Markdown?
+      body: |
+        Markdown es una forma de dar formato al texto (derecha)
+        escribiéndolo como texto plano (izquierda)
+
+        Esta página esta escrita con Markdown para mostrar como funciona.
+    headers:
+      body: |
+        ## Títulos
+
+        Utiliza el numeral para convertir el texto en un título
+
+        # Esto es un h1
+        ## Esto es un h2
+        #### Esto es un h4
+    paragraphs:
+      title: |
+        ## Párrafo
+      body: |
+        Necesitas
+        poner
+        una linea en blanco
+        entre lineas.
+
+        O todo acabara como un gran párrafo.
+    emphasis:
+      title: |
+        ## Énfasis
+      body: |
+        Puedes hacer que una palabra sea itálica con _guiones bajos_ o *asteriscos*.
+
+        Haz una palabra __Negrita__ doblando los **énfasis**.
+    lists:
+      title: |
+        ## Listas
+      body: |
+        Así haces una lista:
+
+        * deja una linea en blanco antes de la lista
+        * usa un asterisco (*)
+        * deja un espacio luego del asterisco
+    links:
+      title: |
+        ## Enlaces e imágenes
+      body: |
+        Repite en voz alta:
+
+        Corchetes para los nombres luego paréntesis para las URL. Sin espacio entre ellos.
+
+        [Loomio Homepage](https://www.loomio.org/)
+
+        Las imágenes son iguales, pero precedidas por un signo de exclamación.
+
+        ![loomio logo](https://i.imgur.com/Fvtworb.png)
+  poll_mailer:
+    common:
+      or: o
+      why_send_this: Recibes este correo porque %{reason}
+      view_on_loomio: Ver en %{site_name}
+      unsubscribe: Cancelar la suscripción al correo
+      results: Resultados
+      responses: Respuestas
+      change_your_stance: Cambiar
+      create_outcome: Compartr resultado
+      your_response: "Tú votaste:"
+      please_respond: 'Por favor responde '
+      time_zone: (horario en %{zone})
+      undecided_members: Piratas indecisos (%{count})
+      undecided_visitors: Invitados indecisos (%{count})
+      more_undecided: "%{count} más..."
+      vote_now: Votar ahora
+      verify_stance_for_unverified_user: "Gracias por votar en %{title}. Por favor verifica tu dirección de email para que podamos enviarte los resultados cuando estén listos. "
+      verify_stance_for_verified_user: "Parece que has votado en %{title}. Si fuiste tu, por favor haz clic en el siguiente enlace para confirmar tu voto. "
+    proposal:
+      subject:
+        poll_created: '*%{actor} comenzó una propuesta: %{title}'
+        poll_edited: '%{actor} editó la propuesta: %{title}'
+        poll_closing_soon: 'Propuesta cerrando en 24hr: %{title}'
+        poll_closing_soon_author: 'Tu propuesta cierra en 24hr: %{title}'
+        poll_expired: "Propuesta cerrada: %{title}"
+        poll_expired_author: ' Tu propuesta ha cerrado. Comparte un resultado para: %{title}'
+        outcome_created: '%{actor} publicó el resultado de la propuesta: %{title}'
+        invitation_created: '%{actor} quiere escuchar tu opinión en: %{title}'
+        invitation_resend: 'RECORDATORIO: %{actor} está esperando que votes en: %{title}'
+        user_reminded: 'RECORDATORIO: %{actor} está esperando que votes en: %{title}'
+        stance_created: "%{actor} votó en: %{title}"
+        stance_created_author: "Por favor verifica tu voto en: %{title}"
+      header:
+        poll_created: '<strong>%{actor}</strong> inicio una propuesta'
+        poll_edited: '<strong>%{actor}</strong> edito la propuesta'
+        poll_closing_soon: 'La propuesta de <strong>%{actor}</strong> cierra en 24hrs. Ahora es un buen momento para votar, cambiar tu voto o motivar a otros a participar. '
+        poll_closing_soon_author: 'Tu propuesta cierra en 24hrs. Ahora es un buen momento para recordarle a la gente que participe o extender la fecha de cierra.'
+        poll_expired: "<strong>%{actor}</strong> propuesta cerrada: %{title}"
+        poll_expired_author: 'Tu propuesta ha <strong>cerrado</strong>. Por favor tomate el tiempo para considerar lo que se ha dicho y <strong>compartir el resultado</strong> con el barco para que todos estén informados.  '
+        outcome_created: '<strong>%{actor}</strong> publicó el resultado de la propuesta.'
+        invitation_created: '<strong>%{actor}</strong> quiere escuchar tu opinión en: %{title}'
+        invitation_resend: 'RECORDATORIO: %{actor} está esperando que votes en: %{title} '
+        user_reminded: 'RECORDATORIO: <strong>%{actor}</strong> está esperando que votes en: %{title}'
+        stance_created: "<strong>%{actor} </strong> votó en: %{title}"
+      body:
+        voted: '<strong>%{participant}</strong>:'
+    poll:
+      subject:
+        poll_created: '*%{actor} comenzó una encuesta: %{title}'
+        poll_edited: '%{actor} editó la encuesta: %{title}'
+        poll_closing_soon: 'Encuesta cerrando en 24hr: %{title}'
+        poll_closing_soon_author: 'Tu encuesta cierra en 24hr: %{title}'
+        poll_expired: "Resultado de la encuesta: %{title}"
+        poll_expired_author: ' Tu encuesta ha cerrado. Comparte el resultado para: %{title}'
+        poll_option_added: '%{actor} ha añadido opciones en: %{title} '
+        poll_option_added_author: '%{actor} ha añadido opciones en: %{title}'
+        outcome_created: '%{actor} publicó el resultado de la encuesta: %{title}'
+        invitation_created: '%{actor} quiere que votes en: %{title}'
+        invitation_resend: 'RECORDATORIO: %{actor} está esperando que votes en %{title}'
+        user_reminded: 'RECORDATORIO: %{actor} está esperando que votes en: %{title} '
+        stance_created: "%{actor} votó en: %{title}"
+        stance_created_author: "Por favor verifica tu voto en: %{title} "
+      header:
+        poll_created: '<strong>%{actor}</strong> inicio una encuesta'
+        poll_edited: '<strong>%{actor}</strong> edito la encuesta'
+        poll_closing_soon: 'La encuesta de <strong>%{actor}</strong> cierra en 24hrs. Ahora es un buen momento para votar, cambiar tu voto o motivar a otros a participar. '
+        poll_closing_soon_author: 'Tu encuesta cierra en 24hrs. Ahora es un buen momento para recordarle a la gente que participe o extender la fecha de cierra.'
+        poll_expired: "La propuesta de<strong>%{actor}</strong> ha cerrado: %{title}"
+        poll_expired_author: 'Tu encuesta ha <strong>cerrado</strong>. Por favor tomate el tiempo para considerar lo que se ha dicho y <strong>compartir el resultado</strong> con el barco para que todos estén informados.  '
+        poll_option_added: '<strong>%{actor}</strong> ha añadido opciones en: %{title} '
+        poll_option_added_author: '<strong>%{actor}</strong> ha añadido opciones en: %{title}'
+        outcome_created: '<strong>%{actor}</strong> publicó el resultado de la encuesta.'
+        invitation_created: '<strong>%{actor}</strong> te invitó a participar en la encuesta: %{title}'
+        invitation_resend: 'RECORDATORIO: %{actor} está esperando que votes en %{title}'
+        user_reminded: 'RECORDATORIO: <strong>%{actor}</strong> está esperando que votes en: %{title}'
+        stance_created: "<strong>%{actor} </strong> votó en: %{title} "
+      body:
+        voted: '<strong>%{participant}</strong>:'
+    count:
+      subject:
+        poll_created: '%{actor} está mirando: %{title}'
+        poll_edited: '%{actor} editó la comprobación: %{title}'
+        poll_closing_soon: 'Quedan 24 horas para participar en: %{title}'
+        poll_closing_soon_author: 'Tu comprobación cierra en 24hr: %{title}'
+        poll_expired: "Comprobación cerrada: %{title}"
+        poll_expired_author: ' Tu comprobación ha cerrado. Comparte el resultado para: %{title}'
+        outcome_created: '%{actor} publicó el resultado: %{title}'
+        invitation_created: '%{actor} está mirando: %{title} '
+        invitation_resend: 'RECORDATORIO: %{actor} está esperando que votes en %{title}'
+        user_reminded: 'RECORDATORIO: %{actor} está esperando tu respuesta: %{title}'
+        stance_created: "%{actor} participó en: %{title}"
+        stance_created_author: "Por favor verifica tu voto en: %{title} "
+      header:
+        poll_created: '<strong>%{actor}</strong> esta mirando'
+        poll_edited: '<strong>%{actor}</strong> editó la comprobación'
+        poll_closing_soon: 'La comprobació de <strong>%{actor}</strong> cierra en 24hrs'
+        poll_closing_soon_author: 'Tu comprobación cierra en 24hrs. Ahora es un buen momento para recordarle a la gente que participe o extender la fecha de cierra.'
+        poll_expired: "La comprobación de<strong>%{actor}</strong> ha cerrado: %{title}"
+        poll_expired_author: 'Este es el resultado de tu comprobación. De ser necesario <strong> comparte el resultado</strong> para que la gente sepa lo que sucederá a continuación.'
+        outcome_created: '<strong>%{actor}</strong> publicó el resultado.'
+        invitation_created: '<strong>%{actor}</strong> esta mirando: %{title}'
+        invitation_resend: 'RECORDATORIO: %{actor} está esperando que votes en %{title}'
+        user_reminded: 'RECORDATORIO: <strong>%{actor}</strong> está esperando tu respuesta en: %{title}'
+        stance_created: "<strong>%{actor}</strong> participó en: %{title}"
+      body:
+        voted: '<strong>%{participant}</strong>:'
+    dot_vote:
+      subject:
+        poll_created: '%{actor} inició un voto de puntos: %{title}'
+        poll_edited: '%{actor} editó un voto de puntos: %{title}'
+        poll_closing_soon: 'Voto de puntos cerrando en 24hr: %{title}'
+        poll_closing_soon_author: 'Tu voto de puntos cierra en 24hr: %{title}'
+        poll_expired: "Resultado del voto de puntos: %{title}"
+        poll_expired_author: ' Tu voto de puntos ha cerrado. Comparte un resultado para: %{title}'
+        poll_option_added: '%{actor} ha añadido opciones en: %{title}'
+        poll_option_added_author: '%{actor} ha añadido opciones en: %{title}'
+        outcome_created: '%{actor} publicó el resultado: %{title}'
+        invitation_created: '%{actor} te invitó a participar en el voto de puntos: %{title}'
+        invitation_resend: 'RECORDATORIO: %{actor} está esperando que votes en: %{title}'
+        user_reminded: 'RECORDATORIO: %{actor} está esperando que votes en: %{title}'
+        stance_created: "%{actor} votó en: %{title}"
+        stance_created_author: "Por favor verifica tu voto en: %{title}"
+      header:
+        poll_created: '<strong>%{actor}</strong> inició un voto de puntos'
+        poll_edited: '<strong>%{actor}</strong> editó el voto de puntos'
+        poll_closing_soon: 'El voto de puntos de <strong>%{actor}</strong> cierra en 24hrs. Ahora es un buen momento para votar, cambiar tu voto o motivar a otros a participar. '
+        poll_closing_soon_author: 'Tu voto de puntos cierra en 24hrs. Ahora es un buen momento para recordarle a la gente que participe o extender la fecha de cierra si es necesario.'
+        poll_expired: "Resultados para el voto de puntos: %{title} de <strong>%{actor}</strong>"
+        poll_expired_author: 'Tu voto de puntos ha <strong>cerrado</strong>. Considera lo que se ha dicho y <strong>comparte el resultado</strong> con el barco para que todos sepan que sucederá a continuación.  '
+        poll_option_added: '<strong>%{actor}</strong> ha añadido opciones en: %{title}'
+        poll_option_added_author: '<strong>%{actor}</strong> ha añadido opciones en: %{title}'
+        outcome_created: '<strong>%{actor}</strong> publicó el resultado del voto de puntos.'
+        invitation_created: '<strong>%{actor}</strong> te invitó a participar en el voto de puntos: %{title}'
+        invitation_resend: 'RECORDATORIO: %{actor} está esperando que votes en: %{title}'
+        user_reminded: '<strong>%{actor}</strong> está esperando que votes en: %{title}'
+        stance_created: "<strong>%{actor} </strong> votó en: %{title} "
+      body:
+        voted: '<strong>%{participant}</strong>:'
+    meeting:
+      subject:
+        poll_created: '%{actor}inició la coordinación de horario: %{title}'
+        poll_edited: '%{actor} editó la coordinación de horario: %{title}'
+        poll_closing_soon: 'Coordinación de horario cerrando en 24hr: %{title}'
+        poll_closing_soon_author: 'Tu coordinación de horario cierra en 24hr: %{title}'
+        poll_expired: "Resultado de la coordinación de horario: %{title}"
+        poll_expired_author: ' Tu coordinación de horario ha cerrado. Comparte el resultado para: %{title}'
+        poll_option_added: '%{actor} añadió opciones en: %{title} '
+        poll_option_added_author: '%{actor} añadió opciones en: %{title} '
+        outcome_created: '%{actor} publicó el resultado: %{title}'
+        outcome_created_author: 'Compartiste el resultado para: %{title}'
+        invitation_created: '%{actor} quiere encontrar un horario: %{title}'
+        invitation_resend: 'RECORDATORIO: %{actor} está esperando que votes en: %{title}'
+        user_reminded: 'RECORDATORIO: %{actor} está esperando tu respuesta: %{title}'
+        stance_created: '%{actor} participó en: %{title}'
+        stance_created_author: "Por favor verifica tu voto en: %{title}"
+      header:
+        poll_created: '<strong>%{actor}</strong> inició una coordinación de horario'
+        poll_edited: '<strong>%{actor}</strong> editó la coordinación de horario'
+        poll_closing_soon: 'La coordinación de horario de <strong>%{actor}</strong> cierra en 24hrs. Ahora es un buen momento para votar, cambiar tu voto o motivar a otros a participar. '
+        poll_closing_soon_author: 'Tu coordinación de horario cierra en 24hrs. Ahora es un buen momento para recordarle a la gente que participe o extender la fecha de cierra si es necesario.'
+        poll_expired: "La coordinación de horario de<strong>%{actor}</strong> ha cerrado"
+        poll_expired_author: 'Tu coordinación de horario ha <strong>cerrado</strong>. Considerar lo que se ha dicho y <strong>compartir el resultado</strong> con el barco para que todos sepan que pasará a continuación.  '
+        poll_option_added: '<strong>%{actor}</strong> ha añadido opciones en: %{title} '
+        poll_option_added_author: '<strong>%{actor}</strong> ha añadido opciones en: %{title}'
+        outcome_created: '<strong>%{actor}</strong> publicó el resultado de la coordinación de horario'
+        outcome_created_author: 'Compartiste el resultado de la coordinación de horario'
+        invitation_created: '<strong>%{actor}</strong> quiere encontrar un horario: %{title}'
+        invitation_resend: 'RECORDATORIO: %{actor} está esperando que votes en: %{title}'
+        user_reminded: 'RECORDATORIO: <strong>%{actor}</strong> está esperando tu respuesta en: %{title}'
+        stance_created: "<strong>%{actor}</strong> participó en: %{title} "
+      body:
+        voted: '<strong>%{participant}</strong>:'
+    ranked_choice:
+      subject:
+        poll_created: '%{actor} inició una opción priorizada: %{title}'
+        poll_edited: '%{actor} editó la opción priorizada: %{title}'
+        poll_closing_soon: 'opción priorizada cerrando en 24hr: %{title}'
+        poll_closing_soon_author: 'Tu opción priorizada cierra en 24hr: %{title}'
+        poll_expired: "Resultado de la opción priorizada: %{title}"
+        poll_expired_author: ' Tu opción priorizada ha cerrado. Comparte el resultado para: %{title}'
+        poll_option_added: '%{actor} añadió opciones en: %{title} '
+        poll_option_added_author: '%{actor} añadió opciones en: %{title}'
+        outcome_created: '%{actor} publicó el resultado: %{title}'
+        outcome_created_author: 'Compartiste el resultado para: %{title}'
+        invitation_created: '%{actor} quiere encontrar un horario: %{title}'
+        invitation_resend: 'RECORDATORIO: %{actor} está esperando que votes en: %{title}'
+        user_reminded: 'RECORDATORIO: %{actor} está esperando tu respuesta: %{title}'
+        stance_created: '%{actor} participó en: %{title}'
+        stance_created_author: "Por favor verifica tu voto en: %{title}"
+      header:
+        poll_created: '<strong>%{actor}</strong> inició una opción priorizada'
+        poll_edited: '<strong>%{actor}</strong> editó la opción priorizada '
+        poll_closing_soon: 'La opción priorizada de <strong>%{actor}</strong> cierra en 24hrs. Ahora es un buen momento para votar, cambiar tu voto o motivar a otros a participar.'
+        poll_closing_soon_author: 'Tu opción priorizada cierra en 24hrs. Ahora es un buen momento para recordarle a la gente que participe o extender la fecha de cierra si es necesario. '
+        poll_expired: "La opción priorizada de<strong>%{actor}</strong> ha cerrado"
+        poll_expired_author: 'Tu opción priorizada ha <strong>cerrado</strong>. Considerar lo que se ha dicho y <strong>compartir el resultado</strong> con el barco para que todos estén informados.  '
+        poll_option_added: '<strong>%{actor}</strong> ha añadido opciones en: %{title}'
+        poll_option_added_author: '<strong>%{actor}</strong> ha añadido opciones en: %{title} '
+        outcome_created: '<strong>%{actor}</strong> publicó el resultado de una opción priorizada.'
+        outcome_created_author: 'Compartiste el resultado de la opción priorizada.'
+        invitation_created: '<strong>%{actor}</strong> quiere encontrar un horario: %{title}'
+        invitation_resend: 'RECORDATORIO: %{actor} está esperando que votes en: %{title} '
+        user_reminded: 'RECORDATORIO: <strong>%{actor}</strong> está esperando tu respuesta en: %{title}'
+        stance_created: "<strong>%{actor}</strong> participó en: %{title}"
+      body:
+        voted: '<strong>%{participant}</strong>:'
+  comment_by: Comentario de %{comment_author}
+  poll_generator:
+    proposal:
+      title: "Ofrecer un empleo formal a Shelley y Jack"
+      details: 'Shelley y Jack han estado trabajando para nosotros como internos por los últimos 3 meses, ambos han demostrado una dedicación admirable, y claramente son un gran recurso para nuestro equipo. ¿Les ofrecemos una oferta formal de trabajo? '
+    poll:
+      title: "¿Hay alguna alergia de la que debamos saber antes de la cena del Jueves?"
+      details: 'Espero verlos a todos en mi casa! Por favor indica si tienes alguna restricción alimenticia de la que debamos saber. '
+    count:
+      title: "¿Quién quiere organizar el picnic de la empresa?  "
+      details: 'Marsha se sintió muy abrumada la ultima vez, así que esta vez nos gustaría darle un par de ayudantes para que sea más fácil para todos. Por favor indica si te gustaría ayudar. '
+    dot_vote:
+      title: "¿Cuál es la estrategia de nuestra empresa para el próximo cuatrimestre? "
+      details: 'Este es un gran año para nuestra empresa y necesitamos ser estratégicos acerca de como invertimos nuestros limitados recursos. Por favor indica cuales son las áreas que crees son más importantes para que nos enfoquemos el próximo cuatrimestre. '
+    ranked_choice:
+      title: "¿Quién debe ser nuestro próximo alcalde adjunto?"
+      details: "Es tiempo de nuestras elecciones de medio año! Esta es una encuesta oficial para determinar quien será nuestro nuevo alcalde adjunto. Tomate el tiempo de leer sobre cada candidato en nuestra página web."
+    meeting:
+      title: "¿Cuándo debemos tener nuestra próxima reunión de personal?"
+      details: Es tiempo nuevamente para nuestra reunión de personal bimestral. Idealmente nos gustaría reunirnos antes del fin de la semana que viene. ¿Qué día y horario funciona mejor para todos?
+  poll_unsubscribe:
+    title: 'Has sido des-inscripto de %{title} '
+    helptext: 'Ya no recibirás emails sobre esta decisión. '
+    visit_poll: Ver encuesta
+    go_to_dashboad: Ir al panel de control
+  slack:
+    new_discussion: "Nuevo hilo en *%{group}*: *%{discussion}* "
+    outcome_created: "Resultado publicado en *%{group}*: *%{poll}*"
+    poll_created: "Nuevo *%{poll_type}* en *%{group}*: *%{poll}*"
+    poll_closing_soon: "Recordatorio: *%{poll}* cierra en 24hr"
+    poll_expired: "*%{poll}* ha cerrado"
+    poll_not_found: "Perdón pero esa encuesta no fue encontrada. Escribe '/loomio<poll_type><title>' para iniciar otra?"
+    unknown_channel: |
+      Perdón pero al parecer no hay un barco de Loomio asociado con este canal.
+      ¿Has intentado correr '/loomio' en uno de los siguientes canales?
+      %{integrations}
+    stance_not_valid: "Perdón pero no pudimos crear el voto en *%{poll}*. <%{url} |Haz clic aquí> para votar directamente. "
+    group_identity_created: |
+      Hola, soy Loomio Bot. *%{author}* me ha añadido.
+      Puedo ayudar a tu equipo a tomar decisiones juntos.
+
+      Mis funcionalidades incluyen:
+
+      - resaltar cuando hay decisiones activas
+      - permitirle a las personas votar en decisiones desde Slack
+      - mostrar donde es que las personas están de acuerdo o no
+      - comunicar el resultado de las decisiones
+      - mantener un archivo de decisiones en tu barco de Loomio.
+
+      Para saber más escribe _/loomio help_
+      Para participar, deberás ser parte del barco *%{group}* en Loomio.
+      Si aún no eres parte, <%{url}|Haz clic aquí> para unirte.
+    request_authorization_message: "Solo un paso más: <%{url}haz clic aquí> para autorizar que tu cuenta de Slack use Loomio. (solo deberás hacerlo una vez)"
+    poll_closed: "*%{title}* ha cerrado! <%{url} haz clic aquí>  para ver el resultado"
+    go_to_slack: Ir a Slack
+    stance_created: Gracias por participar. Votaste *%{position}* en la encuesta <%{poll_url} %{title}>. Si quieres cambiar tu voto, o dar una razón por la que votaste de esta forma, <%{stance_url} haz clic aquí>
+    click_to_vote: "Selecciona una opción debajo para votar:"
+    time_zone_message: (todos los horarios están en la zona horaria %{zone})
+    authorized_message: Genial! Ya estás listo para votar desde Slack.
+    community_poll_published: "@%{username} inició una nueva %{type}:"
+    initiate: |
+      Ok, hagámoslo! <%{url} haz clic aquí para iniciar tu %{type}>.
+      (nota: publicaremos en este canal una vez que sea creada, para que todos puedan participar)
+    slash_command_help: |
+      Ingresa un estilo de decisión (escrito en Ingles como se muestra debajo) y una pregunta, y comenzaremos desde ahí.
+      Puedes elegir estos estilos de decisión:
+      'proposal': Busca el acuerdo colectivo
+      'count':      Comprueba la participación y busca voluntarios
+      'poll':          Mide la popularidad de opciones
+      'dot_vote': Prioriza una lista de opciones
+      'meeting':  Encuentra un horario para la reunion
+
+      Por ejemplo escribe:
+      /loomio count ¿Quién viene a la fiesta el Domingo?
+      Para iniciar una nueva comprobación.

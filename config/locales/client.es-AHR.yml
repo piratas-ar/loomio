@@ -1,0 +1,1547 @@
+es-AHR:
+  reactions:
+    slight_smile: Gusta
+    heart: Encanta
+    laughing: Risa
+    clap: 'Aplauso '
+    hugging: 'Abrazo '
+    sunglasses: Guay
+    wink: Guiño
+    nerd: Listo
+    relieved: 'Aliviado '
+    worried: 'Preocupado '
+    confused: 'Confundido '
+    confounded: Condenado
+    neutral_face: Neutral
+    slight_frown: 'Ceño fruncido  '
+    disappointed: 'Decepcionado '
+    angry: 'Enojado '
+    weary: Cansado
+    astonished: 'Asombrado '
+    rolling_eyes: 'Revolear los ojos '
+    cry: 'Llorar '
+    scream: 'Gritar '
+    sleeping: 'Aburrido '
+    thinking: 'Pensando '
+    raised_hands: 'Manos al aire '
+    pray: 'Rezar '
+    fingers_crossed: 'Dedos cruzados '
+    v: Paz
+    metal: Metal
+    ok_hand: Ok
+    wave: Saludar
+  poll_types:
+    proposal: Propuesta
+    count: Comprobar
+    poll: Encuesta
+    dot_vote: Voto de Puntos
+    meeting: Coordinar horario
+    ranked_choice: Opción priorizada
+  timezones:
+    local: Hora local ({{value}})
+  common:
+    you: Tú
+    expand: Expandir
+    all_day: Todo el día
+    ok_got_it: Bien, ¡lo tengo!
+    learn_more: Aprender más
+    not_found: 'No encontrado '
+    time_zone: 'Zona horaria '
+    local_time: Hora local
+    confirm_discard_changes: ¿Descartar tus cambios?
+    time:
+      am: am
+      pm: pm
+    closing_in: 'Cerrando {{time}}'
+    closed_ago: 'Cerrado {{time}}'
+    volume: 'Volumen '
+    notification_volume: 'Volumen de notificaciones'
+    group: 'Barco'
+    groups: 'Barcos'
+    threads: 'Hilos'
+    decisions: 'Decisiones '
+    settings: 'Configuración '
+    help: 'Ayuda'
+    anonymous: Anónimo
+    privacy:
+      privacy: 'Privacidad'
+      public: 'Público'
+      open: 'Abierto'
+      closed: 'Cerrado '
+      private: 'Privado'
+      secret: 'Secreto '
+    selected: 'Seleccionado'
+    date_range:
+      today: 'Hoy'
+      yesterday: 'Ayer'
+      thisweek: 'Esta semana'
+      thismonth: 'Este mes'
+      older: 'Antiguo'
+    more_help: 'Mas ayuda '
+    models:
+      proposal: 'Propuesta'
+    copy: 'Copiar'
+    copy_text: 'Copiar texto'
+    copied: 'Copiado al portapapeles'
+    points_abbrev: 'Cada voto vale {{score}} puntos '
+    total: Total
+    action:
+      next: 'Siguiente'
+      close: 'Cerrar'
+      reopen: 'Reabierto'
+      save: 'Guardar'
+      save_changes: 'Guardar cambios'
+      update_settings: 'Actualizar preferencias'
+      reply: 'Responder'
+      edit: 'Editar'
+      remove: 'Eliminar'
+      like: 'Me gusta'
+      back: 'Atrás'
+      unlike: 'Ya no me gusta'
+      update: 'Actualizar '
+      cancel: 'Cancelar'
+      show_more: "Mostrar más"
+      view_all: "Ver todo"
+      new_thread: "Nuevo hilo"
+      add_subgroup: 'Añadir subbarco'
+      loading: 'Cargando'
+      translate: 'Traducir'
+      translated: 'Traducido mediante Bing Translator'
+      upload: 'Cargar '
+      uploading: 'Cargando'
+      load_more: 'Cargar Más'
+      share: Compartir
+      ok: ¡Ok!
+      retry: 'Reintentar '
+      done: Listo
+      start: 'Empezar '
+      delete: Eliminar
+      unsubscribe: Cancelar la suscripción a la lista de email
+      subscribe: Suscribirme a la lista de email
+      remind: 'Recordar '
+      resend: 'Reenviar '
+      send: Enviar
+      resent: Reenviar invitación
+    formatting_help:
+      label: 'Formato '
+      title: 'Aprende a usar Markdown para dar formato a tu texto'
+  ordinal:
+    _1: 1º
+    _2: 2º
+    _3: 3º
+    _4: 4º
+    _5: 5º
+    _6: 6º
+    _7: 7º
+    _8: 8º
+    _9: 9º
+    _10: 10º
+  devise:
+    failure:
+      inactive: 'Hay una cuenta Desactivada asociada a este email. Contáctanos si quieres Reactivar tu cuenta.'
+  error_page:
+    forbidden: 'No tienes permisos para hacer esto.'
+    page_not_found: 'No encontramos lo que estás buscando. Podría haber sido borrado o movido.'
+    internal_server_error: 'Lo sentimos, pero algo ha ido mal. Por favor, inténtalo otra vez.'
+  verify_email_notice:
+    please_verify: 'Gracias por participar! Por favor busca en tu correo un email con un enlace para verificar tu voto. '
+  verify_stances:
+    title: Verificar votos
+    description: 'Por favor verifica que los siguientes votos son tuyos. '
+    verify: Verificar
+    remove: Eliminar
+    verify_success: 'Voto verificado '
+    remove_success: 'Voto eliminado '
+    all_done: Bien hecho! verificaste todos tus votos.
+  previous_polls_page:
+    heading: Actividades en {{name}}
+    polls_count: Mostrando {{loaded}} de {{total}} decisiones
+    search_activities: 'Buscar decisiones '
+  volume_levels:
+    loud: 'Alto'
+    normal: 'Normal'
+    quiet: 'Bajo'
+    mute: 'Silenciado '
+    unmute: 'Des-silenciar '
+  change_volume_form:
+    aria_label: "Formulario para cambiar las notificaciones de email"
+    loud_label: "Toda la actividad"
+    normal_label: "Anuncios"
+    quiet_label: "No enviar correo"
+    mute_label: "Silenciar "
+    discussion:
+      title: "Configuración de correo electrónico para {{title}}"
+      loud_description: "Recibirás correo electrónico siempre que haya actividad en este hilo."
+      normal_description: "Recibirás correo electrónico siempre que se inicie una propuesta, cuando esté a punto de cerrarse o cuando se publique un resultado. "
+      quiet_description: "No recibirás correo electrónico sobre este hilo. "
+      apply_to_all: "Aplicar esta configuración para todos los hilos de este barco."
+      messages:
+        loud: "Recibirás la actividad de este hilo por correo electrónico. "
+        normal: "Recibirás correo electrónico sobre propuestas en este hilo. "
+        quiet: "No recibirás correo electrónico sobre este hilo."
+    membership:
+      title: "Configuración de correo electrónico para {{title}} "
+      loud_description: "Recibirás correo electrónico siempre que haya actividad en este barco."
+      normal_description: "Sólo se enviarán anuncios por correo electrónico en este barco."
+      quiet_description: "No recibirás correo electrónico sobre la actividad en este barco."
+      apply_to_all: "Aplicar esta configuración para todos mis barcos. "
+      messages:
+        loud: "Recibirás correo electrónico sobre toda la actividad en este barco. "
+        normal: "Sólo se enviarán anuncios por correo electrónico en este barco."
+        quiet: "No recibirás correo electrónico sobre este barco."
+    all_groups:
+      messages:
+        loud: "Recibirás correo electrónico sobre toda la actividad en todos tus barcos. "
+        normal: "Sólo se te enviarán anuncios por correo electrónico en todos sus barcos."
+        quiet: "No recibirás correo electrónico sobre tus barco."
+    user:
+      title: Configuración de correo electrónico para barcos nuevos
+      loud_description: "Recibirás correo electrónico sobre toda la actividad en cualquier barco nuevo. "
+      normal_description: "Recibirás por correo electrónico los anuncios de cualquier barco nuevo en el que participes."
+      quiet_description: "No recibirás correo electrónico sobre la actividad en ningún nuevo barco en el que participes."
+      apply_to_all: "Aplicar esta configuración para todos mis barcos."
+      messages:
+        loud: "Recibirás correo electrónico sobre toda la actividad en tus nuevos barcos. "
+        normal: "Recibirás por correo electrónico los anuncios de barcos nuevos."
+        quiet: "No recibirás correo electrónico de los nuevos barcos."
+  close_explanation_modal:
+    aria_label: Cerrar hilo
+    close_thread: 'Cerrar hilo '
+    body_header: |
+        <p>Cierra hilos irrelevantes o viejos para removerlos de la vista e indicar que la discusión ha finalizado</p>
+    body_footer: |
+        <p>Cualquier persona podrá aún comentar o iniciar una propuesta en un hilo cerrado, pero el mismo no aparecerá en el listado de hilos del barco o el escritorio</p>
+    image_alt: Todos los hilos cerrados
+  mute_explanation_modal:
+    aria_label: 'Silenciar hilo '
+    mute_thread: Silenciar hilo
+    body_html: |+
+        <p>Silenciar significa<strong>que no recibirás notificaciones sobre propuestas</strong>, o ninguna otra actividad en este hilo, a no ser que alguien te <strong>@mencione.</strong></p>
+        <p>Los hilos silenciados tampoco serán visibles en tus páginas <strong>Recientes</strong> y <strong>No leído</strong>. Para encontrar tus hilos silenciados, selecciona <strong>Silenciado</strong> en la barra lateral de navegación:</p>
+
+    image_alt: 'Opción de hilos silenciados en la barra lateral '
+  dismiss_explanation_modal:
+    aria_label: Ignorar hilo
+    dismiss_thread: Ignorar hilo
+    body_html: |
+        <p>Ignorar un hilo lo remueve de tu lista de no leídos. Si alguna nueva
+        actividad ocurre en el hilo, volverá a aparecer como no leído nuevamente.</p>
+  inbox:
+    clear: 'Limpiar'
+    latest: 'Últimos'
+    unread: 'No leído'
+    closing_in: 'Cerrando'
+  sign_up_form:
+    password_label: 'Contraseña:'
+    password_confirmation_label: 'Esa contraseña otra vez:'
+  signed_out_modal:
+    aria_label: 'Sesión cerrada '
+    title: "Tu sesión ha terminado "
+    message: "Tu sesión ha sido terminada desde otra pestaña del navegador. Por favor vuelve a entrar para continuar. "
+    ok: "listo"
+  comment_reply_form:
+    aria_label: 'Añade una respuesta'
+  comment_form:
+    aria_label: 'Añade un comentario'
+    attachments:
+      add_attachment: 'Adjuntar archivos '
+      remove_attachment: 'Quitar archivo adjunto'
+    messages:
+      created: 'Comentario añadido'
+      replied: '{{name}} ha sido notificado de la respuesta '
+      updated: 'Comentario actualizado'
+      destroyed: 'Comentario eliminado'
+    say_something: Diga algo...
+    edit_comment: 'Editar comentario'
+    delete_comment: 'Borrar comentario'
+    cancel_reply: 'Cancelar respuesta'
+    confirm_delete_message: '¿Estás seguro de que quieres borrar este comentario?'
+    confirm_delete: 'Eliminar comentario '
+    in_reply_to: "Responder a {{name}}"
+    write_a_comment: "Añade un comentario..."
+    submit_button:
+      label: 'Enviar'
+    private_privacy_notice: 'Tu comentario solo será visible para piratas de {{groupName}}.'
+    public_privacy_notice: 'Tu comentario será público en internet. '
+    sign_in: "Inicia sesión para unirte a la conversación "
+  sidebar:
+    recent_threads: 'Hilos recientes'
+    unread_threads: 'No leído ({{count}})'
+    muted_threads: 'Hilos silenciados '
+    start_group: 'Nuevo barco'
+    explore: 'Barcos públicos'
+    start_thread: Nuevo hilo
+    start_decision: 'Nueva decisión  '
+    aria_labels:
+      heading: 'Barra Lateral '
+      threads_list: 'Acciones del hilo'
+      groups_list: 'Barcos'
+      user_list: 'Acciones de usuario'
+  navbar:
+    recent_title: 'Ir al Escritorio'
+    unread_title: 'Ver los mensajes no leídos'
+    start_thread: 'Nuevo hilo '
+    notifications: 'Panel de notificaciones'
+    search:
+      label: 'Búsqueda, por barcos o hilos  '
+      results_aria_label: 'Resultados de la búsqueda '
+      no_results: 'Ningún hilo encontrado'
+      close: 'Cerrar panel de búsqueda'
+      placeholder: 'Buscar'
+      loading: 'Cargando resultados...'
+      discussions: 'Hilos'
+      proposals: 'Propuestas'
+      comments: 'Comentarios '
+    sign_in: 'Iniciar sesión'
+    toggle_sidebar: 'Alternar barra lateral'
+    logo_title: 'Página principal'
+  user_dropdown:
+    edit_profile: 'Editar perfil '
+    email_settings: 'Configuración de email'
+    help: 'Ayuda'
+    contact_site_name: 'Contacto {{site_name}}'
+    sign_out: 'Salir'
+  start_menu:
+    label: 'Acciones de usuario '
+    title: 'Acción '
+    start_group: 'Crear un barco nuevo'
+    start_subgroup: 'Crear subbarco nuevo'
+    start_thread: 'Iniciar hilo nuevo'
+    start_poll: 'Crear una encuesta'
+    invite_people: 'Invita a gente'
+  notifications:
+    header: "Notificaciones"
+    no_notifications: "No tienes notificaciones"
+    new_discussion: "<strong>{{name}}</strong> empezó una discusión <strong>{{title}}</strong>"
+    new_motion: "<strong>{{name}}</strong> creó una propuesta <strong>{{title}}</strong>"
+    motion_closed: "Propuesta cerrada: <strong>{{title}}</strong>"
+    publish_outcome: "Publicar el resultado"
+    motion_closed_by_user: "<strong>{{name}}</strong> cerró la propuesta <strong>{{title}}</strong>"
+    motion_closed_by_expiry: "Se ha cerrado la propuesta <strong>{{title}}</strong>"
+    new_vote: "<strong>{{name}}</strong> {{position}} a la propuesta <strong>{{title}}</strong>"
+    new_comment: "<strong>{{name}}</strong> ha comentado en <strong>{{title}}</strong>"
+    comment_replied_to: "<strong>{{name}}</strong> ha contestado a tu comentario en <strong>{{title}}</strong>"
+    user_mentioned: "<strong>{{name}}</strong> te ha mencionado en <strong>{{title}}</strong>"
+    user_reminded: "<strong>{{name}}</strong> esta esperando que participes en <strong>{{title}}</strong>"
+    membership_requested: "<strong>{{name}}</strong> ha solicitado unirse a <strong>{{title}}</strong>"
+    membership_request_approved: '<strong>{{name}}</strong> ha aprobado tu solicitud para unirte a <strong>{{title}}</strong>'
+    user_added_to_group: "<strong>{{name}}</strong> te ha añadido al barco <strong>{{title}}</strong>"
+    user_added_to_group_no_inviter: "Has sido añadido al barco <strong>{{title}}</strong>"
+    motion_closing_soon: "La propuesta está a punto de cerrarse: <strong>{{title}}</strong>"
+    motion_outcome_created: "<strong>{{name}}</strong> ha publicado un resultado para la propuesta <strong>{{title}}</strong>"
+    motion_outcome_updated: "<strong>{{name}}</strong> ha actualizado el resultado de la propuesta <strong>{{title}}</strong>"
+    invitation_accepted: "<strong>{{name}}</strong> ha aceptado tu invitación a unirse a <strong>{{title}}</strong>"
+    new_coordinator: "<strong>{{name}}</strong> te ha añadido como coordinador de <strong>{{title}}</strong>"
+    poll_created: "<strong>{{name}}</strong> empezó una {{poll_type}}: <strong>{{title}}</strong>"
+    poll_edited: "<strong>{{name}}</strong> editó una {{poll_type}}: <strong>{{title}}</strong>"
+    poll_closing_soon: "{{poll_type}} está a punto de cerrarse: <strong>{{title}}</strong>"
+    poll_expired: "{{poll_type}} se cerró: <strong>{{title}}</strong>"
+    poll_option_added: "<strong>{{name}}</strong> agregó opciones a la {{poll_type}}: <strong>{{title}}</strong>"
+    outcome_created: "<strong>{{name}}</strong> compartió un resultado: <strong>{{title}}</strong>"
+    stance_created: "<strong>{{name}}</strong> participó en: <strong>{{title}}</strong>"
+  position_buttons_panel:
+    heading: 'Danos tu opinión '
+  extend_proposal_form:
+    aria_label: Cambiar fecha de cierre
+    title: 'Cambiar fecha de cierre'
+    success: 'Fecha de cierre de la propuesta actualizada'
+    submit: 'Actualizar fecha de cierre'
+  discussion_record:
+    created: 'El hilo {{title}} ha sido creado con éxito en {{groupName}}'
+    updated: 'Guardar cambios en {{title}}'
+  discussion_form:
+    aria_label: 'Formulario del hilo'
+    messages:
+      created: 'Hilo iniciado'
+      updated: 'Hilo actualizado'
+    new_discussion_title: 'Inicia un nuevo hilo'
+    edit_discussion_title: 'Editar hilo'
+    group_label: 'Barco'
+    group_placeholder: 'Seleccionar un barco'
+    title_label: 'Título'
+    title_placeholder: '¿Cuál es el tema que quieres discutir?'
+    context_label: 'Contexto'
+    context_placeholder: 'Da suficiente información de contexto para que el barco pueda llevar a cabo una discusión productiva. Esta información puede actualizarse según progresa la discusión.'
+    privacy_label: 'Privacidad'
+    privacy_public: 'Cualquier persona puede ver los hilos. Solo piratas pueden participar. '
+    privacy_private: 'Los hilos solo serán visibles para piratas de {{group}}.'
+    privacy_organisation: 'Los hilos serán visibles para piratas de {{parent}} y piratas de {{group}}.'
+    make_announcement: Anuncio
+    notified_count: '{{count}} personas recibirán un correo electrónico'
+  action_dock:
+    react: 'Añadir reacción '
+    add_resource: Agregar archivo adjunto
+    edit_group: Editar contexto de barco
+    add_comment: Comentario
+    copy_url_comment: Copiar URL
+    edit_thread: Editar contexto
+    translate_thread: Traducir contexto
+    edit_poll: Editar encuesta
+    translate_poll: Traducir encuesta
+    edit_stance: Cambia tu voto
+    translate_stance: Traducir voto
+    edit_comment: Editar comentario
+    delete_comment: 'Eliminar comentario '
+    reply_to_comment: Responder
+    translate_comment: Traducir comentario
+    edit_outcome: Editar el resultado
+    translate_outcome: Traducir resultado
+    show_history: Ver historial de revisión
+    pin_thread: Fijar hilo
+    unpin_thread: Soltar hilo
+    comment_copied: URL del comentario copiado al portapapeles
+  cover_photo_form:
+    aria_label: 'Formulario de carga para la foto de portada '
+    heading: 'Nueva foto de portada '
+    upload_link: 'Subir nueva foto de portada'
+    image_size_helptext: 'Tamaño de imagen ideal 1400x320px'
+    upload_success: 'La foto de portada ha sido actualizada con éxito'
+  logo_photo_form:
+    aria_label: 'Formulario de cambio del logo del barco'
+    heading: 'Nuevo logo del barco'
+    upload_link: 'cargar nuevo logo del barco'
+    image_size_helptext: 'Tamaño de imagen ideal 100x100px'
+    upload_success: 'El logo ha sido actualizado con éxito'
+  join_group_button:
+    join_group: Unirse al barco
+    membership_requested: Petición de membresía pendiente
+    messages:
+      joined_group: 'Ahora eres pirata de {{group}}'
+  membership_request_form:
+    aria_label: Formulario de petición de membresías
+    heading: Solicita unirte al barco
+    name_label: Nombre
+    email_label: Correo electrónico
+    introduction_label: ¿Porqué quieres unirte?
+    submit_button: 'Solicita membresía '
+    introduction_over_limit: La respuesta es muy larga
+    messages:
+      membership_requested: 'Ya has solicitado unirte a {{group}}'
+  revision_history_modal:
+    aria_label: Historial de revisión
+    thread_header: Historial de revisión del contexto del hilo
+    comment_header: Historial de revisión del comentario
+    started_by: 'Iniciado por <strong>{{name}}</strong>'
+    edited_by: 'Editado por <strong>{{name}}</strong>'
+    posted: Enviado
+  reactions_input:
+    add_your_reaction: 'Añadir reacción '
+  reactions_display:
+    more_reactions: "{{count}}  más"
+    you: "Tú"
+    you_and_name: "Tú y {{name}}"
+    you_and_name_and_count_more: "Tú, {{name}} y {{count}} más"
+    name_and_count_more: "{{name}} y {{count}} más"
+  context_panel:
+    thread_status:
+      pinned: "Este hilo ha sido fijado. Permanecerá en la parte superior de la lista de hilos de tu barco para todos los piratas del mismo."
+      closed: "Este hilo ha sido cerrado. Ya no aparecerá en el escritorio, y será listado bajo 'Cerrado' en la página principal del barco"
+  group_page:
+    show_opened: '{{count}} Abierto'
+    show_closed: '{{count}} Cerrado '
+    no_threads_here: Ningún hilo para ver aquí!
+    search_threads: Buscar hilos ...
+    private_threads: Debes ser un pirata para ver hilos privados en este barco
+    no_more_threads: Esos son todos los hilos en este barco!
+    messages:
+      privacy:
+        members: 'Ahora este barco es visible sólo para piratas.'
+        parent_members: 'Ahora este barco es visible sólo para piratas de tu organización'
+        public: 'Ahora este barco es visible para el público'
+      leave_group_success: 'Has dejado este barco'
+      archive_group_success: 'Este barco ha sido desactivado '
+    group_logo: 'Logo del barco'
+    new_photo: 'Nueva foto '
+    new_cover_photo: 'Carga una nueva foto de portada '
+    new_group_logo: 'Cargar nuevo logo del barco'
+    open_discussions: 'Hilos abiertos'
+    closed_discussions: 'Hilos cerrados'
+    discussions_placeholder: 'Un hilo es donde todo el mundo puede discutir un tema y tomar decisiones juntos.'
+    members: 'Piratas '
+    members_placeholder: 'Estás solo aquí: ¡invita a algunas personas para unirse a ti! '
+    member_options: Opciones de membresía
+    see_all_members: 'Ve todos los ({{count}}) piratas'
+    pending_invitations: '+ {{count}} pendientes'
+    subgroups: 'Subbarcos'
+    subgroups_placeholder: 'Los subbarcos le dan su propio espacio a los equipos y mantienen las notificaciones enfocadas en las personas indicadas.'
+    invite_people: 'Invitar'
+    visibility_label: 'Visibilidad'
+    options_label: 'Opciones'
+    options:
+      label: 'Opciones'
+      edit_group: 'Editar la configuración del barco'
+      manage_members: 'Administrar piratas '
+      add_subgroup: 'Agregar un Subbarco'
+      manage_subscription: 'Administrar las Suscripciones del barco '
+      email_settings: 'Ajustes de correo'
+      leave_group: 'Dejar el barco'
+      deactivate_group: 'Desactivar el barco'
+    volume:
+      loud: Enviar correo electrónico siempre que haya actividad.
+      loud_aria_description: El volumen de notificaciones para este barco está establecido como Alto. Se te enviará un correo electrónico siempre que haya actividad.
+      loud_message: Correo electrónico te será enviado sobre toda la actividad en "{{name}}."
+      normal: 'Sólo enviar actividad importante: Hilos y propuestas nuevos, resultados... etc.'
+      normal_aria_description: El volumen de notificaciones para este barco está establecido como Normal. Sólo se te enviarán correos electrónicos con actividad importante como cuando alguien inicia un hilo nuevo, surge una propuesta o se establece un resultado.
+      normal_message: 'Solo te será enviado correo electrónico sobre eventos importantes en "{{name}}".'
+      quiet: No enviar correo electrónico sobre el barco. La actividad del barco se mostrará en el Escritorio.
+      quiet_aria_description: El volumen de notificaciones para este barco está establecido como Bajo. No se te enviarán correos electrónicos con la actividad de este barco. Dicha actividad se mostrará en tu Escritorio.
+      quiet_message: 'No te será enviado correo electrónico sobre actividad en "{{name}}".'
+      mute: Ocultar este barco en el Escritorio y no notificarme a no ser que sea @mencionado.
+      mute_aria_description: El volumen de notificaciones para este barco está establecido como Silenciado. No se te enviarán correos electrónicos a menos que alguien te mencione, y la actividad del barco no se mostrará en tu Escritorio.
+      mute_message: '"{{name}}" ha sido eliminado de tu Escritorio.'
+    privacy:
+      private: 'Privacidad: Este barco es solo visible para piratas'
+      parent_members: 'Privacidad: Este barco es visible para los piratas de {{parentGroupName}} y piratas de {{groupName}} '
+      public: 'Privacidad: Este barco es visible en la red '
+      aria_label: 'Privacidad del barco: {{privacy}}'
+  description_card:
+    title: 'Descripción del Barco '
+    placeholder: 'Los coordinadores del barco pueden usar esta área para describir el propósito del barco para que todos sepan porque están aquí.  '
+    messages:
+      description_updated: 'Descripción actualizada'
+  leave_group_form:
+    aria_label: 'Abandonar el barco'
+    title: 'Abandonar el barco '
+    question: '¿Estás seguro de que quieres abandonar este barco?'
+    submit: 'Sí, quiero abandonar este barco'
+    cannot_leave_group: 'No puedes irte de este barco porque eres el último coordinador. Tendrás que elegir a otro coordinador o desactivar el barco.'
+    add_coordinator: 'Añadir coordinador'
+  archive_group_form:
+    aria_label: 'Desactivar el barco'
+    title: 'Desactivar el barco '
+    question: '¿Estás seguro de que quieres desactivar este barco?'
+    submit: 'Sí, desactivar este barco'
+  group_form:
+    aria_label: 'Formulario de barco'
+    start_group_heading: 'Empieza un barco'
+    start_subgroup_heading: 'Comienza un sub-barco '
+    edit_group_heading: 'Editar la configuración del barco'
+    edit_subgroup_heading: 'Editar la configuración del subbarco'
+    group_name: 'Nombre del Barco'
+    group_name_placeholder: '¿Cómo quieres nombrar a tu barco?'
+    subgroup_name: 'Nombre del sub-barco '
+    description: 'Descripción '
+    description_placeholder: 'Describe el propósito de tu barco para que los piratas sepan porque están aquí. '
+    privacy_statement:
+      public_on_web: 'Nombre, descripción y archivos adjuntos al contexto del barco, serán visibles al públicos '
+      private_to_group: 'El nombre y la descripción solo serán visibles para piratas. '
+      private_to_parent_members: 'El nombre y la descripción serán visibles para los piratas de {{parent}}'
+    privacy: 'Privacidad'
+    group_privacy_is_open_description: "Cualquier persona puede encontrar el barco y pedir membresía. Solo los piratas pueden ver quien pertenece al barco. Todos los hilos son públicos."
+    group_privacy_is_closed_description: "Cualquier persona puede encontrar este barco y pedir membresía. Sólo los piratas pueden ver quien pertenece al mismo. Todos los hilos son privados."
+    group_privacy_is_closed_public_threads_description: "Cualquier persona puede encontrar este barco y pedir membresía. Sólo los piratas pueden ver quien pertenece al mismo. Los hilos pueden ser públicos o privados."
+    group_privacy_is_secret_description: "Sólo piratas que han sido invitados pueden encontrar este barco, ver quien pertenece al mismo y los hilos.  "
+    confirm_change_to_secret: "Si procedes, todos los hilo en este barco y sus subbarcos se harán privados."
+    confirm_change_to_secret_subgroup: 'Si continuas todos los hilos se harán privados.'
+    confirm_change_to_public: 'Si continúas, todos los hilos de este barco se harán públicos en internet.  '
+    confirm_change_to_private_discussions_only: 'Si continuas cualquier hilo público en este barco se hará privado. '
+    subgroup_privacy_is_open_description: "Cualquier persona puede encontrar este subbarco y pedir membresía. Solo los piratas pueden ver quien pertenece al mismo. Todos los hilos son públicos."
+    subgroup_privacy_is_closed_description: "Cualquier persona puede encontrar este subbarco y pedir membresía. Sólo los piratas pueden ver quien pertenece al mismo. Todos los hilos son privados."
+    subgroup_privacy_is_closed_public_threads_description: "Cualquier persona puede encontrar este subbarco y pedir membresía. Sólo los piratas pueden ver quien pertenece al mismo. Los hilos pueden ser públicos o privados."
+    subgroup_privacy_is_closed_secret_parent_description: "Piratas de {{parent}} puede encontrar este subbarco y pedir membresía. Solo los piratas pueden ver quien pertenece al mismo. Todos los hilos son privados."
+    subgroup_privacy_is_secret_description: 'Sólo piratas que han sido invitados pueden encontrar este subbarco, ver quien pertenece al mismo y los hilos.  '
+    advanced_settings: "Configuración avanzada "
+    how_do_people_join: "¿Cómo se unen las personas a este barco?"
+    membership_granted_upon_request: 'Cualquiera puede unirse al barco.'
+    membership_granted_upon_approval: 'Cualquiera puede pedir la membresía, pero debe ser aprobada.'
+    membership_granted_upon_approval_secret_parent: 'Cualquiera en {{parent}} puede pedir apuntarse al barco <strong>por petición</strong>.'
+    features: 'Herramientas especificas de este barco'
+    thread_privacy: 'Privacidad del hilo'
+    public_threads: 'Sólo hilos públicos'
+    public_discussions_subgroup: 'Cualquiera que pertenezca a {{parentGroupName}} puede ver las discusiones'
+    public_or_private_threads: 'Permitir hilos públicos y privados'
+    private_threads: 'Solamente los piratas pueden ver las discusiones'
+    permissions: 'Permisos'
+    allow_public_threads: 'Permitir hilos públicos en este barco.'
+    parent_members_can_see_discussions: 'Los piratas de {{parent}} pueden ver los hilos privados.'
+    members_can_add_members: 'Piratas pueden invitar gente y aprobar membresías.'
+    members_can_create_subgroups: 'Los piratas pueden crear subbarcos.'
+    members_can_edit_discussions: 'Los piratas pueden editar el título y contexto de cualquier hilo.'
+    members_can_edit_comments: 'Los piratas pueden editar sus propios comentarios en cualquier momento.'
+    members_can_start_discussions: 'Los piratas pueden iniciar hilos nuevos.'
+    members_can_vote: 'Los piratas pueden votar en las propuestas.'
+    members_can_raise_motions: 'Los piratas pueden iniciar propuestas.'
+    submit_start_group: 'Crear barco'
+    submit_start_subgroup: 'Crear subbarcos'
+    submit_update: 'Actualizar preferencias'
+    messages:
+      group_created: 'Barco ha sido creado'
+      group_updated: 'Barco actualizado'
+  group_features:
+    useAnonymous: 'Activar votos anónimos '
+    nested_comments: Activar comentarios agrupados
+  membership_requests_card:
+    heading: 'Pedidos de membresía '
+    manage_requests: 'Gestionar peticiones '
+    manage_requests_with_count: Gestionar peticiones ({{count}})
+  documents_page:
+    title: Adjuntos
+    fragment_placeholder: Buscar archivos adjuntos ...
+    add_document: Añadir archivo adjunto
+    no_documents: No se encontraron archivos adjuntos para este barco. Haga click en 'Agregar archivo adjunto' arriba para agregar uno.
+    no_documents_from_fragment: No se encontraron archivos adjuntos con nombre '{{fragment}}'
+    confirm_remove_title: Quitar archivo adjunto
+    confirm_remove_helptext: ¿Seguro que quieres eliminar este archivo adjunto?
+    document_removed: Archivo adjunto eliminado
+  document:
+    error:
+      invalid_format: Tu URL es invalido. Asegurate que comienza con http:// o https://
+    card:
+      no_documents: Aún no se han cargado archivos adjuntos a este barco
+      view_documents: Ver todo
+    list:
+      title: Adjuntos
+      no_group_documents: Aún no se han cargado archivos adjuntos a esta decisión grupal
+    management:
+      content_header: Todos los adjuntos
+      uploaded_to: en
+    modal:
+      title: Agregar archivo adjunto
+    method_form:
+      helptext: Adjunta archivos o enlaces para compartirlos con tu barco.
+      url_helptext: Enlaces a páginas web o recursos online
+      file_helptext: Adjunta archivos desde tu ordenador
+    form:
+      url_label: URL
+      helptext: Clic aquí, pega, o arrastra tus archivos para adjuntarlos
+      url_placeholder: E.j. https://www.example.com/attachment.zip
+      title_helptext: ¿Cómo llamamos este adjunto?
+      title_label: Nombre
+      title_placeholder: 'E.j. ''Guías Comunitarias'' '
+    flash:
+      success: Adjunto guardado
+      destroyed: Archivo adjunto eliminado
+  membership_requests_page:
+    heading: Solicitudes de ingreso
+    approve: 'Aprobar '
+    ignore: Ignorar
+    no_pending_requests: 'Actualmente no hay pedidos de membresía pendientes para este barco '
+    no_previous_requests: 'Actualmente no hay pedidos de membresía previos para este barco '
+    previous_requests: Solicitudes anteriores
+    previous_request_response: '{{response}} de {{responder}} '
+    messages:
+      request_approved_success: Solicitud de ingreso aprobada
+      request_ignored_success: Solicitud de ingreso ignorada
+  group_previous_proposals_card:
+    heading: Propuestas previas
+    see_more: Ver más
+  group_decisions_card:
+    see_more: "Ve todas: las ({{count}}) decisiones "
+  invitation_form:
+    aria_label: 'Formulario de invitación'
+    invite_people: 'Invita gente'
+    invite_people_to_group: 'Invitar a {{name}}'
+    group: 'Barco'
+    group_placeholder: 'Selecciona un barco'
+    shareable_link: 'Enlace para compartir'
+    copy_link: 'Copiar'
+    email_addresses: 'Correo electrónico'
+    email_addresses_placeholder: 'ej. helperbot@loomio.org, friendlybot@loomio.org'
+    shareable_link_explanation: 'Copia el enlace y envíalo a cualquier persona que quieras que se una a tu barco. Esto les dará acceso a todos los hilos de tu barco. '
+    email_explanation: 'Alternativamente, ingresa las direcciones de email debajo para enviar invitaciones por email.'
+    add_custom_message: 'Personaliza tu invitación,'
+    add_custom_message_link: 'agrega un mensaje personalizado '
+    custom_message: 'Mensaje personalizado '
+    custom_message_placeholder: 'Entra un mensaje personal para incluirlo a la invitación. '
+    team_invitation_message: 'Alternativamente, '
+    team_invitation_link: 'usa un enlace para compartir.'
+    add_members: 'Incluye piratas'
+    from_parent_group: 'de {{name}}.'
+    send: 'Enviar'
+    done: 'Listo'
+    messages:
+      invitation_sent: 'Invitaciones enviadas. '
+      invitations_sent: '{{count}} invitaciones enviadas.'
+      no_invitations: '¡Uh oh! Comprueba que la dirección de correo electrónico es correcta e inténtalo de nuevo.'
+      max_invitations: 'Si quieres enviar mas de 100 invitaciones, utiliza un enlace.'
+  add_members_modal:
+    aria_label: 'Añadir piratas del barco principal'
+    heading: 'Adherir piratas de {{name}}'
+    add_members: 'Incluye piratas '
+    user_added_to_subgroup: '{{name}} incluido al Subbarco '
+    users_added_to_subgroup: '{{count}} Usuarios incluidos al Subbarco '
+    no_members_to_add: 'Todos los piratas de {{parent}} pertenecen a este subbarco'
+  memberships_page:
+    members: 'Piratas'
+    name_label: 'Nombre'
+    coordinator_label: 'Coordinador'
+    remove_member_label: 'Eliminar'
+    fragment_placeholder: 'Filtrar usuarios por nombre o nombre de usuario...'
+    messages:
+      remove_member_success: '{{name}} eliminado'
+      make_admin_success: 'Ahora {{name}} es un coordinador'
+      remove_admin_success: '{{name}} ya no es un coordinador'
+    remove_admin_from_self:
+      question: '¿Estás seguro que ya no quieres ser un coordinador? '
+  memberships_panel:
+    add_coordinator: 'Hacer coordinador '
+    remove_coordinator: Remover coordinador
+  remove_membership_form:
+    aria_label: 'Eliminar pirata'
+    title: 'Eliminar pirata '
+    question: '¿Estás seguro de que quieres eliminar a {{name}} del barco {{group}}?'
+    submit: 'Eliminar'
+  pending_invitations_card:
+    heading: Invitaciones pendientes
+    email: 'correo electrónico '
+    invitation_link: 'enlace de invitación '
+    sent: 'Enviado '
+    sent_at: Enviado {{date}}
+    copy_url: Copiar URL
+    revoke_invitation: Remover
+  cancel_invitation_form:
+    heading: 'cancelar invitación '
+    question: ¿Estás seguro de que quieres cancelar esta invitación?
+    submit: "Si, cancela la invitación "
+    cancel: 'No '
+    messages:
+      success: 'invitación cancelada '
+  user_page:
+    contact_user: 'Contactar {{name}}'
+    location_field: 'Ubicación: {{value}}'
+    locale_field: 'Idioma: {{value}}'
+    online_field: 'Online: {{value}}'
+  contact_request_form:
+    modal_title: "Email: {{name}}"
+    message_placeholder: Comparte una breve introducción personal y di porqué te quieres contactar.
+    helptext: "A {{name}} le será enviado tu nombre, dirección de email y mensaje.  "
+    email_sent: "Email enviado a {{name}}"
+  profile_page:
+    messages:
+      updated: 'Perfil actualizado'
+      picture_changed: 'Imagen de perfil actualizada'
+      password_changed: 'Contraseña actualizada'
+      deactivated: 'Cuanta desactivada'
+    change_picture_link: 'Cambiar imagen'
+    change_password_link: 'Restablece contraseña'
+    deactivate_user_link: 'Desactivar cuenta...'
+    profile: 'Perfil'
+    edit_profile: 'Editar perfil'
+    picture_label: 'Imagen'
+    name_label: 'Nombre'
+    username_label: 'Nombre de usuario'
+    username_helptext: 'Todo en minúscula, solo letras y números, máximo 30 caracteres. '
+    email_label: 'Correo electrónico'
+    short_bio_label: 'Introducción'
+    locale_label: 'Idioma'
+    short_bio_placeholder: 'Por favor ingresa una introducción personal, incluye áreas de especialización, tópicos de interés, y afiliación con organizaciones.'
+    locale_placeholder: 'Selecciona tu lenguaje preferido '
+    location_label: 'Ubicación '
+    location_placeholder: '¿Dónde estas basado?'
+    update_profile: 'Actualizar perfil'
+    deactivate_account: 'Desactiva cuenta'
+    help_translate: "Ayúdanos a traducir Loomio"
+  change_picture_form:
+    aria_label: 'Formulario de cambio de imagen'
+    title: 'Cambiar imagen'
+    helptext: 'Puedes subir tu propia foto de perfil, o si tienes una cuenta en <href="https://en.gravatar.com/support/whatisgravatar/"> Gravatar </a>, puedes usarla.'
+    use_initials: 'Usar iniciales'
+    use_gravatar: 'Usar Gravatar'
+    use_uploaded: 'Subir una imagen nueva'
+  change_password_form:
+    set_password_title: Ingresa una contraseña
+    change_password_title: Cambia tu contraseña
+    set_password_helptext: 'Por favor ingresa una contraseña para ingresar - mínimo 8 caracteres '
+    change_password_helptext: '¿Olvidaste tu contraseña o quieres cambiarla? Simplemente ingresa una nueva contraseña aquí. '
+    set_password: Configura la contraseña
+    change_password: Cambiar la contraseña
+    password_changed: Tu contraseña ha sido actualizada.
+    password_set: Tu contraseña ha sido ingresada
+  deactivation_modal:
+    aria_label: 'Desactiva cuenta '
+    introduction: 'Cuando desactivas tu cuenta:'
+    no_longer_group_member: 'Ya no serás listado como pirata en ningún barco'
+    name_removed: 'Comentarios, propuestas e hilos que has realizado permanecerán, pero tu nombre será removido de los mismos'
+    no_emails: 'Ya no recibirás notificaciones por email'
+    contact_for_reactivation: 'Deberás contactarnos para reactivar su cuenta'
+    submit: 'Si, quiero desactivar mi cuenta'
+  deactivate_user_form:
+    aria_label: 'Confirmar la desactivación de la cuenta '
+    title: 'Desactiva cuenta '
+    question: '¿Nos contarías por qué estás desactivando tu cuenta?'
+    placeholder: 'Contestar a esta pregunta es opcional. Cualquier información que compartas nos ayudará a mejorar :)'
+    submit: 'Desactiva cuenta '
+  only_coordinator_modal:
+    aria_label: 'No hemos podido desactivar la cuenta'
+    explanation: 'Un barco debe tener al menos un coordinador. Tú eres el único coordinador de los siguientes barcos:'
+    instructions: 'Para poder desactivar su cuenta, necesitarás visitar cada uno de los barco mencionados arriba y o bien nombrar a otro coordinador o desactivar el barco.'
+  email_settings_page:
+    header: Ajustes de correo
+    all_groups: 'Configuración para todos los barcos. '
+    daily_summary_label: Correo electrónico de resumen diario
+    daily_summary_description: "Cada mañana, recibirás un email con la actividad no leída el día anterior. Este email facilita  el estar al día con la actividad."
+    on_participation_label: 'Suscribirte a la participación '
+    on_participation_description: "Cuando participes en un hilo, inmediatamente se te enviará toda la actividad subsiguiente por correo electrónico. "
+    mentioned_label: 'Menciones '
+    update_settings: Guardar cambios
+    specific_groups: 'Configuración para barcos específicos  '
+    default_settings:
+      loud_description: "Cuando te unas a un nuevo barco, te enviaremos correo electrónico <strong>siempre que haya actividad</strong>.  "
+      normal_description: "Cuando te unas a un nuevo barco, te enviaremos correo electrónico sobre <strong>nuevos hilos y propuestas</strong>.  "
+      quiet_description: "Cuando te unas a un nuevo barco, no <strong>te enviaremos ningún correo electrónico</strong>.  "
+    edit: Editar
+    messages:
+      updated: Configuración de correo electrónico actualizadas
+    learn_more: Aprende más sobre la configuración de email...
+  dashboard_page:
+    aria_label: 'Escritorio'
+    no_groups:
+      show_all: 'No tienes ningún hilo reciente porque no eres pirata de ningún barco. '
+      show_muted: No tienes ningún hilo silenciado porque no eres pirata de ningún barco.
+      start: 'Empezar '
+      or: 'o '
+      join_group: '<a href="/explore">únete</a> a un barco para ver hilos.  '
+    no_threads:
+      show_all: No tienes ningún hilo reciente.
+      show_proposals: No hay propuestas activas en este momento.
+      show_muted: No tienes ningún hilo silenciado.
+    view_recent: ¿Ver todos los hilos recientes?
+    load_more: Cargar más hilos
+    mark_as_read: Marcar como leído
+    dismiss: Ignorar
+    thread_dismissed: 'Hilo ignorado '
+    thread_recalled: 'Hilo recuperado '
+    explain_mute:
+      title: No tienes ningún hilo silenciado.
+      explanation_html: |
+          Silenciar es una forma de esconder hilos en los que no estas interesada.
+          Silenciar significa que no veras el hilo en <strong>Recientes</strong> o <strong>No leído</strong>, y no serás notificado sobre ninguna actividad en ese hilo.
+          Solo serás alertada cuando alguien te <strong>@mencione</strong>.
+      instructions: 'Para silenciar un hilo, pasa el cursor por encima y selecciona el icono para silenciar.'
+      see_muted_html: 'Para ver tus hilos silenciados, selecciona <strong>Silenciado</strong> en la barra lateral. Puedes des-silenciar pasando el cursor por encima y seleccionando el mismo icono.'
+    filtering:
+      filter_threads: Filtrar hilos
+      filter_threads_aria_label: 'Filtrar hilos '
+      dropdown_heading: Filtrar Escritorio
+      all: Hilos Recientes
+      all_aria_label: Mostrando hilos recientes
+      all_description: Ver hilos recientes
+      proposals: Propuestas
+      proposals_aria_label: Mostrando hilos con propuestas activas
+      proposals_description: Ver únicamente hilos con propuestas activas
+      muted: Silenciado
+      muted_aria_label: Mostrando hilos silenciados
+      muted_description: Ver únicamente hilos que han sido silenciados
+    aria_thread:
+      unread: '{{count}} elementos no leídos.'
+      current_proposal: 'Propuesta actual: {{name}}.'
+      you_voted: 'Has votado: {{position}}.'
+    thread_preview:
+      you_voted: 'Votaste {{position}}'
+      undecided: 'Estas indeciso '
+    threads_from:
+      group: 'Hilos de'
+      pinned: 'Hilos fijados'
+      proposals: 'Hilos con decisiones activas '
+      starred: 'Hilos destacados'
+      today: 'Hoy'
+      yesterday: 'Ayer'
+      thisweek: 'Esta semana'
+      thismonth: 'Este mes'
+      older: 'De hace más de un mes'
+  inbox_page:
+    no_threads: ¡Sí, has leído todos los hilos de tu bandeja de entrada!
+    unread_threads: Hilos sin leer
+    view_more: Ver más
+    no_groups:
+      explanation: 'No tienes ningún hilo no leído porque no eres pirata de ningún barco. '
+      start: 'Empezar  '
+      or: 'o '
+      join_group: '<a href="/explore">únete</a> a un barco para ver hilos.   '
+  discussion:
+    activity: 'Actividad'
+    activity_placeholder: 'No hay actividad todavía'
+    load_previous: 'Cargar actividad más reciente'
+    started_by: 'Iniciado por <strong>{{name}}</strong>'
+    pin:
+      pinned: 'Hilo fijado'
+      unpinned: 'Hilo liberado'
+    volume:
+      mute_message: 'Hilo silenciado'
+      unmute_message: 'Hilo silenciado '
+    closed:
+      reopened: 'Hilo reabierto'
+      closed: 'Hilo cerrado '
+  activity_card:
+    beginning: 'Inicio '
+    unread: 'No leído '
+    latest: Últimos
+    chronological: 'Cronológico '
+    nested: 'Agrupado '
+    attachment_display:
+      aria_label: 'Archivo adjunto:'
+      image_alt: 'Imagen adjunta'
+    n_previous: 'Mostrar {{count}} respuestas previas'
+    n_more: 'Mostrar {{count}} respuestas'
+  thread_group:
+    aria_label: 'Nombre del barco'
+  thread_context:
+    aria_label: 'Contexto del hilo'
+    thread_options: 'Preferencias del hilo'
+    email_settings: 'Ajustes de correo '
+    edit: 'Editar'
+    edit_thread: 'Editar'
+    close_thread: 'Cerrar'
+    reopen_thread: 'Reabierto'
+    pin_thread: 'Fijar'
+    unpin_thread: 'Liberar'
+    mute_thread: 'Silenciar'
+    move_thread: 'Mover'
+    print_thread: 'Imprimir '
+    delete_thread: 'Eliminar'
+    add_comment: 'Comentar '
+    seen_by_count: 'Visto por {{count}} '
+  pin_thread_modal:
+    title: Fijar hilo
+    helptext: "Los hilos fijados siempre aparecen en la parte superior del listado de hilos del barco. Se pueden usar para informar a los piratas sobre anuncios importantes, o promover material grupal como el código de conducta u otras guías comunitarias. "
+    helptext_two: "En cualquier momento puedes liberar nuevamente los hilos fijados, seleccionando 'Liberar' desde el menú desplegable del hilo."
+    pin_thread: 'Fijar hilo '
+  delete_thread_form:
+    aria_label: 'Borrar hilo '
+    title: 'Borrar hilo '
+    body: ¿Estás seguro que quieres eliminar este hilo?
+    confirm: 'Eliminar hilo '
+    messages:
+      success: Hilo eliminado
+  move_thread_form:
+    aria_label: Mover hilo
+    title: Mover hilo
+    body: 'Barco de destino:'
+    confirm: 'Mover hilo '
+    confirm_change_to_private_thread: '{{groupName}} es un barco público. Si continuas, este hilo se hará público.'
+    messages:
+      success: El hilo ha sido movido a {{name}}
+  print_modal:
+    load_discussion: 'Cargando discusión entera '
+    helptext: 'Un momento, estamos cargando todos los eventos en este hilo para impresión... '
+  delete_comment_dialog:
+    title: 'Borrar comentario'
+    question: '¿Estás seguro de que quieres borrar este comentario?'
+    confirm: 'Borrar comentario'
+  new_comment_item:
+    aria_label: 'Comentario de {{author}}'
+    context_menu:
+      aria_label: 'Opciones de comentario'
+      edit_comment: 'Editar comentario'
+      delete_comment: 'Borrar comentario'
+    in_reply_to: 'en respuesta a <strong>{{recipient}}</strong>'
+    edited: 'Editado'
+  new_vote_item:
+    commited: 'compromiso'
+    agree: 'de acuerdo'
+    abstain: 'abstiene'
+    disagree: 'en desacuerdo'
+    block: 'bloqueado'
+    commited_with_statement: 'compromiso: <span>{{statement}}</span>'
+    agree_with_statement: 'de acuerdo: <span>{{statement}}</span>'
+    abstain_with_statement: 'abstiene: <span>{{statement}}</span>'
+    disagree_with_statement: 'en desacuerdo: <span>{{statement}}</span>'
+    block_with_statement: 'bloqueo: <span>{{statement}}</span>'
+  new_proposal_item:
+    author_created_proposal: 'comenzó una propuesta: <span>{{title}}</span>'
+  proposal_closed_item:
+    proposal_closed: 'La propuesta ha cerrado: <span>{{title}}</span>'
+  proposal_closed_by_user_item:
+    proposal_closed_by_user: 'cerró la propuesta: <span>{{title}}</span>'
+  proposal_edited_item:
+    name: 'actualizó el título de la propuesta: <span>{{title}}</span>'
+    description: 'actualizó la descripción de la propuesta'
+    closing_at: 'actualizó la propuesta para que cierre en <span>{{time}}</span>'
+    description_name: 'actualizó el título y la descripción de la propuesta'
+    closing_at_name: 'actualizó el título y el tiempo de cierre de la propuesta '
+    closing_at_description: 'actualizó la descripción y el tiempo de cierre de la propuesta'
+    closing_at_description_name: 'actualizó el título, la descripción y el tiempo de cierre de la propuesta'
+  proposal_outcome_created_item:
+    proposal_outcome_created: 'publicó el resultado de la propuesta:'
+  proposal_outcome_updated_item:
+    proposal_outcome_updated: 'actualizó el resultado de la propuesta'
+  discussion_edited_item:
+    attachment_ids: 'actualizó los archivos adjuntos del hilo'
+    title: 'actualizó el título del hilo: <span>{{title}}</span>'
+    description: 'actualizó el contexto del hilo'
+    description_title: 'actualizó el título y el contexto del hilo '
+    private: 'Actualizar la privacidad del hilo a '
+    public_to_private: 'privado'
+    private_to_public: 'público'
+    private_title: 'actualizó el título y la privacidad del hilo '
+    description_private: 'actualizó el contexto y la privacidad del hilo '
+    description_private_title: 'se actualizó el título, el contexto y la privacidad del hilo '
+  contact_message_form:
+    helptext: "¿Quieres ponerte en contacto con el equipo de Loomio? Ingresa un mensaje debajo y te responderemos a la brevedad. "
+    contact_us_email: "(También siempre podrás contactarnos en <a href=\"mailto:contact@loomio.org\">{{email}}</a>) "
+    contact_us: 'Contáctanos'
+    name_label: 'Tu nombre'
+    name_placeholder: 'Introduce tu nombre...'
+    email_label: 'Tu correo electrónico'
+    email_placeholder: 'Introduce tu correo electrónico...'
+    message_label: 'Tu mensaje'
+    message_placeholder: 'Tu mensaje...'
+    send_message: 'Enviar mensaje'
+    new_contact_message: "Gracias por contactarnos, te responderemos en breve"
+  hint:
+    context: 'Consejos para usar el panel de contexto'
+    discussion: 'Consejos para empezar una discusión participativa'
+    invitation: 'Consejos para redactar una buena invitación'
+    proposal: 'Consejos para redactar una propuesta clara'
+    vote: 'Puedes cambiar tu decisión en cualquier momento'
+  explore_page:
+    header: Explorar barcos
+    search_placeholder: Buscar barcos públicos
+    single_search_result: "1 barco público coincide con <strong>{{searchTerm}}:</strong> "
+    multiple_search_results: "{{resultCount}} barcos públicos coinciden con <strong>{{searchTerm}}:</strong>"
+    no_results_found: "<strong>¿No puedes encontrar el barco que buscas?</strong> Si la privacidad de ese barco es 'Secreto', no aparecerá aquí. Si conoces a un coordinador del barco, puedes pedirles una invitación.  "
+  global:
+    messages:
+      app_update: 'Una nueva versión de la app está disponible '
+      reload: 'Actualizar '
+  emoji_picker:
+    search: "Busca un emoji / emoticono..."
+    no_emojis_found: "No se han encontrado emojis /emoticonos para  '{{term}}'!"
+  authorized_apps_page:
+    title: 'Apps autorizados '
+    no_applications: "No has autorizado ningún app de terceros todavía."
+    notice: "Has dado el permiso a aplicaciones de terceros para usar tu cuenta. Has clic en \"Revocar\" para desactivarlos."
+    revoke: Remover
+  registered_apps_page:
+    title: 'Aplicaciones registradas '
+    no_applications: "No tienes ninguna aplicación OAuth todavía. Haz clic debajo para crear una."
+    name: Nombre
+    redirect_uris: Redireccionar URLs
+    create_new_application: 'Nueva aplicación '
+  registered_app_page:
+    uid: ID de la aplicación
+    secret: Secreto de la aplicación
+  registered_app_form:
+    new_application_title: 'Nueva aplicación '
+    edit_application_title: Actualizar aplicación
+    name_label: 'Nombre '
+    name_placeholder: ¿Cómo se llama tu aplicación?
+    redirect_uri_label: Redireccionar Uris
+    redirect_uri_placeholder: "El callback uri de tu aplicación, Ej: https://myapplication.com/loomio/callback"
+    redirect_uri_note: (una línea por URI, usa 'urn:ietf:wg:oauth:2.0:oob' para pruebas locales)
+    new_application_submit: Crear aplicación
+    edit_application_submit: 'Actualizar aplicación '
+    messages:
+      logo_changed: Logo actualizado
+      created: "'{{name}}' creado"
+      updated: "'{{name}}' actualizado "
+  remove_app_form:
+    title: Desactivar {{name}}
+    question: "¿Estás seguro de que quieres desactivar la aplicación '{{name}}'? Esta acción no puede ser deshecha. "
+    submit: Desactivar
+    messages:
+      success: "'{{name}}' ha sido desactivada satisfactoriamente"
+  revoke_app_form:
+    title: Acceso revocado para {{name}}
+    question: "¿Estás seguro que quieres rechazar que '{{name}}' use tu cuenta?"
+    submit: 'Revocar acceso '
+    messages:
+      success: "'{{name}}' ya no puede usar tu cuenta."
+  decision_tools_card:
+    title: Herramientas para decisiones
+    help_text: <a href="https://www.loomio.school/beginner/decision_tools.html" target="_blank">Ayuda</a>
+    proposal_title: Propuesta
+    count_title: Comprobación
+    poll_title: 'Encuesta '
+    dot_vote_title: Voto de Punto
+    meeting_title: Coordinar horario
+    ranked_choice_title: Opción priorizada
+  poll_common:
+    your_response: Tu respuesta
+    change_your_response: Cambie su respuesta
+    reason: Razón
+    reason_placeholder: ¿Algún otro comentario?
+    message: Mensaje
+    results: Resultados
+    vote: Votar
+    votes: Votos
+    update_outcome: Actualizar el resultado
+    outcome: Resultado
+    statement: Declaración
+    change_your_stance: Cambie su voto
+    load_more: Carga más
+    details: Detalles
+    participant_name: Tu nombre
+    participant_email: Dirección de correo electrónico
+    share_poll: Compartir encuesta
+    share_proposal: Compartir propuesta
+    share_count: 'Compartir Comprobación '
+    start_poll: 'Iniciar una decisión '
+    publish_poll: Compartir encuesta
+  poll_common_attachment_form:
+    label: Adjuntos
+  poll_common_add_option:
+    button:
+      add_option: Añadir otra opción
+    modal:
+      title: Añadir opción
+    form:
+      add_options: 'Añadir opciones '
+      options_added: Nuevas opciones añadidas
+  poll_common_card:
+    show_results: Mostrar resultados
+  poll_common_index_card:
+    title: Decisiones anteriores
+    no_polls: No se han encontrado decisiones anteriores
+    count: "Ve todas: las ({{count}}) decisiones"
+  poll_common_action_panel:
+    unable_to_vote: No tienes permiso para votar en esta desición
+  current_polls_card:
+    title: 'Decisiones actuales '
+    start_poll: 'Nueva decisión  '
+    no_polls: No hay decisiones activas en este momento.
+  poll_common_collapsed:
+    by_who: "por {{name}}"
+  poll_common_select_group:
+    loomio_group: Barco
+    loomio_group_placeholder: (ningún barco seleccionado)
+  poll_common_voter_add_options:
+    add_options: Los votantes pueden añadir opciones
+    helptext_on: 'Los participantes podrán añadir sus propias opciones al votar '
+    helptext_off: 'Los participantes seleccionarán las opciones que tu provees '
+  poll_common_notify_group:
+    notify_group: Anuncio
+    members_helptext: 'Tu barco no será notificado '
+    members_count: "{{count}} personas serán notificadas"
+    participants_count: "Las {{count}} personas que hayan votado serán notificadas"
+  poll_common_calendar_invite:
+    calendar_invite: 'Incluye una invitación al calendario con este resultado '
+    poll_option_id: 'Horario de reunión '
+    helptext_on: Los usuarios podrán añadir esta reunión a sus calendarios
+    helptext_off: No se enviaran invitaciones para la reunión
+    event_duration: Duración
+    event_summary: Resumen
+    event_summary_placeholder: ¿Cómo te gustaría llamar esta reunión?
+    event_description: Descripción de la reunión
+    event_description_placeholder: ¿Cuál es la agenda para esta reunión?
+    location: 'Locación '
+    location_placeholder: ¿Dónde tomara lugar esta reunión?
+  poll_common_notify_on_participate:
+    notify_on_participate: Notificarme cuando participe gente
+    helptext_on: Se te notificará cuando alguien participe
+    helptext_off: 'Recibirás los resultados cuando esta actividad cierre '
+  poll_common_anonymous:
+    anonymous: 'Participante Anónimo '
+    helptext_on: La información del participante no será mostrada con cada respuesta
+    helptext_off: Los participantes serán mostrados con sus respuestas
+  poll_common_close_form:
+    title: Cerrar una encuesta temprano
+    helptext: ¿Estás seguro de que estás listo para cerrar tan pronto?
+    close_proposal: Cerrar propuesta
+    close_poll: Cerrar encuesta
+    close_count: 'Cerrar comprobación '
+    close_dot_vote: Cerrar voto de puntos
+    close_meeting: Cerrar coordinación de horario
+    close_ranked_choice: 'Cerrar encuesta de opción priorizada '
+    proposal_closed: Propuesta cerrada
+    poll_closed: Encuesta cerrada
+    count_closed: 'Comprobación cerrada '
+    dot_vote_closed: Voto por puntos cerrado
+    meeting_closed: Coordinación de horario cerrada
+    ranked_choice_closed: Encuesta de opción priorizada ha cerrado
+  poll_common_closing_at_field:
+    closing: Cerrando
+    closing_hour: Hora de cierre
+  poll_card:
+    started_by: Iniciado por {{name}}
+  poll_common_votes_panel:
+    newest_first: El más reciente primero
+    oldest_first: Los más viejos primero
+    priority_first: De acuerdo primero
+    priority_last: Bloqueados primero
+    no_votes_yet: Todavía no se han realizado votos.
+    change_results_order: Cambiar orden de resultados
+    none_of_the_above: '(Ninguno de los mencionados) '
+  poll_common_undecided_panel:
+    show_undecided: "Mostrar {{count}} indecisos"
+    show_invitations: Mostrar invitaciones pendientes
+    undecided_users: "Indecisos ({{count}})  "
+    invitation_count_singular: "1 persona más ha sido invitada a participar vía email "
+    invitation_count_plural: "{{count}} personas adicionales han sido invitadas a participar vía email "
+  poll_common_undecided_user:
+    reminded: 'Recordatorio enviado '
+    reminder_sent: 'Recordatorio de notificación enviado '
+  poll_common_set_outcome_panel:
+    share_outcome: Compartr resultado
+    poll: 'Esta encuesta ha cerrado. <strong>Comparte el resultado</strong> con el barco.'
+    proposal: 'Esta propuesta se ha cerrado. Por favor, considere lo que se ha dicho y <strong> comparta un resultado</strong>, para que la gente sepa lo que sucederá a continuación.'
+    count: 'Esta comprobación ha cerrado. <strong>Comparte el resultado</strong> para completar el proceso. '
+    meeting: 'Esta coordinación de horario ha cerrado. <strong>Comparte un resultado</strong> para que otros sepan el mejor horario.'
+    dot_vote: 'Este voto por puntos ha cerrado. <strong>Comparte un resultado</strong> con el barco.'
+    ranked_choice: 'Esta encuesta de opción priorizada ha cerrado. <strong>Comparte el resultado</strong> con el barco.'
+  poll_common_outcome_form:
+    new_title: Comparte un resultado
+    update_title: Actualizar el resultado
+    outcome_created: Resultado creado
+    outcome_updated: Resultado actualizado
+    statement_placeholder: Resuma las respuestas y explique lo que ocurrirá a continuación.
+    submit: Compartr resultado
+  poll_common_outcome_panel:
+    authored_by: 'Por {{name}}'
+  poll_common_delete_modal:
+    question: ¿Estás seguro que quieres eliminar esto?
+    title: 'Eliminar decisión '
+    success: Eliminada con éxito.
+  poll_common_unsubscribe_form:
+    title: 'Recibir actualizaciones '
+    label: 'Recibir actualizaciones por email sobre esta decisión '
+    tooltip: 'Las actualizaciones por email te mantienen informado sobre esta decisión, como cuando es editada, cuando cierra, o cuando el resultado ha sido publicado. Desmarcar esta casilla te aseguras de que no recibirás ninguna notificación por email al respecto. '
+    helptext_on: 'Recibirás emails sobre actividad en esta decisión. '
+    helptext_off: 'No recibirás emails sobre actividad en esta decisión. '
+    subscribed: Suscripción exitosa
+    unsubscribed: Cancelación de la suscripción exitosa
+  poll_common_form:
+    title: Título
+    details: Detalles
+    options: Opciones
+    options_placeholder: Ingresa una nueva opción...
+    no_options: No has añadido ninguna opción aún
+    closing: Cerrando
+    closed: 'Cerrado '
+    start: Iniciar
+    update: Actualizar
+    loomio_school_link: |
+        <p>Encuentra más información en <a href="https://www.loomio.school/beginner/decision_tools.html" target="_blank">Loomio School</a>.</p>
+  poll_proposal_form:
+    tool_tip_expanded: |
+        <p>Una propuesta es una herramienta para buscar el acuerdo colectivo sobre una declaración o curso de acción</p>
+        <p>Los participantes pueden estar de acuerdo, abstenerse, estar en desacuerdo o bloquear, y dar una explicación, o fundamento de su posición</p>
+        <p>Un gráfico circular, permite tener una visión general de las posiciones del barco, mientras que las explicaciones o fundamentos, permiten que todas las voces sean escuchadas. </p>
+        <p>No te desanimes si al comienzo no ves que haya acuerdo, las propuestas están diseñadas para hacer visibles los problemas que necesitan resolución..</p>
+        <p>Si hay buena participación, una propuesta es un poderoso mandato para pasar a la acción.</p>
+    tool_tip_collapsed: 'Busca el acuerdo colectivo  '
+    start_header: Inicia una propuesta
+    edit_header: Edita una propuesta
+    tip: 'Busca el acuerdo colectivo a través de un proceso que permite que todas las voces sean escuchadas. '
+    title_placeholder: P.ej. ¡Vamos a la luna!
+    details_placeholder: Dé suficiente información para que todos sepan lo que significa estar de acuerdo o en desacuerdo
+    proposal_created: Propuesta iniciada
+    proposal_updated: Propuesta actualizada
+  poll_poll_form:
+    tool_tip_expanded: |
+        <p>Usa una encuesta para medir popularidad u ofrecer alternativas.</p>
+        <p>Proporciona algunas opciones de dónde elegir. Decide si los participantes eligen opciones individuales o múltiples en su respuesta.</p>
+        <p>Todos votan y pueden incluir una fundamentación si lo desean. Los resultados se visualizan en un gráfico de barras.</p>
+    tool_tip_collapsed: 'Mida la popularidad u ofrezca una opción '
+    start_header: Iniciar encuesta
+    edit_header: Editar encuesta
+    tip: Mida la popularidad de diferentes opciones
+    title_placeholder: 'Ej. ¿A dónde quieres ir de vacaciones? '
+    details_placeholder: Proporcione cualquier detalle aclaratorio que la gente pueda necesitar para contestar la pregunta.
+    add_option_placeholder: Agregar opción
+    remove_option: Quitar opción
+    multiple_choice: Opción multiple
+    multiple_choice_explained: 'Permitir a los votantes seleccionar cuantas opciones quieran. '
+    poll_created: Encuesta creada
+    poll_updated: Encuesta actualizada
+  poll_count_form:
+    tool_tip_expanded: |
+        <p>Una <em>comprobación</em> es una herramienta que tiene muchos usos posibles pero solo 2 respuestas: visto (✔) o anulación (✘). Los participantes usarán el visto (✔) para decir sí y la anulación (✘) para decir no o inseguro. </p>
+        <p>Úsalo para comprometer a la gente, como al pedir confirmación: "asistiré al evento" o "me apuntaré al barco de trabajo".</p>
+        <p>O úsalo para hacer seguimiento a una tarea: "confirmé que mis datos de contacto están correctos", o "leí el documento y dejé mis comentarios".</p>
+        <p>Una comprobación tiene un <em>objetivo</em>, que es el número de participantes que quisieras. La meta indica al barco que algo requiere más atención o cuenta con amplio acuerdo.</p>
+        <p>Un día antes de que se cierre la comprobación, se le recordará a quienes no han participado todavía.</p>
+    tool_tip_collapsed: Comprobar la participación y encontrar voluntarios
+    start_header: 'Iniciar Comprobación '
+    edit_header: 'Editar Comprobación '
+    tip: Motiva a las personas con una oferta o un pedido
+    title_placeholder: P.ej. ¿Quién quiere unirse al barco de trabajo?
+    details_placeholder: Explica lo que implica participar o brinda detalles sobre cómo participar.
+    count_created: 'Comprobación iniciada '
+    count_updated: 'Comprobación actualizada '
+  poll_dot_vote_form:
+    tool_tip_expanded: |
+        <p>El voto de puntos es una manera de priorizar un listado de alternativas.</p>
+        <p>Los participantes tienen un número limitado de ‘puntos’ que pueden distribuir del modo que quieran entre las opciones que representen sus preferencias.</p>
+        <p>El proceso da como resultado un gráfico de barras acumulativas además de las asignaciones individuales, con lo que se pueden considerar los distintos puntos de vista.</p>
+    tool_tip_collapsed: Priorizar opciones
+    start_header: Iniciar voto de puntos
+    edit_header: Editar voto de puntos
+    tip: 'Asignar recursos colectivamente '
+    title_placeholder: Ej. ¿Cómo debemos asignar el presupuesto?
+    details_placeholder: Proporcione cualquier detalle aclaratorio que la gente pueda necesitar para participar
+    add_option_placeholder: Agregar opción
+    dots_per_person: Puntos por persona
+    dot_vote_created: Voto de punto creado
+    dot_vote_updated: Voto de punto actualizado
+  poll_meeting_form:
+    tool_tip_expanded: |
+        <p>Usa una coordinación de horario para saber cuándo hay disponibilidad de la gente para reunirse.</p>
+        <p>Ingresa un listado de fechas u horas en que podrías hacer la reunión.</p>
+        <p>Los participantes marcan aquellas en que pueden asistir o pueden indicar sus circunstancias en el cuadro para que puedas actualizar las alternativas de ser necesario.</p>
+        <p>Si agregas nuevos horarios durante la coordinación de horario, se le pedirá a la gente que ya ha votado que actualice su respuesta.</p>
+        <p>Así puedes saber cuándo está disponible cada uno y decidir el momento de la reunión.</p>
+        <p>Las horas se convierten automáticamente a la zona horaria del participante.</p>
+    tool_tip_collapsed: Encuentra un tiempo para reunirse
+    start_header: Iniciar coordinación horaria
+    edit_header: Editar coordinación horaria
+    tip: 'Averigua cuando la gente está disponible para reunirse '
+    title_placeholder: Ej. ¿Cuándo debemos tener nuestra próxima reunión?
+    details_placeholder: Proporcione cualquier detalle aclaratorio que la gente pueda necesitar para participar
+    meeting_created: Coordinación horaria iniciada
+    meeting_updated: Coordinación horaria editada
+    timeslots: Horarios
+    no_options: Ingresa horarios en tu zona horaria actual ({{zone}}). Los participantes verán los horarios traducidos a sus zonas horarias locales.
+    meeting_duration: Duración de reunión
+    add_option_placeholder: Ingrese una nueva hora
+  poll_ranked_choice_form:
+    tool_tip_expanded: |
+        <p>La opción priorizada es un método de votación que permite a cada persona responder con un orden de preferencia.</p>
+        <p>Es preferente cuando el 'robo de votos' es una preocupación (ej. dos opciones bastante populares son tan similares
+        que los votos terminan siendo compartidos entre ambas), y pueden ser usadas para implementar un Condorcet o  una sistema de elección de segunda vuelta instantáneas (Instant Runoff Voting).
+        </p>
+    tool_tip_collapsed: 'Prioriza las opciones en orden '
+    start_header: 'Inicia una opción priorizada '
+    edit_header: 'Editar opción priorizada '
+    tip: 'Averigua cuando la gente está disponible para reunirse '
+    title_placeholder: Ej, ¿Quién debe ser el próximo alcalde?
+    details_placeholder: Proporcione cualquier detalle aclaratorio que la gente pueda necesitar para participar
+    meeting_created: Opción priorizada creada
+    meeting_updated: Opción priorizada actualizada
+    no_options: "No has añadido ninguna opción aún"
+    add_option_placeholder: Ingresa una nueva opción
+    minimum_stance_choices: Opciones para priorizar
+    minimum_stance_choices_helptext: 'Número de opciones que cada persona puede priorizar '
+    ranked_choice_created: 'Opción priorizada creada '
+    ranked_choice_updated: 'Opción priorizada actualizada '
+  poll_meeting_time_field:
+    new_time_slot: Nuevo horario
+    closing_hour: Hora de finalización
+  poll_proposal_vote_form:
+    default_reason_placeholder: Por favor explique su razonamiento
+    abstain_reason_placeholder: Deje a la gente saber porqué usted se está omitiendo de esta decisión
+    agree_reason_placeholder: ¿Qué te gusta de la propuesta y cómo va a beneficiar al barco?
+    commited_reason_placeholder: ¿En qué te comprometes a llevarla a cabo?
+    disagree_reason_placeholder: ¿Cómo podría mejorarse esta propuesta para que pueda apoyarla?
+    block_reason_placeholder: Explique su objeción a esta propuesta y por qué no debe seguir adelante
+    stance_created: Voto creado
+    stance_updated: Voto actualizado
+    vote: Votar
+  poll_proposal_options:
+    commited: Compromiso
+    commited_verb: "se compromete"
+    commited_meaning: Estoy de acuerdo con esta propuesta y me comprometo a llevarla a cabo
+    agree: De acuerdo
+    agree_verb: "acordado"
+    agree_meaning: Esta propuesta es suficientemente buena para ser adoptada por el barco
+    abstain: Abstenerse
+    abstain_verb: "Se abstuvo"
+    abstain_meaning: No estoy seguro, no sé o no me importa. Apoyaré el resultado de cualquier manera
+    disagree: Desacuerdo
+    disagree_verb: "en desacuerdo"
+    disagree_meaning: 'No apoyo la propuesta. No debería seguir adelante. '
+    block: Bloquear
+    block_verb: "Bloqueado "
+    block_meaning: La atención urgente del barco es necesaria para abordar una profunda preocupación
+  poll_count_options:
+    yes_meaning: He voluntariado, dado mi consentimiento, o completado la tarea
+    no_meaning: Estoy habilitado para contribuir o participar en esta decisión
+  poll_count_vote_form:
+    reason_label: Mensaje
+    reason_placeholder: 'Deja un mensaje si quieres '
+    stance_created: Voto creado
+    stance_updated: Voto actualizado
+  poll_common_percent_voted:
+    sentence: "{{percent}}% de piratas ha manifestado su posición ({{numerator}}/{{denominator}})"
+  poll_count_chart_panel:
+    out_of: de {{goal}}
+  poll_meeting_chart_panel:
+    total: Total
+  poll_poll_vote_form:
+    stance_created: Voto creado
+    stance_updated: Voto actualizado
+  poll_meeting_vote_form:
+    your_response: ¿Cuándo puedes?
+    stance_created: Disponibilidad salvada
+    stance_updated: Disponibilidad actualizada
+    reason_placeholder: Explica cuando estarás libre (u ocupado), para el caso de que el autor quiera agregar opciones.
+  poll_dot_vote_vote_form:
+    dots_remaining: "{{count}} puntos restantes."
+    too_many_dots: Usaste demasiados votos.
+    stance_created: Voto creado
+    stance_updated: Voto actualizado
+  poll_ranked_choice_vote_form:
+    helptext: 'Agarra y mueve las opciones en orden de preferencia (1 siendo tu opción más preferida). Tus {{count}} opciones serán registradas. '
+    stance_created: 'Opción registrada '
+    stance_updated: Opción actualizada
+  thread_item:
+    comment_replied_to: "<strong><a href='u/{{username}}'>{{author}}</a></strong> en respuesta a <strong> {{title}}</strong>"
+    discussion_title_edited: "<strong><a href='u/{{username}}'>{{author}}</a></strong> editó el titulo del hilo"
+    discussion_context_edited: "<strong><a href='u/{{username}}'>{{author}}</a></strong> ha editado el contexto del hilo"
+    discussion_attachments_edited: "<strong><a href='u/{{username}}'>{{author}}</a></strong> ha editado los anexos del hilo"
+    discussion_privacy_edited: "<strong><a href='u/{{username}}'>{{author}}</a></strong> cambió la privacidad del hilo"
+    discussion_edited: "<strong><a href='u/{{username}}'>{{author}}</a></strong> ha editado el hilo"
+    discussion_moved: "<strong><a href='u/{{username}}'>{{author}}</a></strong> movió el hilo de <strong>{{title}}</strong>"
+    discussion_closed: "<strong><a href='u/{{username}}'>{{author}}</a></strong> cerró el hilo"
+    discussion_reopened: "<strong><a href='u/{{username}}'>{{author}}</a></strong> reabrió el hilo"
+    new_comment: "<strong><a href='u/{{username}}'>{{author}}</a></strong>"
+    outcome_created: "<strong><a href='u/{{username}}'>{{author}}</a></strong> compartió un resultado para <strong>{{title}}</strong>"
+    poll_closed_by_user: "<strong><a href='u/{{username}}'>{{author}}</a></strong> ha cerrado el {{polltype}}: <strong>{{title}}</strong>"
+    poll_created: "<strong><a href='u/{{username}}'>{{author}}</a></strong> inició un {{polltype}}: <strong>{{title}}</strong>"
+    poll_edited: "<strong><a href='u/{{username}}'>{{author}}</a></strong> editó el {{polltype}}: <strong>{{title}}</strong>"
+    poll_expired: "{{polltype}} ha cerrado: <strong>{{title}}</strong>"
+    stance_created: "<strong><a href='u/{{username}}'>{{author}}</a></strong> votó en: <strong> {{title}}</strong>"
+    event_removed: "Eliminado del hilo"
+  poll_admin_page:
+    title: Administrador - {{title}}
+  poll_common_share_form:
+    no_group_selected: Ningún barco seleccionado
+    share_a_link: Compartir enlace
+    share_a_link_helptext: Crear un enlace compartible para distribuir. Cualquiera que tenga este enlace, podrá participar.
+    anyone_can_participate: Cualquiera con el enlace puede paticipar
+    anyone_can_participate_true: Enlace para compartir creado
+    anyone_can_participate_false: 'Enlace compartible revocado '
+    get_link: Copiar enlace
+    invite_visitor: Invitados por correo electrónico
+    invite_visitor_helptext: Invitar individuos a esta decisión por correo electrónico. Estos invitados podrán participar únicamente en esta decisión.
+    send_email: Enviar correo electrónico
+    shareable_link_created: Ahora cualquiera puede participar en esta decisión
+    shareable_link_revoked: Ahora esta decisión es solo por invitación
+    shareable_link: Enlace para compartir
+    guests_invited: Enviado a  {{count}} personas
+    guest_revoked: Acceso revocado para {{email}}
+    existing_guests: Invitados
+    new_guests: 'Nuevos emails para invitar '
+    enter_email: "ej. invitado@ejemplo.com "
+    reminded: 'Recordatorio enviado '
+    send_emails: Invitaciones enviadas ({{count}})
+    share_group: 'Barco '
+    share_group_helptext: Selecciona un barco con el que compartir esta decisión. Los piratas del barco podrán participar.
+    cannot_move_poll_helptext: Esta encuesta es parte de la discusión <strong>{{discussion}}</strong> en <strong>{{group}}</strong>, y por eso no puede moverse.
+    move_group_helptext: 'Ten cuidado! Mover una decisión fuera de un barco puede causar que algunas personas pierdan acceso a la misma. Los votos existentes aún serán contados. '
+    set_group: Establecer barco
+    group_set: Barco actualizado
+    view_poll: Ver la encuesta
+    email_invited: 'Invitación enviada a {{email}}'
+    email_exists: '{{email}} ya ha sido invitado'
+    email_empty: 'Por favor ingresa una dirección de email '
+    email_invalid: "No parece ser una dirección de email valida"
+  poll_common_publish_facebook_preview:
+    shared_a: Comparte un
+    link: enlace
+    just_now: Ahora
+  poll_common_publish_slack_preview:
+    poll_published: "publicar encuesta"
+    poll_published_with_discussion: "publicó una encuesta en <strong>{{discussion}}</strong>:"
+    view_it_on_loomio: Verlo en {{site_name}}
+    timestamp: Hoy en {{timestamp}}
+  poll_common_participant_form:
+    participant_name_placeholder: ¿Cuál es tu nombre?
+  poll_common_subscribe_form:
+    receive_updates_title: 'Tu voto ha sido enviado '
+    receive_updates_helptext: 'Si deseas recibir un correo sobre el resultado de esta encuesta, ingresa tu dirección de email debajo '
+    email_saved: 'Recibirás un email sobre el resultado de esta encuesta '
+    subscribe: Suscribir
+    no_thanks: No, gracias
+  poll_common_example_card:
+    what_is_this: "Este es un ejemplo en vivo de {{type}}. Tu eres un participante - pruebalo! "
+    helptext_before: "Cuando estés list@,"
+    helptext_link: "comienza una {{type}}"
+    helptext_after: "propia, e invita a algunas personas a probarlo."
+  share_poll_page:
+    title: Compartir encuesta - {{title}}
+  polls_page:
+    heading: Decisiones
+    heading_with_group: Decisiones en {{name}}
+    search_placeholder: Buscar encuestas...
+    polls_count: Mostrando {{count}} de {{total}} encuestas
+    start_new_poll: Nueva decisión
+    filter_placeholder: (todas las encuestas)
+    groups_placeholder: (todos los barcos)
+  auth_form:
+    sign_in_to_loomio: Entrar a {{site_name}}
+    sign_in: Entrar
+    sign_in_as: Ingresa como {{name}}
+    choose_an_account: "Entra a través de un tercero, o ingresa una dirección de correo electrónico para continuar."
+    invitation_required: Cuenta de usuario no encontrada. Nuevas cuentas de usuario son solo por invitación
+    more_providers: Más
+    email_not_present: Se necesita una dirección de correo
+    invalid_email: "Lo lamentamos, eso no parece una dirección de correo electrónico válida"
+    invalid_password: "Lo lamentamos, esa contraseña no coincide con la que tenemos archivada"
+    invalid_token: "Perdón pero no pudimos usar ese enlace para que ingreses. Haz clic debajo para que te enviemos uno nuevo"
+    email_not_found: "Lo lamentamos, no pudimos encontrar una cuenta con esa dirección de correo electrónico"
+    email_placeholder: tu@ejemplo.com
+    login_with_token: Estas listo! haz clic en el enlace debajo para ingresar.
+    login_link_helptext: |
+        Haz clic en el botón debajo y te enviaremos un enlace para ingresar instantáneamente.
+        Si deseas usar una contraseña para ingresar en el futuro, puedes ingresar una en tu página de perfil.
+    login_link_helptext_with_password: "Introduce tu contraseña, o entra a través de un correo electrónico."
+    sign_up_helptext: "Simplemente ingresa el nombre por el que te gustaría ser conocido, y te enviaremos un enlace para ingresar."
+    oauth_confirm_helptext: "Simplemente confirma tus detalles de abajo, y te enviaremos un enlace para entrar."
+    name_required: Por favor ingresa un nombre
+    account_inactive: ¡Vaya! parece que la cuenta {{email}} está desactivada. Póngase en contacto con nosotros para reactivarla.
+    welcome: Encantado de conocerte,  {{email}}!
+    welcome_back: Bienvenido nuevamente, {{name}}!
+    login_link: Entra a través de un correo electrónico
+    set_password: Configura la contraseña
+    set_password_helptext: '¿Cansado de entrar con tu email? '
+    set_password_link: Configura una contraseña
+    hello: "Hola, {{name}}!"
+    new_to_loomio: ¿Nuevo en {{site_name}}? Crea una nueva cuenta
+    create_account: Crear una cuenta
+    already_a_user: ¿Ya tienes una cuenta en {{site_name}}? Ingresa tu correo electrónico para enlazar esta cuenta con la tuya
+    link_accounts: Enlazar cuentas
+    check_your_email: ¡Revisa tu correo electrónico!
+    login_link_sent: "Ok. Te hemos enviado un correo electrónico a {{email}}, con un enlace para ingresar inmediatamente. ¡Nos vemos pronto!"
+    password_link_sent: "Te hemos enviado un correo electrónico a {{email}}, con instrucciones en como configurar tu contraseña."
+    signed_in: Entraste exitosamente
+    email_verified: Email verificado
+    name: Nombre
+    email: Correo Electrónico
+    password: Contraseña
+  install_slack:
+    modal_title: Installar Slack
+    modal_helptext: 'Primero, deberás ingresar en Slack. Te enviaremos ahí automáticamente en un segundo, o puedes hacer clic en el siguiente botón para continuar. '
+    login_to_slack: Ingresar en Slack
+    card:
+      install_title: Conectar a Slack
+      install_helptext: Loomio bot notifica a tu barco en Slack de las discusiones y decisiones en Loomio. También te ayuda a iniciar decisiones y votar desde Slack.
+      installed_title: Conectado a Slack
+      installed_helptext: Este barco ha sido conectado al <strong><a target='_blank' href='https://{{team}}.slack.com'>{{team}}</a></strong> equipo en Slack. Eventos de este barco aparecerán en el canal <strong>{{channel}}</strong>.
+      install_slack: Conectar a Slack
+      remove_identity: Eliminar esta integración
+      confirm_remove_title: Eliminar integración con Slack
+      confirm_remove_helptext: |
+          Tu canal de Slack ya no recibirá actualizaciones sobre este barco.
+          Siempre podrás volver atrás y añadirlo nuevamente.
+      identity_removed: 'Integración eliminada '
+    progress:
+      install: Instalar
+      invite: Invita
+      decide: Decide
+    install:
+      heading: 'Primer paso: Selecciona un barco de Loomio al que unirte'
+      tooltip_heading: Loomio y Slack funcionan muy bien juntos.
+      it_does_this: 'Incluye a las personas desde donde estén '
+      and_also_this: Inicia encuestas instantáneamente y recibe respuestas en tiempo real.
+      and_also_also_this: Comunica el resultado con los piratas y mejora las ideas rápidamente
+      add_to_group_helptext: Selecciona un barco para enlazarlo con Slack
+      create_new_group_helptext: ¿No tienes un barco en Loomio? Simplemente ingresa un nombre, y crearemos uno para ti
+      group_name: Nombre del barco
+      group_name_placeholder: Nombra tu nuevo barco...
+      slack_installed: Slack integrado
+      install_slack: Instalar Slack ahora
+      start_new_group: Empezar un nuevo barco
+      use_existing_group: 'Usa un barco ya existente '
+    invite:
+      heading: 'Paso 2: Crea un canal en Slack'
+      helptext: |
+          Hecho! Ahora, selecciona el canal donde quieres que mandemos notificaciones.
+      select_a_channel: Selecciona un canal
+      publish_group: Publica un mensaje de bienvenida
+      publish_group_helptext_on: Publicaremos un mensaje en ese canal para informarle a la gente como usar Loomio Bot.
+      publish_group_helptext_off: No Publicaremos nada hasta que creés una encuesta.
+      custom_message: 'Mensaje personalizado '
+      set_channel: Selecciona un canal
+    decide:
+      heading: 'Paso 3: Toma decisiones juntos '
+      helptext: "Ahora que ya está todo listo, es tiempo de empezar a tomar decisiones. Selecciona una de las opciones debajo:"
+    common:
+      do_it_later: Lo haré luego
+  slack_added_modal:
+    title: Hecho!
+    helptext: |
+        Añadiste Slack a tu barco <strong>{{name}}</strong> satisfactoriamente.
+        Desde ahora cuando cualquier persona use una de las herramientas de decisión en este barco, tendrán la opción de
+        publicar actualizaciones sobre la misma en un canal de tu equipo de Slack.
+    start_poll_now: Toma una decisión ahora
