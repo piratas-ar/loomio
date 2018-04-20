@@ -5,6 +5,8 @@ AbilityService = require 'shared/services/ability_service.coffee'
 ModalService   = require 'shared/services/modal_service.coffee'
 ThreadService  = require 'shared/services/thread_service.coffee'
 I18n           = require 'shared/services/i18n.coffee'
+AppConfig      = require 'shared/services/app_config.coffee'
+
 
 { listenForTranslations, listenForReactions } = require 'shared/helpers/listen.coffee'
 { scrollTo }                                  = require 'shared/helpers/layout.coffee'
@@ -15,6 +17,7 @@ angular.module('loomioApp').directive 'contextPanel', ['$rootScope', ($rootScope
   replace: true
   templateUrl: 'generated/components/thread_page/context_panel/context_panel.html'
   controller: ['$scope', ($scope) ->
+    $scope.padUrl = AppConfig.padUrl
 
     $scope.status = ->
       return 'pinned' if $scope.discussion.pinned

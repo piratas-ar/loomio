@@ -58,6 +58,7 @@ InitialPayload = Struct.new(:user) do
       pollTypes:         AppConfig.poll_types,
       pollColors:        AppConfig.colors,
       timeZones:         AppConfig.timezones,
+      padUrl:            ENV['PAD_URL'],
       identityProviders: AppConfig.providers.fetch('identity', []).try(:map) do |provider|
         ({ name: provider, href: send("#{provider}_oauth_path") } if ENV["#{provider.upcase}_APP_KEY"])
       end.try(:compact),

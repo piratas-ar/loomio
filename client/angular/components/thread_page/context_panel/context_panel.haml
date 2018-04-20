@@ -9,6 +9,9 @@
       %h1.lmo-h1{ng-if: "discussion.translation"}
         %translation{model: "discussion", field: "title"}
 
+    %a.md-button.md-primary.md-raised{href: "{{padUrl}}{{discussion.key}}",target:"_blank"}
+      %i.fa.fa-users{aria-hidden:"true"}
+      %span &nbsp;pad
     %context_panel_dropdown{discussion: "discussion"}
 
   .context-panel__details.md-body-1.lmo-flex--row
