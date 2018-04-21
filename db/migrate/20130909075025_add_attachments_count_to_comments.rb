@@ -1,4 +1,4 @@
-class AddAttachmentsCountToComments < ActiveRecord::Migration
+class AddAttachmentsCountToComments < ActiveRecord::Migration[4.2]
   class Comment < ActiveRecord::Base
     has_many :attachments
   end

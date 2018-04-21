@@ -1,4 +1,4 @@
-class AddPaymentPlanToGroups < ActiveRecord::Migration
+class AddPaymentPlanToGroups < ActiveRecord::Migration[4.2]
   def up
     add_column :groups, :payment_plan, :string, default: 'pwyc'
     Group.where("id > 1550").where(paying_subscription: true).update_all(payment_plan: 'subscription')

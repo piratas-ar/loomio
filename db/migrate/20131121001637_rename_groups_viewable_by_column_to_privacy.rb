@@ -1,4 +1,4 @@
-class RenameGroupsViewableByColumnToPrivacy < ActiveRecord::Migration
+class RenameGroupsViewableByColumnToPrivacy < ActiveRecord::Migration[4.2]
   def up
     rename_column :groups, :viewable_by, :privacy
     Group.reset_column_information

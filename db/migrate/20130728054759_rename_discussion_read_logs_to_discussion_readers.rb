@@ -1,4 +1,4 @@
-class RenameDiscussionReadLogsToDiscussionReaders < ActiveRecord::Migration
+class RenameDiscussionReadLogsToDiscussionReaders < ActiveRecord::Migration[4.2]
   def up
     rename_table :discussion_read_logs, :discussion_readers
     rename_column :discussion_readers, :discussion_last_viewed_at, :last_read_at

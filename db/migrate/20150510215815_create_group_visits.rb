@@ -1,4 +1,4 @@
-class CreateGroupVisits < ActiveRecord::Migration
+class CreateGroupVisits < ActiveRecord::Migration[4.2]
   def change
     create_table :group_visits do |t|
       t.uuid :visit_id

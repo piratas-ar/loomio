@@ -1,4 +1,4 @@
-class FixAgeIndexOnVotes < ActiveRecord::Migration
+class FixAgeIndexOnVotes < ActiveRecord::Migration[4.2]
   def up
     remove_index :votes, name: 'aged_votes_for_motions'
     execute <<-SQL

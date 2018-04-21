@@ -1,4 +1,4 @@
-class RemoveFollowingColumnsNowVolumeWorks < ActiveRecord::Migration
+class RemoveFollowingColumnsNowVolumeWorks < ActiveRecord::Migration[4.2]
   def change
     remove_column :memberships, :following_by_default, :boolean
     remove_column :memberships, :email_new_discussions_and_proposals

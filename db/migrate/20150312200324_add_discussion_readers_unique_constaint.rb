@@ -1,4 +1,4 @@
-class AddDiscussionReadersUniqueConstaint < ActiveRecord::Migration
+class AddDiscussionReadersUniqueConstaint < ActiveRecord::Migration[4.2]
   def change
     ActiveRecord::Base.connection.execute "DELETE FROM discussion_readers as dr1
                                               USING discussion_readers as dr2

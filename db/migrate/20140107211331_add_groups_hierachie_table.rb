@@ -1,4 +1,4 @@
-class AddGroupsHierachieTable < ActiveRecord::Migration
+class AddGroupsHierachieTable < ActiveRecord::Migration[4.2]
   def change
     create_table :group_hierarchies, id: false, force: true do |t|
       t.integer  :ancestor_id, null: false   # ID of the parent/grandparent/great-grandparent/... tag

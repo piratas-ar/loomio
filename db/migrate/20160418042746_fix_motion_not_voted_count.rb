@@ -1,4 +1,4 @@
-class FixMotionNotVotedCount < ActiveRecord::Migration
+class FixMotionNotVotedCount < ActiveRecord::Migration[4.2]
   def change
     add_column :motions, :members_count, :integer
     add_column :motions, :voters_count, :integer, null: false, default: 0

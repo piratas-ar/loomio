@@ -1,4 +1,4 @@
-class RepopulateGroupFullName < ActiveRecord::Migration
+class RepopulateGroupFullName < ActiveRecord::Migration[4.2]
   class Group < ActiveRecord::Base
     has_many :subgroups, :class_name => "Group", :foreign_key => 'parent_id'
   end

@@ -1,4 +1,4 @@
-class RemoveTemplateFromPolls < ActiveRecord::Migration
+class RemoveTemplateFromPolls < ActiveRecord::Migration[4.2]
   def change
     remove_column :polls, :poll_template_id
     remove_column :polls, :can_add_options

@@ -1,4 +1,4 @@
-class MembersCanEditContexts < ActiveRecord::Migration
+class MembersCanEditContexts < ActiveRecord::Migration[4.2]
   def up
     add_column :groups, :members_can_edit_discussions, :boolean, default: true, null: false
   end

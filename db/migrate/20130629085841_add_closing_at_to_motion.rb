@@ -1,4 +1,4 @@
-class AddClosingAtToMotion < ActiveRecord::Migration
+class AddClosingAtToMotion < ActiveRecord::Migration[4.2]
   class Motion < ActiveRecord::Base
   end
 

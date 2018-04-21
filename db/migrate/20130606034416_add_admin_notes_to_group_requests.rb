@@ -1,4 +1,4 @@
-class AddAdminNotesToGroupRequests < ActiveRecord::Migration
+class AddAdminNotesToGroupRequests < ActiveRecord::Migration[4.2]
   def up
     add_column :group_requests, :admin_notes, :text
   end

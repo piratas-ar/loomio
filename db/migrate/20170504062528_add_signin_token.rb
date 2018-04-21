@@ -1,4 +1,4 @@
-class AddSigninToken < ActiveRecord::Migration
+class AddSigninToken < ActiveRecord::Migration[4.2]
   def change
     create_table :login_tokens do |t|
       t.references :user

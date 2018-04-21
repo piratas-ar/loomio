@@ -1,5 +1,5 @@
 require 'ruby-progressbar'
-class AddAgeToVotes < ActiveRecord::Migration
+class AddAgeToVotes < ActiveRecord::Migration[4.2]
   def up
     add_column :votes, :age, :integer
     add_column :votes, :previous_vote_id, :integer unless column_exists? :votes, :previous_vote_id

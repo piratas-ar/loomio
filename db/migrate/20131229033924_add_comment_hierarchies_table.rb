@@ -1,4 +1,4 @@
-class AddCommentHierarchiesTable < ActiveRecord::Migration
+class AddCommentHierarchiesTable < ActiveRecord::Migration[4.2]
   def change
     create_table :comment_hierarchies, id: false do |t|
       t.integer  :ancestor_id, null: false   # ID of the parent/grandparent/great-grandparent/... tag

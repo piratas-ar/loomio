@@ -1,4 +1,4 @@
-class RemoveIdentityIdFromGroups < ActiveRecord::Migration
+class RemoveIdentityIdFromGroups < ActiveRecord::Migration[4.2]
   def change
     # Group.joins(:community).where.not("communities.identity_id": nil).each do |group|
     #   group.group_identities.create(identity_id: group.community.identity_id)

@@ -1,4 +1,4 @@
-class CreateDidNotVotes < ActiveRecord::Migration
+class CreateDidNotVotes < ActiveRecord::Migration[4.2]
   def change
     create_table :did_not_votes do |t|
       t.references :user

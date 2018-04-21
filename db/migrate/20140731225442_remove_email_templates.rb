@@ -1,4 +1,4 @@
-class RemoveEmailTemplates < ActiveRecord::Migration
+class RemoveEmailTemplates < ActiveRecord::Migration[4.2]
   def change
     drop_table :emails
     drop_table :email_templates

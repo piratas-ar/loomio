@@ -1,4 +1,4 @@
-class AddViewableByParentMembersColumnToGroups < ActiveRecord::Migration
+class AddViewableByParentMembersColumnToGroups < ActiveRecord::Migration[4.2]
   def up
     add_column :groups, :viewable_by_parent_members, :boolean, null: false, default: true
     Group.reset_column_information

@@ -1,4 +1,4 @@
-class AddSearchVectors < ActiveRecord::Migration
+class AddSearchVectors < ActiveRecord::Migration[4.2]
   def change
     create_table :discussion_search_vectors do |t|
       t.belongs_to  :discussion

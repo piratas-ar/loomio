@@ -1,4 +1,4 @@
-class AddTableSetupGroup < ActiveRecord::Migration
+class AddTableSetupGroup < ActiveRecord::Migration[4.2]
   def up
     create_table :group_setups, force: true do |t|
       t.integer :group_id

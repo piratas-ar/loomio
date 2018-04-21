@@ -1,4 +1,4 @@
-class CreateMotionReadLogs < ActiveRecord::Migration
+class CreateMotionReadLogs < ActiveRecord::Migration[4.2]
   def change
     create_table :motion_read_logs do |t|
       t.integer :vote_activity_when_last_read

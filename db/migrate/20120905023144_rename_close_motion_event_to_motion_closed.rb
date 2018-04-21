@@ -1,4 +1,4 @@
-class RenameCloseMotionEventToMotionClosed < ActiveRecord::Migration
+class RenameCloseMotionEventToMotionClosed < ActiveRecord::Migration[4.2]
   class Event < ActiveRecord::Base
   end
 

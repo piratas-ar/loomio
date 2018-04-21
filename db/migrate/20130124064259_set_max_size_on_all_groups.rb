@@ -1,4 +1,4 @@
-class SetMaxSizeOnAllGroups < ActiveRecord::Migration
+class SetMaxSizeOnAllGroups < ActiveRecord::Migration[4.2]
   class Group < ActiveRecord::Base
   end
 

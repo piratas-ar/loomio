@@ -1,4 +1,4 @@
-class RenameGroupRequestMetricsColumns < ActiveRecord::Migration
+class RenameGroupRequestMetricsColumns < ActiveRecord::Migration[4.2]
   def up
     rename_column :group_requests, :sectors, :sectors_metric
     rename_column :group_requests, :other_sector, :other_sectors_metric

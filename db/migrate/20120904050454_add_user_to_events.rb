@@ -1,4 +1,4 @@
-class AddUserToEvents < ActiveRecord::Migration
+class AddUserToEvents < ActiveRecord::Migration[4.2]
   class Event < ActiveRecord::Base
     belongs_to :eventable, :polymorphic => true
   end

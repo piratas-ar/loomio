@@ -1,4 +1,4 @@
-class RemoveEventsCounts < ActiveRecord::Migration
+class RemoveEventsCounts < ActiveRecord::Migration[4.2]
   def up
     remove_column :discussions, :events_count
     remove_column :discussion_readers, :read_events_count

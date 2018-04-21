@@ -1,4 +1,4 @@
-class CountDiscussionsAndMotions < ActiveRecord::Migration
+class CountDiscussionsAndMotions < ActiveRecord::Migration[4.2]
   def up
     Group.find_each do |group|
       discussion_ids = Discussion.where(group_id: group.id).pluck(:id)

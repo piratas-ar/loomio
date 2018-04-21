@@ -1,4 +1,4 @@
-class MakeDiscussionActivityNonNullable < ActiveRecord::Migration
+class MakeDiscussionActivityNonNullable < ActiveRecord::Migration[4.2]
   class Discussion < ActiveRecord::Base
   end
   def up

@@ -1,4 +1,4 @@
-class CreateAnnouncementDismissals < ActiveRecord::Migration
+class CreateAnnouncementDismissals < ActiveRecord::Migration[4.2]
   def change
     unless table_exists? :announcement_dismissals
       create_table :announcement_dismissals do |t|

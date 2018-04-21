@@ -1,4 +1,4 @@
-class ChangeEmailPreferencesColumns < ActiveRecord::Migration
+class ChangeEmailPreferencesColumns < ActiveRecord::Migration[4.2]
   def change
     rename_column :users, :subscribed_to_mention_notifications, :email_followed_threads
     rename_column :users, :subscribed_to_missed_yesterday_email, :email_missed_yesterday

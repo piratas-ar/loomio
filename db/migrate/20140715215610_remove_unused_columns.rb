@@ -1,4 +1,4 @@
-class RemoveUnusedColumns < ActiveRecord::Migration
+class RemoveUnusedColumns < ActiveRecord::Migration[4.2]
   def up
     remove_column :users, :invitation_sent_at
     remove_column :users, :invitation_accepted_at

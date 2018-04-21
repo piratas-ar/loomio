@@ -1,4 +1,4 @@
-class ChangeMotionReadLogsToMotionReaders < ActiveRecord::Migration
+class ChangeMotionReadLogsToMotionReaders < ActiveRecord::Migration[4.2]
   class Motion < ActiveRecord::Base
     has_many :votes
   end

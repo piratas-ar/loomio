@@ -1,4 +1,4 @@
-class AddSingleUseAttributeToInvitations < ActiveRecord::Migration
+class AddSingleUseAttributeToInvitations < ActiveRecord::Migration[4.2]
   def change
     add_column    :invitations, :single_use, :boolean, default: true, null: false
     remove_column :invitations, :accepted_by_id

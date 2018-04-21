@@ -1,4 +1,4 @@
-class ChangeUsersToDefaultToSubscribed < ActiveRecord::Migration
+class ChangeUsersToDefaultToSubscribed < ActiveRecord::Migration[4.2]
   def up
     change_column :users, :subscribed_to_daily_activity_email, :boolean, :null => false, :default => true
     change_column :users, :subscribed_to_proposal_closure_notifications, :boolean, :null => false, :default => true

@@ -1,4 +1,4 @@
-class AddVolumeOptions < ActiveRecord::Migration
+class AddVolumeOptions < ActiveRecord::Migration[4.2]
   def change
     add_column :memberships, :volume, :integer, default: DiscussionReader.volumes[:normal], null: false
     add_column :discussion_readers, :volume, :integer, default: nil

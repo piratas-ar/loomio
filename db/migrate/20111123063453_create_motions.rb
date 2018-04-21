@@ -1,4 +1,4 @@
-class CreateMotions < ActiveRecord::Migration
+class CreateMotions < ActiveRecord::Migration[4.2]
   def change
     create_table :motions do |t|
       t.string :name

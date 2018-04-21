@@ -1,4 +1,4 @@
-class RemoveColoumVoteActivityWhenLastReadFromMotionReadLogs < ActiveRecord::Migration
+class RemoveColoumVoteActivityWhenLastReadFromMotionReadLogs < ActiveRecord::Migration[4.2]
   def up
     remove_column :motion_read_logs, :vote_activity_when_last_read
   end

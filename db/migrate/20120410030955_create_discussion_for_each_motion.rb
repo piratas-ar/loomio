@@ -1,4 +1,4 @@
-class CreateDiscussionForEachMotion < ActiveRecord::Migration
+class CreateDiscussionForEachMotion < ActiveRecord::Migration[4.2]
   def up
     Motion.all.each do |motion|
       if motion.discussion_id == nil

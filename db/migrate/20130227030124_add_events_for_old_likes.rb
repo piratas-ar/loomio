@@ -1,4 +1,4 @@
-class AddEventsForOldLikes < ActiveRecord::Migration
+class AddEventsForOldLikes < ActiveRecord::Migration[4.2]
   def up
     likes_that_have_been_fixed = []
     CommentVote.find_each(batch_size: 100) do |like|

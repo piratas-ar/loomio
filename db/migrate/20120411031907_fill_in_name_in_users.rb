@@ -1,4 +1,4 @@
-class FillInNameInUsers < ActiveRecord::Migration
+class FillInNameInUsers < ActiveRecord::Migration[4.2]
   def up
     User.all.each do |user|
       if user.name == nil

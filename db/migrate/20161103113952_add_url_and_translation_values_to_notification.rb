@@ -1,4 +1,4 @@
-class AddUrlAndTranslationValuesToNotification < ActiveRecord::Migration
+class AddUrlAndTranslationValuesToNotification < ActiveRecord::Migration[4.2]
   def change
     add_column :notifications, :translation_values, :jsonb, null: false, default: {}
     add_column :notifications, :url, :string

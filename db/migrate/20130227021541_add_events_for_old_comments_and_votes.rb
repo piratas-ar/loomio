@@ -1,4 +1,4 @@
-class AddEventsForOldCommentsAndVotes < ActiveRecord::Migration
+class AddEventsForOldCommentsAndVotes < ActiveRecord::Migration[4.2]
   def up
     Comment.find_each(batch_size: 100) do |comment|
       unless Event.where(eventable_id: comment.id, eventable_type: "Comment").exists?

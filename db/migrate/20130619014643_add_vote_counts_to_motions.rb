@@ -1,4 +1,4 @@
-class AddVoteCountsToMotions < ActiveRecord::Migration
+class AddVoteCountsToMotions < ActiveRecord::Migration[4.2]
 
   class Motion < ActiveRecord::Base
     has_many :votes, :dependent => :destroy

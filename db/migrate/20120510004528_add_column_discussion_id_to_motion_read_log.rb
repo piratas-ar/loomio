@@ -1,4 +1,4 @@
-class AddColumnDiscussionIdToMotionReadLog < ActiveRecord::Migration
+class AddColumnDiscussionIdToMotionReadLog < ActiveRecord::Migration[4.2]
   class MotionReadLog < ActiveRecord::Base #this helps migration find table
   end
 

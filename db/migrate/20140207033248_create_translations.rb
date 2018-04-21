@@ -1,4 +1,4 @@
-class CreateTranslations < ActiveRecord::Migration
+class CreateTranslations < ActiveRecord::Migration[4.2]
   def up
     execute "CREATE EXTENSION IF NOT EXISTS hstore"
 

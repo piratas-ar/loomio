@@ -1,4 +1,4 @@
-class AddUniqueToUsername < ActiveRecord::Migration
+class AddUniqueToUsername < ActiveRecord::Migration[4.2]
   def change
     User.where("username NOT SIMILAR TO '[a-z0-9]*'").each do |user|
       user.update_attribute(:username, user.username.downcase.gsub(/[^a-z0-9]*/, ''))

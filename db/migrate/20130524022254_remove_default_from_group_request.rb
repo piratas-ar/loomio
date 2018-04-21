@@ -1,4 +1,4 @@
-class RemoveDefaultFromGroupRequest < ActiveRecord::Migration
+class RemoveDefaultFromGroupRequest < ActiveRecord::Migration[4.2]
   def up
     change_column_default(:group_requests, :cannot_contribute, nil)
   end

@@ -1,4 +1,4 @@
-class AddSetupCompletedAtToGroup < ActiveRecord::Migration
+class AddSetupCompletedAtToGroup < ActiveRecord::Migration[4.2]
   class Group < ActiveRecord::Base
   end
 

@@ -1,4 +1,4 @@
-class AddLastCommentAtToDiscussions < ActiveRecord::Migration
+class AddLastCommentAtToDiscussions < ActiveRecord::Migration[4.2]
   class Discussion < ActiveRecord::Base
   end
 

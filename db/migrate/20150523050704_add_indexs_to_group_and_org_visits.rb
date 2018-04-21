@@ -1,4 +1,4 @@
-class AddIndexsToGroupAndOrgVisits < ActiveRecord::Migration
+class AddIndexsToGroupAndOrgVisits < ActiveRecord::Migration[4.2]
   # oh the word is indices.. but too late now
   def change
     add_column :group_visits, :user_id, :integer

@@ -1,4 +1,4 @@
-class AddResponderResponseResponseAtToMembershipRequest < ActiveRecord::Migration
+class AddResponderResponseResponseAtToMembershipRequest < ActiveRecord::Migration[4.2]
   def change
     remove_column :membership_requests, :user_id
 

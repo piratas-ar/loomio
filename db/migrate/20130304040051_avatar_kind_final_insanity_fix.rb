@@ -1,4 +1,4 @@
-class AvatarKindFinalInsanityFix < ActiveRecord::Migration
+class AvatarKindFinalInsanityFix < ActiveRecord::Migration[4.2]
   def up
     users = User.where("avatar_kind != 'initials' AND avatar_kind != 'uploaded' AND avatar_kind != 'gravatar'")
     users.each do |user|

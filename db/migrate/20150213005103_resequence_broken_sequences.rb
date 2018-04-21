@@ -1,4 +1,4 @@
-class ResequenceBrokenSequences < ActiveRecord::Migration
+class ResequenceBrokenSequences < ActiveRecord::Migration[4.2]
 
   def change
     Event.where(kind: 'new_discussion').update_all(discussion_id: nil)

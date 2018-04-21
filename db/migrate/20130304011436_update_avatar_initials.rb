@@ -1,4 +1,4 @@
-class UpdateAvatarInitials < ActiveRecord::Migration
+class UpdateAvatarInitials < ActiveRecord::Migration[4.2]
   class User < ActiveRecord::Base
   end
 

@@ -1,4 +1,4 @@
-class AddFollowingSupport < ActiveRecord::Migration
+class AddFollowingSupport < ActiveRecord::Migration[4.2]
   def change
     add_column    :memberships, :following_by_default, :boolean, default: false, null: false
     remove_column :discussion_readers, :following

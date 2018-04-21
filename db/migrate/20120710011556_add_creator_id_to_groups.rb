@@ -1,4 +1,4 @@
-class AddCreatorIdToGroups < ActiveRecord::Migration
+class AddCreatorIdToGroups < ActiveRecord::Migration[4.2]
   class Membership < ActiveRecord::Base
     MEMBER_ACCESS_LEVELS = ['member', 'admin']
   end

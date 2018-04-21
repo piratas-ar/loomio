@@ -1,4 +1,4 @@
-class CreateDidNotVotesForMotions < ActiveRecord::Migration
+class CreateDidNotVotesForMotions < ActiveRecord::Migration[4.2]
   def up
     Motion.all.each do |motion|
       motion.group.users.each do |user|

@@ -1,4 +1,4 @@
-class AddTokenToGroupRequests < ActiveRecord::Migration
+class AddTokenToGroupRequests < ActiveRecord::Migration[4.2]
   class Invitation < ActiveRecord::Base
   end
   class GroupRequest < ActiveRecord::Base

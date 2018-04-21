@@ -1,4 +1,4 @@
-class AddLastVoteAtToMotions < ActiveRecord::Migration
+class AddLastVoteAtToMotions < ActiveRecord::Migration[4.2]
  def up
     add_column :motions, :last_vote_at, :datetime
     remove_column :motions, :activity

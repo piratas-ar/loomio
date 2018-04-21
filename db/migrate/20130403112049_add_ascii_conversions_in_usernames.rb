@@ -1,4 +1,4 @@
-class AddAsciiConversionsInUsernames < ActiveRecord::Migration
+class AddAsciiConversionsInUsernames < ActiveRecord::Migration[4.2]
   class User < ActiveRecord::Base
     def generate_username
       ensure_name_entry if name.nil?

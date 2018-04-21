@@ -1,4 +1,4 @@
-class UpdateCounterCaches < ActiveRecord::Migration
+class UpdateCounterCaches < ActiveRecord::Migration[4.2]
   def up
     remove_column :groups, :motions_count
     add_column :discussions, :motions_count, :integer, default: 0

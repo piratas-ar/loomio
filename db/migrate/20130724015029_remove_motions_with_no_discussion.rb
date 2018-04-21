@@ -1,4 +1,4 @@
-class RemoveMotionsWithNoDiscussion < ActiveRecord::Migration
+class RemoveMotionsWithNoDiscussion < ActiveRecord::Migration[4.2]
   class Discussion < ActiveRecord::Base
     has_many :motions, :dependent => :destroy
     has_many :events, :as => :eventable, :dependent => :destroy

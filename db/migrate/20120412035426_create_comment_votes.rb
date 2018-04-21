@@ -1,4 +1,4 @@
-class CreateCommentVotes < ActiveRecord::Migration
+class CreateCommentVotes < ActiveRecord::Migration[4.2]
   def change
     create_table :comment_votes do |t|
       t.references :comment

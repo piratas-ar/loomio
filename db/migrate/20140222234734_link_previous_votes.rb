@@ -1,4 +1,4 @@
-class LinkPreviousVotes < ActiveRecord::Migration
+class LinkPreviousVotes < ActiveRecord::Migration[4.2]
   class Vote < ActiveRecord::Base
   end
 

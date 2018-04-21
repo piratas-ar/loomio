@@ -1,4 +1,4 @@
-class RemoveNoVoteCountFromMotion < ActiveRecord::Migration
+class RemoveNoVoteCountFromMotion < ActiveRecord::Migration[4.2]
   def up
     remove_column :motions, :no_vote_count
   end

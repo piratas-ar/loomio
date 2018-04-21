@@ -1,4 +1,4 @@
-class ChangeColumnExpectedSizeToStringInGroupRequest < ActiveRecord::Migration
+class ChangeColumnExpectedSizeToStringInGroupRequest < ActiveRecord::Migration[4.2]
   class GroupRequest < ActiveRecord::Base
   end
   def up

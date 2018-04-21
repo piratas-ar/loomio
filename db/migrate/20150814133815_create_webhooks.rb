@@ -1,4 +1,4 @@
-class CreateWebhooks < ActiveRecord::Migration
+class CreateWebhooks < ActiveRecord::Migration[4.2]
   def change
     if ActiveRecord::Base.connection.table_exists? :webhooks
       drop_table :webhooks

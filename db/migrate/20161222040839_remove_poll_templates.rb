@@ -1,4 +1,4 @@
-class RemovePollTemplates < ActiveRecord::Migration
+class RemovePollTemplates < ActiveRecord::Migration[4.2]
   def change
     drop_table :poll_templates, {}
     drop_table :poll_poll_options, {}

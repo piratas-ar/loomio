@@ -1,4 +1,4 @@
-class ConvertAccessLevelToBoolean < ActiveRecord::Migration
+class ConvertAccessLevelToBoolean < ActiveRecord::Migration[4.2]
   def up
     add_column :memberships, :admin, :boolean, default: false, null: false
 

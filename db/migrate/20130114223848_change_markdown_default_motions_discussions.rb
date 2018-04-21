@@ -1,4 +1,4 @@
-class ChangeMarkdownDefaultMotionsDiscussions < ActiveRecord::Migration
+class ChangeMarkdownDefaultMotionsDiscussions < ActiveRecord::Migration[4.2]
   def up
     change_column :discussions, :uses_markdown, :boolean, default: true, null: false
     change_column :motions, :uses_markdown, :boolean, default: true, null: false

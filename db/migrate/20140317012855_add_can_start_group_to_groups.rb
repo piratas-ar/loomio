@@ -1,4 +1,4 @@
-class AddCanStartGroupToGroups < ActiveRecord::Migration
+class AddCanStartGroupToGroups < ActiveRecord::Migration[4.2]
   def up
     add_column :groups, :can_start_group, :boolean, default: true
   end

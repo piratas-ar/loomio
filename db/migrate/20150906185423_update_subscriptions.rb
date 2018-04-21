@@ -1,4 +1,4 @@
-class UpdateSubscriptions < ActiveRecord::Migration
+class UpdateSubscriptions < ActiveRecord::Migration[4.2]
   def change
     rename_column :subscriptions, :expires_on, :expires_at
     add_column :subscriptions, :trial_ended_at, :date

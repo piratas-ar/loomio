@@ -1,4 +1,4 @@
-class ResetLastItemAt < ActiveRecord::Migration
+class ResetLastItemAt < ActiveRecord::Migration[4.2]
   def change
     puts "Resetting last_item_at, last_sequence_id for all discussions"
     Event.select('DISTINCT ON (discussion_id) id, *').

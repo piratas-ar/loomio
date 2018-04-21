@@ -1,4 +1,4 @@
-class RemoveDisableDiscussionFromMotions < ActiveRecord::Migration
+class RemoveDisableDiscussionFromMotions < ActiveRecord::Migration[4.2]
   def up
     remove_column :motions, :disable_discussion
   end

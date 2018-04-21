@@ -1,4 +1,4 @@
-class RemoveUserFromGroup < ActiveRecord::Migration
+class RemoveUserFromGroup < ActiveRecord::Migration[4.2]
   def up
     remove_column :groups, :user_id
   end

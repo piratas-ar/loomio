@@ -1,4 +1,4 @@
-class AddNetwork < ActiveRecord::Migration
+class AddNetwork < ActiveRecord::Migration[4.2]
   def change
     create_table :networks do |t|
       t.string :name, null: false

@@ -1,4 +1,4 @@
-class ChangeReferralToNotNull < ActiveRecord::Migration
+class ChangeReferralToNotNull < ActiveRecord::Migration[4.2]
   def up
     non_referral_group_ids = GroupRequest.pluck(:group_id).compact;
     Group.parents_only.where('groups.id NOT IN (?)', non_referral_group_ids).update_all(is_referral: true)

@@ -1,4 +1,4 @@
-class SetGroupEmailsOnByDefault < ActiveRecord::Migration
+class SetGroupEmailsOnByDefault < ActiveRecord::Migration[4.2]
   class Membership < ActiveRecord::Base
   end
 

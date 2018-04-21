@@ -1,4 +1,4 @@
-class CreateEmailTemplateSentToGroups < ActiveRecord::Migration
+class CreateEmailTemplateSentToGroups < ActiveRecord::Migration[4.2]
   def change
     create_table :email_template_sent_to_groups do |t|
       t.references :email_template

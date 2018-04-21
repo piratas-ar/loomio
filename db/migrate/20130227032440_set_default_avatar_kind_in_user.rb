@@ -1,4 +1,4 @@
-class SetDefaultAvatarKindInUser < ActiveRecord::Migration
+class SetDefaultAvatarKindInUser < ActiveRecord::Migration[4.2]
   class User < ActiveRecord::Base
   end
 

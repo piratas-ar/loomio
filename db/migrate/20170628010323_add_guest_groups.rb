@@ -1,4 +1,4 @@
-class AddGuestGroups < ActiveRecord::Migration
+class AddGuestGroups < ActiveRecord::Migration[4.2]
   def change
     add_column :groups, :type, :string, default: "FormalGroup", null: false
     add_column :polls, :guest_group_id, :integer

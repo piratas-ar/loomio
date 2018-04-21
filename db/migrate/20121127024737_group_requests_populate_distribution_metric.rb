@@ -1,4 +1,4 @@
-class GroupRequestsPopulateDistributionMetric < ActiveRecord::Migration
+class GroupRequestsPopulateDistributionMetric < ActiveRecord::Migration[4.2]
   class GroupRequest < ActiveRecord::Base
   end
 

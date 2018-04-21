@@ -1,4 +1,4 @@
-class CreateCampaignSignups < ActiveRecord::Migration
+class CreateCampaignSignups < ActiveRecord::Migration[4.2]
   def change
     create_table :campaign_signups do |t|
       t.references :campaign

@@ -1,4 +1,4 @@
-class AddEventableToEvents < ActiveRecord::Migration
+class AddEventableToEvents < ActiveRecord::Migration[4.2]
   def up
     add_column :events, :eventable_id, :integer
     add_column :events, :eventable_type, :string

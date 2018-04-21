@@ -1,4 +1,4 @@
-class FixNotifications < ActiveRecord::Migration
+class FixNotifications < ActiveRecord::Migration[4.2]
   def change
     Event.where(kind: %w(
       comment_liked

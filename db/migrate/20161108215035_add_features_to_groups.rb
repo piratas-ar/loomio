@@ -1,4 +1,4 @@
-class AddFeaturesToGroups < ActiveRecord::Migration
+class AddFeaturesToGroups < ActiveRecord::Migration[4.2]
   def change
     add_column :groups, :features, :jsonb, null: false, default: {}
     Group.where("enabled_beta_features like ?", "%export%").update_all(features: {dataExport: true}.to_json)

@@ -1,4 +1,4 @@
-class AddNewIndexesSept02 < ActiveRecord::Migration
+class AddNewIndexesSept02 < ActiveRecord::Migration[4.2]
   def change
     add_index :discussions, :last_activity_at
     add_index :discussions, :private

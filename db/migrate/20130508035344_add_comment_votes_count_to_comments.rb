@@ -1,4 +1,4 @@
-class AddCommentVotesCountToComments < ActiveRecord::Migration
+class AddCommentVotesCountToComments < ActiveRecord::Migration[4.2]
   class Comment < ActiveRecord::Base
   end
 

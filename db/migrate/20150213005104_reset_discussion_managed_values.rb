@@ -1,4 +1,4 @@
-class ResetDiscussionManagedValues < ActiveRecord::Migration
+class ResetDiscussionManagedValues < ActiveRecord::Migration[4.2]
   def change
     raise "migration does not work" if Event.where('discussion_id is not null').where('sequence_id is null').any?
 

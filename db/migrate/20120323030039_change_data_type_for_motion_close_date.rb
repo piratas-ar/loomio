@@ -1,4 +1,4 @@
-class ChangeDataTypeForMotionCloseDate < ActiveRecord::Migration
+class ChangeDataTypeForMotionCloseDate < ActiveRecord::Migration[4.2]
   def up
     change_table :motions do |t|
       t.change :close_date, :datetime

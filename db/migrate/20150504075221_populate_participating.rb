@@ -1,4 +1,4 @@
-class PopulateParticipating < ActiveRecord::Migration
+class PopulateParticipating < ActiveRecord::Migration[4.2]
   class DiscussionService
     define_singleton_method :mark_as_participating!, ->{}
   end

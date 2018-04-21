@@ -1,4 +1,4 @@
-class AddNameAndManagerEmailToCampaigns < ActiveRecord::Migration
+class AddNameAndManagerEmailToCampaigns < ActiveRecord::Migration[4.2]
   class Campaign < ActiveRecord::Base
   end
 

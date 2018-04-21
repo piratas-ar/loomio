@@ -1,4 +1,4 @@
-class RemoveHelpNoticesFromUser < ActiveRecord::Migration
+class RemoveHelpNoticesFromUser < ActiveRecord::Migration[4.2]
   def up
     remove_column :users, :has_read_discussion_notice
     remove_column :users, :has_read_group_notice

@@ -1,4 +1,4 @@
-class CreateInvitations < ActiveRecord::Migration
+class CreateInvitations < ActiveRecord::Migration[4.2]
   def change
     if table_exists? :invitations
       drop_table :invitations

@@ -1,4 +1,4 @@
-class PopulateGroupCreator < ActiveRecord::Migration
+class PopulateGroupCreator < ActiveRecord::Migration[4.2]
   #def change
     ##for each group assign first admin with membership and assign as creator
     ##could there be a Membership level of creator?

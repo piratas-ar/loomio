@@ -1,4 +1,4 @@
-class CreateGroupIdentities < ActiveRecord::Migration
+class CreateGroupIdentities < ActiveRecord::Migration[4.2]
   def change
     create_table :group_identities do |t|
       t.integer :group_id, null: false

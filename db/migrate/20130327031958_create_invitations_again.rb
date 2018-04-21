@@ -1,4 +1,4 @@
-class CreateInvitationsAgain < ActiveRecord::Migration
+class CreateInvitationsAgain < ActiveRecord::Migration[4.2]
   def up
     create_table :invitations do |t|
       t.string :recipient_email, null: false

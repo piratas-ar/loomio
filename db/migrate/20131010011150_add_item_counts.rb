@@ -1,4 +1,4 @@
-class AddItemCounts < ActiveRecord::Migration
+class AddItemCounts < ActiveRecord::Migration[4.2]
   def up
     add_column :discussions, :items_count, :integer,  default: 0, null: false
     add_column :discussion_readers, :read_items_count, :integer, default: 0, null: false

@@ -1,4 +1,4 @@
-class AddActivityToDiscussion < ActiveRecord::Migration
+class AddActivityToDiscussion < ActiveRecord::Migration[4.2]
   def up
     add_column :discussions, :activity, :integer, default: 0
     execute "UPDATE discussions d SET activity = (SELECT discussion_activity FROM motions m WHERE d.id = m.discussion_id)"

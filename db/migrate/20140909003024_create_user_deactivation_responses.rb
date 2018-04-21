@@ -1,4 +1,4 @@
-class CreateUserDeactivationResponses < ActiveRecord::Migration
+class CreateUserDeactivationResponses < ActiveRecord::Migration[4.2]
   def change
     create_table :user_deactivation_responses do |t|
       t.references :user, index: true

@@ -1,4 +1,4 @@
-class RemoveValueFromCommentVotes < ActiveRecord::Migration
+class RemoveValueFromCommentVotes < ActiveRecord::Migration[4.2]
   def up
     remove_column :comment_votes, :value
   end

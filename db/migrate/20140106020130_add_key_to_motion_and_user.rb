@@ -1,4 +1,4 @@
-class AddKeyToMotionAndUser < ActiveRecord::Migration
+class AddKeyToMotionAndUser < ActiveRecord::Migration[4.2]
     def up
       add_column :users,   :key, :string
       add_column :motions, :key, :string

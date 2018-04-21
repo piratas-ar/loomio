@@ -1,4 +1,4 @@
-class AddLastEventAtToDiscussions < ActiveRecord::Migration
+class AddLastEventAtToDiscussions < ActiveRecord::Migration[4.2]
   def up
     add_column :discussions, :last_activity_at, :datetime
     Discussion.update_all('last_activity_at = last_comment_at')

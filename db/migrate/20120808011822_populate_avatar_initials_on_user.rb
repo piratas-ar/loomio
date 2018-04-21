@@ -1,4 +1,4 @@
-class PopulateAvatarInitialsOnUser < ActiveRecord::Migration
+class PopulateAvatarInitialsOnUser < ActiveRecord::Migration[4.2]
   class User < ActiveRecord::Base
   end
 

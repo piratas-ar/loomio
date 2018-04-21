@@ -1,4 +1,4 @@
-class AddCommentsCountToDiscussions < ActiveRecord::Migration
+class AddCommentsCountToDiscussions < ActiveRecord::Migration[4.2]
   class Discsussion < ActiveRecord::Base
     has_many :comments
   end

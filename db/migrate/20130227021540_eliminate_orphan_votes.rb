@@ -1,4 +1,4 @@
-class EliminateOrphanVotes < ActiveRecord::Migration
+class EliminateOrphanVotes < ActiveRecord::Migration[4.2]
   def up
     destroyed_votes = []
     Vote.includes(:motion).find_each(batch_size: 100) do |vote|

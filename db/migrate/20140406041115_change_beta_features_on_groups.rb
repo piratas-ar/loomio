@@ -1,4 +1,4 @@
-class ChangeBetaFeaturesOnGroups < ActiveRecord::Migration
+class ChangeBetaFeaturesOnGroups < ActiveRecord::Migration[4.2]
   def up
     remove_column :groups, :beta_features
     add_column :groups, :enabled_beta_features, :text

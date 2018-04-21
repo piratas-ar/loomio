@@ -1,4 +1,4 @@
-class AddDiscussionToMotion < ActiveRecord::Migration
+class AddDiscussionToMotion < ActiveRecord::Migration[4.2]
   def up
     change_table :motions do |t|
       t.references :discussion

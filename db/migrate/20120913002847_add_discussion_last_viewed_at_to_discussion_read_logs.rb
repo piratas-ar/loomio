@@ -1,4 +1,4 @@
-class AddDiscussionLastViewedAtToDiscussionReadLogs < ActiveRecord::Migration
+class AddDiscussionLastViewedAtToDiscussionReadLogs < ActiveRecord::Migration[4.2]
   def up
     add_column :discussion_read_logs, :discussion_last_viewed_at, :datetime, :default => Time.now
     remove_column :discussion_read_logs, :discussion_activity_when_last_read

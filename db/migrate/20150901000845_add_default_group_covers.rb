@@ -1,4 +1,4 @@
-class AddDefaultGroupCovers < ActiveRecord::Migration
+class AddDefaultGroupCovers < ActiveRecord::Migration[4.2]
   def change
     create_table :default_group_covers do |t|
       t.attachment :cover_photo

@@ -1,4 +1,4 @@
-class AddNoVoteCountToMotions < ActiveRecord::Migration
+class AddNoVoteCountToMotions < ActiveRecord::Migration[4.2]
   def up
     add_column :motions, :no_vote_count, :integer
     Motion.reset_column_information

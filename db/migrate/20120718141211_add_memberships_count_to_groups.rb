@@ -1,4 +1,4 @@
-class AddMembershipsCountToGroups < ActiveRecord::Migration
+class AddMembershipsCountToGroups < ActiveRecord::Migration[4.2]
   def up
     add_column :groups, :memberships_count, :integer, :default => 0, :null => false
     Group.reset_column_information

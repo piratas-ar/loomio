@@ -1,4 +1,4 @@
-class AddDefaultCoverData < ActiveRecord::Migration
+class AddDefaultCoverData < ActiveRecord::Migration[4.2]
   def up
     if !Rails.env.test?
       File.readlines(File.join(__dir__, "../default_group_covers.txt")).map do |url|

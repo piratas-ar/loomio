@@ -1,4 +1,4 @@
-class AddUndecidedCounts < ActiveRecord::Migration
+class AddUndecidedCounts < ActiveRecord::Migration[4.2]
   def change
     add_column :polls, :undecided_user_count, :integer, default: 0, null: false
     add_column :polls, :undecided_visitor_count, :integer, default: 0, null: false

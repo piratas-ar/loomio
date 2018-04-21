@@ -1,4 +1,4 @@
-class FixSetupCompletedAtAndRemoveDiscussionsForGroupsThatHaveNotStarted < ActiveRecord::Migration
+class FixSetupCompletedAtAndRemoveDiscussionsForGroupsThatHaveNotStarted < ActiveRecord::Migration[4.2]
   class Group < ActiveRecord::Base
     has_many :discussions
   end

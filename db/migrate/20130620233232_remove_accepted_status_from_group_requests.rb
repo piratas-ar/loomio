@@ -1,4 +1,4 @@
-class RemoveAcceptedStatusFromGroupRequests < ActiveRecord::Migration
+class RemoveAcceptedStatusFromGroupRequests < ActiveRecord::Migration[4.2]
   class GroupRequest < ActiveRecord::Base
   end
 

@@ -1,4 +1,4 @@
-class ImprovePollSearchIndexing < ActiveRecord::Migration
+class ImprovePollSearchIndexing < ActiveRecord::Migration[4.2]
   def change
     add_index :poll_communities, :poll_id
     add_index :poll_communities, :community_id

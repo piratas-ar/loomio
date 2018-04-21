@@ -1,4 +1,4 @@
-class AddCohortTables < ActiveRecord::Migration
+class AddCohortTables < ActiveRecord::Migration[4.2]
   def change
     create_table :cohorts do |t|
       t.date :start_on

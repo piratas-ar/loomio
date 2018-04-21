@@ -1,4 +1,4 @@
-class AddDiscussionSearchIndex < ActiveRecord::Migration
+class AddDiscussionSearchIndex < ActiveRecord::Migration[4.2]
   def change
     add_index :discussion_search_vectors, :discussion_id
     add_index :users, :deactivated_at

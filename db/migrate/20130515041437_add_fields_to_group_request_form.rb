@@ -1,4 +1,4 @@
-class AddFieldsToGroupRequestForm < ActiveRecord::Migration
+class AddFieldsToGroupRequestForm < ActiveRecord::Migration[4.2]
   def up
     add_column :group_requests, :why_do_you_want, :text
     add_column :group_requests, :group_core_purpose, :text

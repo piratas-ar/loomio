@@ -1,4 +1,4 @@
-class AddGroupIdToPolls < ActiveRecord::Migration
+class AddGroupIdToPolls < ActiveRecord::Migration[4.2]
   def change
     add_column :polls, :group_id, :integer, null: true, index: true
 

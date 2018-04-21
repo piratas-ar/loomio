@@ -1,4 +1,4 @@
-class FillInDiscussionIdForEachEventActivityItem < ActiveRecord::Migration
+class FillInDiscussionIdForEachEventActivityItem < ActiveRecord::Migration[4.2]
   class Event < ActiveRecord::Base
     KINDS = %w[new_discussion discussion_title_edited discussion_description_edited new_comment
            new_motion new_vote motion_blocked motion_close_date_edited

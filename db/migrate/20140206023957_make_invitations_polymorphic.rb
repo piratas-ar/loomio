@@ -1,5 +1,5 @@
 require 'ruby-progressbar'
-class MakeInvitationsPolymorphic < ActiveRecord::Migration
+class MakeInvitationsPolymorphic < ActiveRecord::Migration[4.2]
   def up
     change_table :invitations do |t|
       t.references :invitable, polymorphic: true

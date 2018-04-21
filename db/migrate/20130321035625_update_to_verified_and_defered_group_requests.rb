@@ -1,4 +1,4 @@
-class UpdateToVerifiedAndDeferedGroupRequests < ActiveRecord::Migration
+class UpdateToVerifiedAndDeferedGroupRequests < ActiveRecord::Migration[4.2]
   class GroupRequest < ActiveRecord::Base
   end
 

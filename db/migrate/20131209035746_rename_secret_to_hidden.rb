@@ -1,4 +1,4 @@
-class RenameSecretToHidden < ActiveRecord::Migration
+class RenameSecretToHidden < ActiveRecord::Migration[4.2]
   def up
     Group.where(privacy: 'secret').update_all("privacy = 'hidden'")
   end

@@ -1,4 +1,4 @@
-class ChangeGroupDescriptionToText < ActiveRecord::Migration
+class ChangeGroupDescriptionToText < ActiveRecord::Migration[4.2]
   def up
     change_column :groups, :description, :text
   end

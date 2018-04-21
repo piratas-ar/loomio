@@ -1,4 +1,4 @@
-class AddMotionLastViewedAtToMotionReadLogs < ActiveRecord::Migration
+class AddMotionLastViewedAtToMotionReadLogs < ActiveRecord::Migration[4.2]
   class MotionReadLog < ActiveRecord::Base
   end
   def up

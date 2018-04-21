@@ -1,4 +1,4 @@
-class AddDidNotVotesCountToMotions < ActiveRecord::Migration
+class AddDidNotVotesCountToMotions < ActiveRecord::Migration[4.2]
   class Motion < ActiveRecord::Base
     has_many :did_not_votes
   end

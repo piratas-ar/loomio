@@ -1,4 +1,4 @@
-class RenameMotionTypeToPhase < ActiveRecord::Migration
+class RenameMotionTypeToPhase < ActiveRecord::Migration[4.2]
   def up
     rename_column :motions, :motion_type, :phase
   end

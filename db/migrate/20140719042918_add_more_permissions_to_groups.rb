@@ -1,4 +1,4 @@
-class AddMorePermissionsToGroups < ActiveRecord::Migration
+class AddMorePermissionsToGroups < ActiveRecord::Migration[4.2]
   def change
     add_column :groups, :members_can_raise_motions,     :boolean, default: true, null: false
     add_column :groups, :members_can_vote,              :boolean, default: true, null: false

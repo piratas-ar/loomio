@@ -1,4 +1,4 @@
-class AddDiscussionMulticolumnIndexes < ActiveRecord::Migration
+class AddDiscussionMulticolumnIndexes < ActiveRecord::Migration[4.2]
   def change
     add_index :discussions, [:is_deleted, :archived_at]
     add_index :discussion_readers, [:user_id, :volume]

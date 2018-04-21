@@ -1,4 +1,4 @@
-class RemoveFacilitatorFromMotions < ActiveRecord::Migration
+class RemoveFacilitatorFromMotions < ActiveRecord::Migration[4.2]
   def up
     remove_column :motions, :facilitator_id
   end

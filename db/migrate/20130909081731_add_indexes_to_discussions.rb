@@ -1,4 +1,4 @@
-class AddIndexesToDiscussions < ActiveRecord::Migration
+class AddIndexesToDiscussions < ActiveRecord::Migration[4.2]
   def change
     add_index :discussions, [:is_deleted, :id]
     add_index :discussions, [:is_deleted, :group_id]

@@ -1,4 +1,4 @@
-class AddIndexToAllCreatedAts < ActiveRecord::Migration
+class AddIndexToAllCreatedAts < ActiveRecord::Migration[4.2]
   def change
     #remove = %w[announcements campaigns group_setups subscriptions]
 

@@ -1,4 +1,4 @@
-class AddArchivedAtToMemberships < ActiveRecord::Migration
+class AddArchivedAtToMemberships < ActiveRecord::Migration[4.2]
 
   class Group < ActiveRecord::Base
     has_many :memberships

@@ -1,4 +1,4 @@
-class MoveMembershipsToMembershipRequests < ActiveRecord::Migration
+class MoveMembershipsToMembershipRequests < ActiveRecord::Migration[4.2]
 
   class Membership < ActiveRecord::Base
     belongs_to :user, :counter_cache => true

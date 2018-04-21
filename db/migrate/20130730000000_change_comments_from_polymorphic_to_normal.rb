@@ -1,4 +1,4 @@
-class ChangeCommentsFromPolymorphicToNormal < ActiveRecord::Migration
+class ChangeCommentsFromPolymorphicToNormal < ActiveRecord::Migration[4.2]
   def up
     remove_column :comments, :commentable_type
     rename_column :comments, :commentable_id, :discussion_id

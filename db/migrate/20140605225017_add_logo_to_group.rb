@@ -1,4 +1,4 @@
-class AddLogoToGroup < ActiveRecord::Migration
+class AddLogoToGroup < ActiveRecord::Migration[4.2]
   def self.up
     add_attachment :groups, :logo
   end

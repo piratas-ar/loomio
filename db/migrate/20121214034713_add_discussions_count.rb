@@ -1,4 +1,4 @@
-class AddDiscussionsCount < ActiveRecord::Migration
+class AddDiscussionsCount < ActiveRecord::Migration[4.2]
   class Group < ActiveRecord::Base
     has_many :discussions
   end

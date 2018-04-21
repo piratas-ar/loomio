@@ -1,4 +1,4 @@
-class CreateGroupRequests < ActiveRecord::Migration
+class CreateGroupRequests < ActiveRecord::Migration[4.2]
   def change
     create_table :group_requests, :force => true do |t|
       t.string :name

@@ -1,4 +1,4 @@
-class RenamePersonasToAuthentications < ActiveRecord::Migration
+class RenamePersonasToAuthentications < ActiveRecord::Migration[4.2]
   def up
     rename_table :personas, :omniauth_identities
     add_column :omniauth_identities, :provider, :string

@@ -1,4 +1,4 @@
-class RemoveMembersCanEditOwnMotions < ActiveRecord::Migration
+class RemoveMembersCanEditOwnMotions < ActiveRecord::Migration[4.2]
   def up
     remove_column :groups, :members_can_edit_own_motions
   end

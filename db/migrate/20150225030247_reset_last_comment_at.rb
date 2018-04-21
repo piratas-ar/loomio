@@ -1,4 +1,4 @@
-class ResetLastCommentAt < ActiveRecord::Migration
+class ResetLastCommentAt < ActiveRecord::Migration[4.2]
   def change
     puts "Resetting last_comment_at for all discussions"
     Comment.select('DISTINCT ON (discussion_id) id, *').order('discussion_id, comments.created_at desc').each do |comment|

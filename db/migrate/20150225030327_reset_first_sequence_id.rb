@@ -1,4 +1,4 @@
-class ResetFirstSequenceId < ActiveRecord::Migration
+class ResetFirstSequenceId < ActiveRecord::Migration[4.2]
   def change
     #first_sequence_id
     puts "Resetting first_sequence_id for all discussions"

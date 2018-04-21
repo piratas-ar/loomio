@@ -1,4 +1,4 @@
-class ResetSystemMessageFlag < ActiveRecord::Migration
+class ResetSystemMessageFlag < ActiveRecord::Migration[4.2]
   class User < ActiveRecord::Base
   end
 

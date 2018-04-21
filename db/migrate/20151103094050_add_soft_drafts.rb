@@ -1,4 +1,4 @@
-class AddSoftDrafts < ActiveRecord::Migration
+class AddSoftDrafts < ActiveRecord::Migration[4.2]
   def change
     create_table :drafts do |t|
       t.belongs_to :user

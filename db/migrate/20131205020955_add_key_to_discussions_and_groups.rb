@@ -1,4 +1,4 @@
-class AddKeyToDiscussionsAndGroups < ActiveRecord::Migration
+class AddKeyToDiscussionsAndGroups < ActiveRecord::Migration[4.2]
   def up
     add_column :discussions, :key, :string
     add_column :groups,      :key, :string

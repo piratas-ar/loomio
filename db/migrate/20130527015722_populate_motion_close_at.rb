@@ -1,4 +1,4 @@
-class PopulateMotionCloseAt < ActiveRecord::Migration
+class PopulateMotionCloseAt < ActiveRecord::Migration[4.2]
   class Motion < ActiveRecord::Base
   end
 

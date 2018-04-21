@@ -1,4 +1,4 @@
-class AddLastSequenceIdToDiscussions < ActiveRecord::Migration
+class AddLastSequenceIdToDiscussions < ActiveRecord::Migration[4.2]
   def change
     add_column :discussions, :last_sequence_id, :integer, default: 0, null: false
     add_column :discussions, :first_sequence_id, :integer, default: 0, null: false

@@ -1,4 +1,4 @@
-class ChangeMaxSizeToIntegerNotNull < ActiveRecord::Migration
+class ChangeMaxSizeToIntegerNotNull < ActiveRecord::Migration[4.2]
   def up
     Group.where(max_size: nil).update_all(max_size: 300)
     change_column :groups, :max_size, :integer, null: false, default: 300

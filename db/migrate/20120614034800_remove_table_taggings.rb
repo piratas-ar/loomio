@@ -1,4 +1,4 @@
-class RemoveTableTaggings < ActiveRecord::Migration
+class RemoveTableTaggings < ActiveRecord::Migration[4.2]
   def up
     remove_index(:taggings, :name => "index_taggings_on_taggable_id_and_taggable_type_and_context")
     remove_index(:taggings, :name => "index_taggings_on_tag_id")

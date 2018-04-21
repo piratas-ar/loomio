@@ -1,4 +1,4 @@
-class GenerateEmailAPIKeysForUsers < ActiveRecord::Migration
+class GenerateEmailAPIKeysForUsers < ActiveRecord::Migration[4.2]
   def up
     User.reset_column_information
     User.find_each do |user|

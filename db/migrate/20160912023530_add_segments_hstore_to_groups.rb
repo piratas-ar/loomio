@@ -1,4 +1,4 @@
-class AddSegmentsHstoreToGroups < ActiveRecord::Migration
+class AddSegmentsHstoreToGroups < ActiveRecord::Migration[4.2]
   def change
     add_column :groups, :experiences, :jsonb, null: false, default: {}.to_json
     Group.where("MOD (segment_seed, 2) = 1").update_all(experiences: {bx_choose_plan: true}.to_json)
