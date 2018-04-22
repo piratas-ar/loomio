@@ -16,7 +16,6 @@ class ConvertMotionsToPolls
       poll = Poll.new(
       poll_type:               "proposal",
       key:                     motion.key,
-      discussion:              motion.discussion,
       motion:                  motion,
       title:                   motion.name,
       details:                 motion.description,
