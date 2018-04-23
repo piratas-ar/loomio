@@ -23,8 +23,7 @@ class ConvertMotionsToPolls
       created_at:              motion.created_at,
       updated_at:              motion.updated_at,
       closing_at:              motion.closing_at,
-      closed_at:               motion.closed_at,
-      outcomes:                Array(outcome)
+      closed_at:               motion.closed_at
       )
       poll.save(validate: false)
 
