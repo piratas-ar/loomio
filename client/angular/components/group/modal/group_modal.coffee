@@ -1,7 +1,7 @@
-Records       = require 'shared/services/records.coffee'
-LmoUrlService = require 'shared/services/lmo_url_service.coffee'
+Records       = require 'shared/services/records'
+LmoUrlService = require 'shared/services/lmo_url_service'
 
-{ applySequence } = require 'shared/helpers/apply.coffee'
+{ applySequence } = require 'shared/helpers/apply'
 
 angular.module('loomioApp').factory 'GroupModal', ->
   templateUrl: 'generated/components/group/modal/group_modal.html'
@@ -11,10 +11,10 @@ angular.module('loomioApp').factory 'GroupModal', ->
     applySequence $scope,
       steps: ->
         if $scope.group.isNew() or $scope.group.parentId
-          ['create', 'invite']
+          ['create', 'announce']
         else
           ['create']
-      createComplete: (_, g) ->
-        $scope.invitationForm = Records.invitationForms.build(groupId: g.id)
-        LmoUrlService.goTo LmoUrlService.group(g)
+      createComplete: (_, group) ->
+        $scope.announcement = Records.announcements.buildFromModel(group)
+        LmoUrlService.goTo LmoUrlService.group(group)
   ]

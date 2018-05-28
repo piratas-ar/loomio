@@ -7,6 +7,7 @@ class Comment < ApplicationRecord
   include HasCreatedEvent
 
   has_paper_trail only: [:body]
+
   is_translatable on: :body
   is_mentionable  on: :body
 
@@ -41,10 +42,15 @@ class Comment < ApplicationRecord
   delegate :full_name, to: :group, prefix: :group
   delegate :title, to: :discussion, prefix: :discussion
   delegate :locale, to: :user
+  delegate :mailer, to: :discussion
   delegate :id, to: :group, prefix: :group
   delegate :groups, to: :discussion
 
   define_counter_cache(:versions_count) { |comment| comment.versions.count }
+
+  def self.always_versioned_fields
+    [:body]
+  end
 
   def created_event_kind
     :new_comment

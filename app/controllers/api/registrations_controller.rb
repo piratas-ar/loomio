@@ -5,26 +5,18 @@ class API::RegistrationsController < Devise::RegistrationsController
 
   def create
     build_resource(sign_up_params)
+    resource.require_valid_signup = true
+    resource.require_recaptcha = true
     if resource.save
       save_detected_locale(resource)
-      if invitation_is_present?
+      if email_is_verified?
         sign_in resource
         flash[:notice] = t(:'devise.sessions.signed_in')
+        render json: { success: :ok, signed_in: true }
       else
         LoginTokenService.create(actor: resource, uri: URI::parse(request.referrer.to_s))
+        render json: { success: :ok }
       end
-      render json: { success: :ok }
-    else
-      render json: { errors: resource.errors }, status: 422
-    end
-  end
-
-  def oauth
-    resource = user_from_pending_identity.tap(&:save)
-    if resource.persisted?
-      sign_in resource
-      flash[:notice] = t(:'devise.sessions.signed_up')
-      render json: { success: :ok }
     else
       render json: { errors: resource.errors }, status: 422
     end
@@ -32,23 +24,17 @@ class API::RegistrationsController < Devise::RegistrationsController
 
   private
   def permission_check
-    AppConfig.app_features[:create_user] || pending_invitation
+    AppConfig.app_features[:create_user] || pending_membership
   end
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up) do |u|
-      u.require(:recaptcha) if !invitation_is_present? && ENV['RECAPTCHA_APP_KEY']
-      u.permit(:name, :email, :recaptcha)
+      u.permit(:name, :email, :recaptcha, :legal_accepted)
     end
   end
 
-  def user_from_pending_identity
-    User.new(name: pending_identity&.name, email: pending_identity&.email)
-  end
-
-  def invitation_is_present?
-    pending_invitation.present? &&
-    pending_invitation.single_use? &&
-    pending_invitation.email == params[:user][:email]
+  def email_is_verified?
+    (pending_identity.present? && pending_identity.email == params[:user][:email]) or
+    (pending_membership.present? && pending_membership.user.email == params[:user][:email])
   end
 end

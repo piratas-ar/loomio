@@ -12,7 +12,7 @@ module Null::User
   def nil_methods
     [:key, :username, :short_bio, :city, :region, :country, :selected_locale, :deactivated_at, :time_zone,
      :default_membership_volume, :unsubscribe_token, :slack_identity, :location,
-     :encrypted_password, :associate_with_identity, :update_attribute, :last_seen_at]
+     :encrypted_password, :associate_with_identity, :update_attribute, :last_seen_at, :legal_accepted_at]
   end
 
   def false_methods
@@ -29,11 +29,16 @@ module Null::User
     [:experiences]
   end
 
+  def zero_methods
+    [:pending_invitation_limit]
+  end
+
   def none_methods
     {
       notifications: :notification,
       login_tokens: :login_token,
       memberships: :membership,
+      admin_memberships: :membership,
       participated_polls: :poll,
       group_polls: :poll,
       polls: :poll,

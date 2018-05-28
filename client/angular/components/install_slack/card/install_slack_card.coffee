@@ -1,6 +1,6 @@
-AppConfig      = require 'shared/services/app_config.coffee'
-AbilityService = require 'shared/services/ability_service.coffee'
-ModalService   = require 'shared/services/modal_service.coffee'
+AppConfig      = require 'shared/services/app_config'
+AbilityService = require 'shared/services/ability_service'
+ModalService   = require 'shared/services/modal_service'
 
 angular.module('loomioApp').directive 'installSlackCard', ->
   scope: {group: '='}
@@ -19,10 +19,9 @@ angular.module('loomioApp').directive 'installSlackCard', ->
       AbilityService.canAdministerGroup($scope.group)
 
     $scope.remove = ->
-      ModalService.open 'ConfirmModal',
-        forceSubmit: -> false
-        submit:      -> $scope.groupIdentity().destroy
-        text:        ->
+      ModalService.open 'ConfirmModal', confirm: ->
+        submit:     $scope.groupIdentity().destroy
+        text:
           title:    'install_slack.card.confirm_remove_title'
           helptext: 'install_slack.card.confirm_remove_helptext'
           flash:    'install_slack.card.identity_removed'

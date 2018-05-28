@@ -1,11 +1,11 @@
-Session       = require 'shared/services/session.coffee'
-Records       = require 'shared/services/records.coffee'
-EventBus      = require 'shared/services/event_bus.coffee'
-ModalService  = require 'shared/services/modal_service.coffee'
-LmoUrlService = require 'shared/services/lmo_url_service.coffee'
+Session       = require 'shared/services/session'
+Records       = require 'shared/services/records'
+EventBus      = require 'shared/services/event_bus'
+ModalService  = require 'shared/services/modal_service'
+LmoUrlService = require 'shared/services/lmo_url_service'
 
-{ subscribeTo }     = require 'shared/helpers/cable.coffee'
-{ myLastStanceFor } = require 'shared/helpers/poll.coffee'
+{ subscribeTo }     = require 'shared/helpers/cable'
+{ myLastStanceFor } = require 'shared/helpers/poll'
 
 $controller = ($rootScope, $routeParams) ->
   @init = (poll) =>
@@ -13,15 +13,13 @@ $controller = ($rootScope, $routeParams) ->
       @poll = poll
 
       EventBus.broadcast $rootScope, 'currentComponent',
-        group: @poll.group()
+        group: poll.group()
+        poll:  poll
         title: poll.title
         page: 'pollPage'
         skipScroll: true
 
       subscribeTo(@poll)
-
-      if LmoUrlService.params().share
-        ModalService.open 'PollCommonShareModal', poll: => @poll
 
       if LmoUrlService.params().set_outcome
         ModalService.open 'PollCommonOutcomeModal', outcome: => Records.outcomes.build(pollId: @poll.id)

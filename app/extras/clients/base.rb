@@ -85,6 +85,7 @@ class Clients::Base
 
   def default_failure
     ->(response) {
+      Rails.logger.info "Failed #{self.class.name.demodulize} api request. response: #{response} token: #{@token}"
       response
     }
   end

@@ -1,11 +1,11 @@
-Session        = require 'shared/services/session.coffee'
-EventBus       = require 'shared/services/event_bus.coffee'
-AbilityService = require 'shared/services/ability_service.coffee'
-LmoUrlService  = require 'shared/services/lmo_url_service.coffee'
-FlashService   = require 'shared/services/flash_service.coffee'
-ModalService   = require 'shared/services/modal_service.coffee'
+Session        = require 'shared/services/session'
+EventBus       = require 'shared/services/event_bus'
+AbilityService = require 'shared/services/ability_service'
+LmoUrlService  = require 'shared/services/lmo_url_service'
+FlashService   = require 'shared/services/flash_service'
+ModalService   = require 'shared/services/modal_service'
 
-{ listenForTranslations, listenForReactions } = require 'shared/helpers/listen.coffee'
+{ listenForTranslations, listenForReactions } = require 'shared/helpers/listen'
 
 angular.module('loomioApp').directive 'newComment', ['$rootScope', 'clipboard', ($rootScope, clipboard) ->
   scope: {event: '=', eventable: '='}
@@ -27,12 +27,19 @@ angular.module('loomioApp').directive 'newComment', ['$rootScope', 'clipboard', 
       canPerform: -> AbilityService.canEditComment($scope.eventable)
       perform:    -> ModalService.open 'EditCommentForm', comment: -> $scope.eventable
     ,
+      name: 'fork_comment'
+      icon: 'mdi-call-split'
+      canPerform: -> AbilityService.canForkComment($scope.eventable)
+      perform:    ->
+        EventBus.broadcast $rootScope, 'toggleSidebar', false
+        $scope.event.toggleFromFork()
+    ,
       name: 'translate_comment'
       icon: 'mdi-translate'
       canPerform: -> $scope.eventable.body && AbilityService.canTranslate($scope.eventable) && !$scope.translation
       perform:    -> $scope.eventable.translate(Session.user().locale)
     ,
-      name: 'copy_url_comment'
+      name: 'copy_url'
       icon: 'mdi-link'
       canPerform: -> clipboard.supported
       perform:    ->
@@ -47,7 +54,13 @@ angular.module('loomioApp').directive 'newComment', ['$rootScope', 'clipboard', 
       name: 'delete_comment'
       icon: 'mdi-delete'
       canPerform: -> AbilityService.canDeleteComment($scope.eventable)
-      perform:    -> ModalService.open 'DeleteCommentForm', comment: -> $scope.eventable
+      perform:    -> ModalService.open 'ConfirmModal', confirm: ->
+        submit: $scope.eventable.destroy
+        text:
+          title:    'delete_comment_dialog.title'
+          helptext: 'delete_comment_dialog.question'
+          confirm:  'delete_comment_dialog.confirm'
+          flash:    'comment_form.messages.destroyed'
     ]
 
     listenForReactions($scope, $scope.eventable)

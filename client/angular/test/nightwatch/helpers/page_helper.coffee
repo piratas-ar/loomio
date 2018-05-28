@@ -1,6 +1,6 @@
 module.exports = (test) ->
-  loadPath: (path) ->
-    test.url "http://localhost:3000/dev/#{path}"
+  loadPath: (path, opts = {}) ->
+    test.url "http://localhost:3000/dev/#{opts.controller || 'nightwatch'}/#{path}"
 
   goTo: (path) ->
     test.url "http://localhost:3000/#{path}"
@@ -43,6 +43,15 @@ module.exports = (test) ->
     test.clearValue(selector)
     test.setValue(selector, value)
 
+  execute: (script) ->
+    test.execute(script)
+
+  selectFromAutocomplete: (selector, value) ->
+    @fillIn(selector, value)
+    @click(selector)
+    @pause()
+    @execute("document.querySelector('.md-autocomplete-suggestions li').click()")
+
   selectOption: (selector, option) ->
     # TODO
     # @click selector
@@ -64,5 +73,5 @@ module.exports = (test) ->
     test.acceptAlert()
     @pause()
 
-  waitFor: (selector, wait = 4000) ->
+  waitFor: (selector, wait = 6000) ->
     test.waitForElementVisible(selector, wait) if selector?

@@ -1,4 +1,4 @@
-utils  = require './utils.coffee'
+utils  = require './utils'
 
 module.exports =
   class BaseModel
@@ -153,6 +153,9 @@ module.exports =
         @recordStore[args.from].find(@[args.by])
 
     translationOptions: ->
+
+    isA: (models...) ->
+      _.contains models, @constructor.singular
 
     isNew: ->
       not @id?

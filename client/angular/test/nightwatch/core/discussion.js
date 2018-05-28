@@ -1,5 +1,6 @@
 require('coffeescript/register')
-pageHelper = require('../helpers/page_helper.coffee')
+pageHelper = require('../helpers/page_helper')
+workflowHelper = require('../helpers/workflow_helper')
 
 module.exports = {
   'preselects current group': (test) => {
@@ -65,12 +66,12 @@ module.exports = {
     page.fillIn('.discussion-form__title-input', 'better title')
     page.fillIn('.discussion-form textarea', 'improved description')
     page.click('.discussion-form__private')
-    page.click('.discussion-form__update')
+    page.click('.discussion-form__submit')
+    page.click('.dismiss-modal-button')
     page.pause()
     page.expectText('.context-panel__heading', 'better title')
     page.expectText('.context-panel__description', 'improved description')
     page.expectText('.context-panel', 'Private')
-    // page.expectText('.thread-item__title', 'edited the thread')
   },
 
   'does not store cancelled thread info': (test) => {
@@ -106,7 +107,7 @@ module.exports = {
     page.loadPath('setup_multiple_discussions')
     page.click('.context-panel-dropdown__button')
     page.click('.context-panel-dropdown__option--mute')
-    page.click('.mute-explanation-modal__mute-thread')
+    page.click('.confirm-modal__submit')
     page.expectText('.flash-root__message', 'Thread muted')
     page.pause()
 
@@ -143,7 +144,7 @@ module.exports = {
     page.loadPath('setup_discussion')
     page.click('.context-panel-dropdown__button')
     page.click('.context-panel-dropdown__option--delete button')
-    page.click('.delete-thread-form__submit')
+    page.click('.confirm-modal__submit')
 
     page.expectText('.flash-root__message', 'Thread deleted')
     page.expectText('.group-theme__name', 'Dirty Dancing Shoes')
@@ -157,8 +158,8 @@ module.exports = {
     page.click('.context-panel-dropdown__button')
     page.click('.context-panel-dropdown__option--pin button')
 
-    page.expectText('.pin-thread-modal', 'Pinned threads always appear')
-    page.click('.pin-thread-modal__submit')
+    page.expectText('.confirm-modal', 'Pinned threads always appear')
+    page.click('.confirm-modal__submit')
 
     page.expectText('.flash-root__message', 'Thread pinned')
     page.expectElement('.context-panel__status .mdi-pin')
@@ -198,6 +199,19 @@ module.exports = {
     page.fillIn('.comment-form textarea', 'I am new!')
     page.click('.comment-form__submit-button')
     page.expectText('.flash-root__message', 'Comment added')
+  },
+
+  'allows guests to comment and view thread in dashboard': (test) => {
+    page = pageHelper(test)
+
+    page.loadPath('setup_discussion_as_guest')
+    page.fillIn('.comment-form textarea', 'I am a guest!')
+    page.click('.comment-form__submit-button')
+    page.expectText('.flash-root__message', 'Comment added')
+
+    page.ensureSidebar()
+    page.click('.sidebar__list-item-button--recent')
+    page.expectText('.thread-preview__text-container', 'Dirty Dancing Shoes')
   },
 
   'allows logged in users to request to join a closed group': (test) => {
@@ -253,21 +267,23 @@ module.exports = {
     page.loadPath('setup_discussion')
     page.expectNoElement('.reaction')
     page.click('.action-dock__button--react')
-    page.click('.emoji-picker__selector:first-child')
+    page.click('.md-active .emoji-picker__link:first-child')
+    page.pause()
     page.click('.action-dock__button--react')
-    page.expectElement('.reaction')
+    page.expectElement('.reaction__emoji', 10000)
   },
 
-  'mentions a user': (test) => {
-    page = pageHelper(test)
-
-    page.loadPath('setup_discussion')
-    page.fillIn('.comment-form textarea', '@jennifer')
-    page.expectText('.mentio-menu', 'Jennifer Grey')
-    page.click('.mentio-menu md-menu-item')
-    page.click('.comment-form__submit-button')
-    page.expectText('.new-comment', '@jennifergrey')
-  },
+  // 'mentions a user': (test) => {
+  //   page = pageHelper(test)
+  //
+  //   page.loadPath('setup_discussion')
+  //   page.fillIn('.comment-form textarea', '@jennifer')
+  //   page.pause()
+  //   page.expectText('.mentio-menu', 'Jennifer Grey')
+  //   page.click('.mentio-menu md-menu-item')
+  //   page.click('.comment-form__submit-button')
+  //   page.expectText('.new-comment', '@jennifergrey')
+  // },
 
   'edits a comment': (test) => {
     page = pageHelper(test)
@@ -281,19 +297,30 @@ module.exports = {
     page.expectText('.new-comment', 'edited comment right thur')
   },
 
-  'lets you view comment revision history': (test) => {
+  'lets_you_view_comment_revision_history': (test) => {
     page = pageHelper(test)
 
-    page.loadPath('setup_discussion')
-    page.fillIn('.comment-form textarea', 'Comment!')
-    page.click('.comment-form__submit-button')
-    page.click('.action-dock__button--edit_comment', 8000)
-    page.fillIn('.edit-comment-form textarea', 'Revised comment!')
-    page.click( '.edit-comment-form .comment-form__submit-button')
-    page.pause()
+    page.loadPath('setup_comment_with_versions')
     page.click('.action-dock__button--show_history')
-    page.expectText('.revision-history-modal__body', 'Revised comment!')
-    page.expectText('.revision-history-modal__body', 'Comment!')
+    page.expectText('.revision-history-nav', 'Latest')
+    page.expectText('.revision-history-content--markdown del', 'star')
+    page.expectText('.revision-history-content--markdown ins', 'moon')
+    page.click('.revision-history-nav--previous')
+    page.expectText('.revision-history-nav', 'Original')
+    page.expectText('.revision-history-content--markdown', 'What star sign are you?')
+  },
+
+  'lets_you_view_discussion_revision_history': (test) => {
+    page = pageHelper(test)
+
+    page.loadPath('setup_discussion_with_versions')
+    page.click('.action-dock__button--show_history')
+    page.expectText('.revision-history-nav', 'Latest')
+    page.expectText('.revision-history-content--header del', 'star')
+    page.expectText('.revision-history-content--header ins', 'moon')
+    page.click('.revision-history-nav--previous')
+    page.expectText('.revision-history-nav', 'Original')
+    page.expectText('.revision-history-content--header ins', 'What star sign are you?')
   },
 
   'deletes a comment': (test) => {
@@ -303,8 +330,37 @@ module.exports = {
     page.fillIn('.comment-form textarea', 'original comment right hur')
     page.click('.comment-form__submit-button')
     page.click('.action-dock__button--delete_comment')
-    page.click('.delete-comment-form__delete-button')
+    page.click('.confirm-modal__submit')
     page.expectNoText('.activity-card', 'original comment right thur')
+  },
+
+  'invites_a_user_to_a_discussion': (test) => {
+    page = pageHelper(test)
+
+    page.loadPath('setup_discussion_mailer_new_discussion_email')
+    page.click('.thread-mailer__subject a')
+    page.expectText('.context-panel__heading', 'go to the moon')
+    page.expectText('.context-panel__description', 'A description for this discussion')
+    page.fillIn('.comment-form textarea', 'Hello world!')
+    page.click('.comment-form__submit-button')
+    page.expectText('.thread-item__title', 'Jennifer Grey', 10000)
+    page.expectText('.thread-item__body', 'Hello world!')
+    page.expectText('.group-theme__name--compact', 'Girdy Dancing Shoes')
+    page.ensureSidebar()
+    page.expectNoElement('.sidebar__list-item-button--group')
+  },
+
+  'invites_an_email_to_a_discussion': (test) => {
+    page = pageHelper(test)
+    workflow = workflowHelper(test)
+
+    page.loadPath('setup_discussion_mailer_invitation_created_email')
+    page.click('.thread-mailer__subject a')
+    page.expectValue('.auth-email-form__email input', 'jen@example.com')
+    workflow.signUpViaInvitation("Jennifer")
+    page.expectText('.context-panel__heading', 'go to the moon', 10000)
+    page.expectText('.context-panel__description', 'A description for this discussion')
+    page.expectText('.new-comment__body', 'body of the comment')
   },
 
   'sends_missed_yesterday': (test) => {
@@ -313,5 +369,21 @@ module.exports = {
     page.loadPath('setup_thread_missed_yesterday')
     page.expectText('.activity-feed', 'body of the comment')
     page.expectText('.activity-feed', 'Patrick Swayze closed the discussion')
-  }
+  },
+
+  // 'can_fork_a_thread': (test) => {
+  //   page = pageHelper(test)
+  //
+  //   page.loadPath('setup_forkable_discussion')
+  //   page.click('.action-dock__button--fork_comment')
+  //   page.expectElement('md-checkbox.md-checked')
+  //   page.click('.discussion-fork-actions__submit')
+  //   page.fillIn('.discussion-form__title-input', 'Forked thread')
+  //   page.click('.discussion-form__submit')
+  //   page.expectText('.flash-root__message', 'Thread fork created')
+  //   page.click('.dismiss-modal-button')
+  //   page.expectText('.context-panel__heading', 'Forked thread')
+  //   page.expectText('.context-panel__details', 'Forked from What star sign are you?')
+  //   page.expectText('.thread-item__directive', 'This is totally on topic!', 8000)
+  // }
 }

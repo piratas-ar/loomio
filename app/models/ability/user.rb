@@ -7,7 +7,11 @@ module Ability::User
     end
 
     can :deactivate, ::User do |u|
-      u.adminable_groups.all? { |g| g.admins.count > 1 }
+      u.adminable_groups.where(type: "FormalGroup").all? { |g| g.admins.count > 1 }
+    end
+
+    can :reactivate, ::User do |u|
+      u.deactivated_at?
     end
 
     can [:update,
