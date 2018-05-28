@@ -1,5 +1,5 @@
-BaseModel = require 'shared/record_store/base_model.coffee'
-AppConfig = require 'shared/services/app_config.coffee'
+BaseModel = require 'shared/record_store/base_model'
+AppConfig = require 'shared/services/app_config'
 
 module.exports = class UserModel extends BaseModel
   @singular: 'user'
@@ -35,11 +35,17 @@ module.exports = class UserModel extends BaseModel
     groups = _.filter @recordStore.groups.find(id: { $in: @groupIds() }), (group) -> !group.isArchived()
     _.sortBy groups, 'fullName'
 
+  formalGroups: ->
+    _.filter @groups(), (group) -> group.type == "FormalGroup"
+
   adminGroups: ->
     _.invoke @adminMemberships(), 'group'
 
   adminGroupIds: ->
     _.invoke @adminMemberships(), 'groupId'
+
+  onlyAdminGroups: ->
+    _.filter @adminGroups(), (g) -> !g.hasMultipleAdmins
 
   parentGroups: ->
     _.filter @groups(), (group) -> group.isParent()
@@ -66,13 +72,13 @@ module.exports = class UserModel extends BaseModel
       group.parent()
 
   isAuthorOf: (object) ->
-    @id == object.authorId
+    @id == object.authorId if object
 
   isAdminOf: (group) ->
-    _.contains(group.adminIds(), @id)
+    _.contains(group.adminIds(), @id) if group
 
   isMemberOf: (group) ->
-    _.contains(group.memberIds(), @id)
+    _.contains(group.memberIds(), @id) if group
 
   firstName: ->
     _.first @name.split(' ') if @name
@@ -103,6 +109,10 @@ module.exports = class UserModel extends BaseModel
 
   hasProfilePhoto: ->
     @avatarKind != 'initials'
+
+  uploadedAvatarUrl: (size = 'medium') ->
+    return @avatarUrl if typeof @avatarUrl is 'string'
+    @avatarUrl[size]
 
   belongsToPayingGroup: ->
     _.any @groups(), (group) -> group.subscriptionKind == 'paid'

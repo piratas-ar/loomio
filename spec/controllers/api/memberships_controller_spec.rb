@@ -7,6 +7,7 @@ describe API::MembershipsController do
   let(:user_named_bang) { create :user, name: "Bang Whamfist" }
   let(:alien_named_biff) { create :user, name: "Biff Beef", email: 'beef@biff.com' }
   let(:alien_named_bang) { create :user, name: 'Bang Beefthrong' }
+  let(:pending_named_barb) { create :user, name: 'Barb Backspace' }
 
   let(:group) { create :formal_group }
   let(:another_group) { create :formal_group }
@@ -17,12 +18,13 @@ describe API::MembershipsController do
   }}
 
   before do
-    group.admins << user
-    group.members  << user_named_biff
-    group.members  << user_named_bang
-    another_group.members << user
-    another_group.members << alien_named_bang
-    another_group.members << alien_named_biff
+    group.add_admin! user
+    group.add_member! user_named_biff
+    group.add_member! user_named_bang
+    another_group.add_member! user
+    another_group.add_member! alien_named_bang
+    another_group.add_member! alien_named_biff
+    group.memberships.create!(user: pending_named_barb, accepted_at: nil)
     sign_in user
   end
 
@@ -32,6 +34,45 @@ describe API::MembershipsController do
       user.update_attribute(:default_membership_volume, 'quiet')
       membership = Membership.create!(user: user, group: new_group)
       expect(membership.volume).to eq 'quiet'
+    end
+  end
+
+  describe 'resend' do
+    let(:group) { create :formal_group }
+    let(:discussion) { create :discussion }
+    let(:poll) { create :poll }
+    let(:user) { create :user }
+    let(:group_invite) { create :membership, accepted_at: nil, inviter: user, group: group }
+    let(:discussion_invite) { create :membership, accepted_at: nil, inviter: user, group: discussion.guest_group }
+    let(:poll_invite) { create :membership, accepted_at: nil, inviter: user, group: poll.guest_group }
+
+    before { sign_in user }
+
+    it 'can resend a group invite' do
+      expect { post :resend, params: { id: group_invite.id } }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      expect(response.status).to eq 200
+    end
+
+    it 'can resend a discussion invite' do
+      expect { post :resend, params: { id: discussion_invite.id } }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      expect(response.status).to eq 200
+    end
+
+    it 'can resend a poll invite' do
+      expect { post :resend, params: { id: poll_invite.id } }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      expect(response.status).to eq 200
+    end
+
+    it 'does not send if not the inviter' do
+      group_invite.update(inviter: create(:user))
+      expect { post :resend, params: { id: group_invite.id } }.to_not change { ActionMailer::Base.deliveries.count }
+      expect(response.status).to eq 403
+    end
+
+    it 'does not send if accepted' do
+      group_invite.update(accepted_at: 1.day.ago)
+      expect { post :resend, params: { id: group_invite.id } }.to_not change { ActionMailer::Base.deliveries.count }
+      expect(response.status).to eq 403
     end
   end
 
@@ -126,6 +167,17 @@ describe API::MembershipsController do
         groups = json['groups'].map { |g| g['id'] }
         expect(users).to include user_named_biff.id
         expect(users).to_not include alien_named_biff.id
+        expect(users).to_not include pending_named_barb.id
+        expect(groups).to include group.id
+      end
+
+      it 'returns pending users' do
+        get :index, params: { group_id: group.id, pending: "true" }, format: :json
+        json = JSON.parse(response.body)
+
+        user_ids = json['users'].map { |c| c['id'] }
+        groups = json['groups'].map { |g| g['id'] }
+        expect(user_ids).to include pending_named_barb.id
         expect(groups).to include group.id
       end
 
@@ -134,6 +186,7 @@ describe API::MembershipsController do
         let(:private_group) { create(:formal_group, is_visible_to_public: false) }
 
         it 'returns users filtered by group for a public group' do
+          group.update(group_privacy: 'open')
           get :index, params: { group_id: group.id }, format: :json
           json = JSON.parse(response.body)
           expect(json.keys).to include *(%w[users memberships groups])
@@ -159,9 +212,9 @@ describe API::MembershipsController do
 
     it 'returns visible groups for the given user' do
       public_group
-      private_group.members << another_user
-      group.members << another_user
-      guest_group.members << another_user
+      private_group.add_member! another_user
+      group.add_member! another_user
+      guest_group.add_member! another_user
 
       get :for_user, params: { user_id: another_user.id }
       json = JSON.parse(response.body)
@@ -255,9 +308,9 @@ describe API::MembershipsController do
 
       it 'does not return duplicate users' do
         third_group = create(:formal_group)
-        third_group.members << user
-        third_group.members << user_named_biff
-        another_group.members << user_named_biff
+        third_group.add_member! user
+        third_group.add_member! user_named_biff
+        another_group.add_member! user_named_biff
 
         get :invitables, params: { group_id: group.id, q: 'biff' }, format: :json
         json = JSON.parse(response.body)

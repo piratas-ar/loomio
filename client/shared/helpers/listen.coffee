@@ -1,6 +1,6 @@
-Records  = require 'shared/services/records.coffee'
-Session  = require 'shared/services/session.coffee'
-EventBus = require 'shared/services/event_bus.coffee'
+Records  = require 'shared/services/records'
+Session  = require 'shared/services/session'
+EventBus = require 'shared/services/event_bus'
 
 # A series of helpers for applying listeners to scope for events, such as an
 # emoji being added or a translation being completed
@@ -9,7 +9,7 @@ module.exports =
     $scope.unmentionableIds = [model.authorId, Session.user().id]
     $scope.fetchByNameFragment = (fragment) ->
       Records.memberships.fetchByNameFragment(fragment, model.group().key).then (response) ->
-        userIds = _.without(_.pluck(response.users, 'id'), $scope.unmentionableIds...)
+        userIds = _.without(_.pluck(response.memberships, 'user_id'), $scope.unmentionableIds...)
         $scope.mentionables = Records.users.find(userIds)
 
   listenForTranslations: ($scope) ->

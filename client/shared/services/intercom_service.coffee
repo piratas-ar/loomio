@@ -1,7 +1,7 @@
-AppConfig     = require 'shared/services/app_config.coffee'
-Session       = require 'shared/services/session.coffee'
-LmoUrlService = require 'shared/services/lmo_url_service.coffee'
-ModalService  = require 'shared/services/modal_service.coffee'
+AppConfig     = require 'shared/services/app_config'
+Session       = require 'shared/services/session'
+LmoUrlService = require 'shared/services/lmo_url_service'
+ModalService  = require 'shared/services/modal_service'
 
 lastGroup = {}
 
@@ -23,8 +23,8 @@ mapGroup = (group) ->
   created_at: group.createdAt.format()
   discussions_count: group.discussionsCount
   memberships_count: group.membershipsCount
+  pending_memberships_count: group.pendingMembershipsCount
   has_custom_cover: group.hasCustomCover
-  invitations_count: group.invitationsCount
 
 module.exports = new class IntercomService
   available: ->
@@ -58,7 +58,7 @@ module.exports = new class IntercomService
   updateWithGroup: (group) ->
     return unless group? and @available()
     return if _.isEqual(lastGroup, mapGroup(group))
-    return if group.isSubgroup()
+    return if group.isSubgroup() or group.type != 'FormalGroup'
     user = Session.user()
     return if !user.isMemberOf(group)
     lastGroup = mapGroup(group)

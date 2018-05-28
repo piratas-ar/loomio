@@ -1,10 +1,11 @@
-BaseModel       = require 'shared/record_store/base_model.coffee'
-AppConfig       = require 'shared/services/app_config.coffee'
-RangeSet        = require 'shared/services/range_set.coffee'
-HasDrafts       = require 'shared/mixins/has_drafts.coffee'
-HasDocuments    = require 'shared/mixins/has_documents.coffee'
-HasMentions     = require 'shared/mixins/has_mentions.coffee'
-HasTranslations = require 'shared/mixins/has_translations.coffee'
+BaseModel        = require 'shared/record_store/base_model'
+AppConfig        = require 'shared/services/app_config'
+RangeSet         = require 'shared/services/range_set'
+HasDrafts        = require 'shared/mixins/has_drafts'
+HasDocuments     = require 'shared/mixins/has_documents'
+HasMentions      = require 'shared/mixins/has_mentions'
+HasTranslations  = require 'shared/mixins/has_translations'
+HasGuestGroup    = require 'shared/mixins/has_guest_group'
 
 module.exports = class DiscussionModel extends BaseModel
   @singular: 'discussion'
@@ -21,6 +22,7 @@ module.exports = class DiscussionModel extends BaseModel
     HasDrafts.apply @
     HasMentions.apply @, 'description'
     HasTranslations.apply @
+    HasGuestGroup.apply @
 
   defaultValues: =>
     private: null
@@ -28,6 +30,10 @@ module.exports = class DiscussionModel extends BaseModel
     lastItemAt: null
     title: ''
     description: ''
+    forkedEventIds: []
+
+  audienceValues: ->
+    name: @group().name
 
   privateDefaultValue: =>
     if @group()
@@ -46,6 +52,7 @@ module.exports = class DiscussionModel extends BaseModel
     @belongsTo 'group'
     @belongsTo 'author', from: 'users'
     @belongsTo 'createdEvent', from: 'events'
+    @belongsTo 'forkedEvent', from: 'events'
 
   discussion: ->
     @
@@ -188,12 +195,17 @@ module.exports = class DiscussionModel extends BaseModel
   reopen: =>
     @remote.patchMember @keyOrId(), 'reopen'
 
+  fork: =>
+    @remote.post 'fork', @serialize()
+
   edited: ->
     @versionsCount > 1
 
-  attributeForVersion: (attr, version) ->
-    return '' unless version
-    if version.changes[attr]
-      version.changes[attr][1]
-    else
-      @attributeForVersion(attr, @recordStore.versions.find(version.previousId))
+  isForking: ->
+    @forkedEventIds.length > 0
+
+  forkedEvents: ->
+    _.sortBy(@recordStore.events.find(@forkedEventIds), 'sequenceId')
+
+  forkTarget: ->
+    @forkedEvents()[0].model() if _.any @forkedEvents()

@@ -1,9 +1,11 @@
-BaseModel       = require 'shared/record_store/base_model.coffee'
-AppConfig       = require 'shared/services/app_config.coffee'
-HasMentions     = require 'shared/mixins/has_mentions.coffee'
-HasDrafts       = require 'shared/mixins/has_drafts.coffee'
-HasDocuments    = require 'shared/mixins/has_documents.coffee'
-HasTranslations = require 'shared/mixins/has_translations.coffee'
+BaseModel        = require 'shared/record_store/base_model'
+AppConfig        = require 'shared/services/app_config'
+HasMentions      = require 'shared/mixins/has_mentions'
+HasDrafts        = require 'shared/mixins/has_drafts'
+HasDocuments     = require 'shared/mixins/has_documents'
+HasTranslations  = require 'shared/mixins/has_translations'
+HasGuestGroup    = require 'shared/mixins/has_guest_group'
+I18n             = require 'shared/services/i18n'
 
 module.exports = class PollModel extends BaseModel
   @singular: 'poll'
@@ -18,11 +20,18 @@ module.exports = class PollModel extends BaseModel
     HasDrafts.apply @
     HasMentions.apply @, 'details'
     HasTranslations.apply @
+    HasGuestGroup.apply @
+
+  translatedPollType: ->
+    I18n.t("poll_types.#{@pollType}")
 
   draftParent: ->
     @discussion() or @author()
 
   poll: -> @
+
+  groups: ->
+    _.compact [@group(), @discussionGuestGroup(), @guestGroup()]
 
   # the polls which haven't closed have the highest importance
   # (and so have the lowest value here)
@@ -43,6 +52,9 @@ module.exports = class PollModel extends BaseModel
     pollOptionIds: []
     customFields: {}
 
+  audienceValues: ->
+    name: @group().name
+
   relationships: ->
     @belongsTo 'author', from: 'users'
     @belongsTo 'discussion'
@@ -51,39 +63,22 @@ module.exports = class PollModel extends BaseModel
     @hasMany   'pollOptions'
     @hasMany   'stances', sortBy: 'createdAt', sortDesc: true
     @hasMany   'pollDidNotVotes'
+    @hasMany   'versions', sortBy: 'createdAt'
+
+  discussionGuestGroupId: ->
+    @discussion().guestGroupId if @discussion()
+
+  discussionGuestGroup: ->
+    @discussion().guestGroup() if @discussion()
+
+  groupIds: ->
+    _.compact [@groupId, @guestGroupId, @discussionGuestGroupId()]
 
   reactions: ->
     @recordStore.reactions.find(reactableId: @id, reactableType: "Poll")
 
-  announcementSize: (action) ->
-    return @group().announcementRecipientsCount if @group() and @isNew()
-    switch action or @notifyAction()
-      when 'publish' then @stancesCount + @undecidedUserCount
-      when 'edit'    then @stancesCount
-      else                0
-
-  memberIds: ->
-    _.uniq if @isActive()
-      @formalMemberIds().concat @guestIds()
-    else
-      @participantIds().concat @undecidedIds()
-
-  formalMemberIds: ->
-    # TODO: membersCanVote
-    if @group() then @group().memberIds() else []
-
-  guestIds: ->
-    if @guestGroup() then @guestGroup().memberIds() else []
-
   participantIds: ->
     _.pluck(@latestStances(), 'participantId')
-
-  undecidedIds: ->
-    _.pluck(@pollDidNotVotes(), 'userId')
-
-  # who can vote?
-  members: ->
-    @recordStore.users.find(@memberIds())
 
   # who's voted?
   participants: ->
@@ -91,7 +86,10 @@ module.exports = class PollModel extends BaseModel
 
   # who hasn't voted?
   undecided: ->
-    _.difference(@members(), @participants())
+    if @isActive()
+      _.difference(@members(), @participants())
+    else
+      _.invoke @pollDidNotVotes(), 'user'
 
   membersCount: ->
     # NB: this won't work for people who vote, then leave the group.
@@ -136,11 +134,6 @@ module.exports = class PollModel extends BaseModel
   addOptions: =>
     @remote.postMember(@key, 'add_options', poll_option_names: @pollOptionNames)
 
-  inviteGuests: ->
-    @processing = true
-    @remote.postMember(@key, 'invite_guests', emails: @customFields.pending_emails.join(',')).finally =>
-      @processing = false
-
   toggleSubscription: =>
     @remote.postMember(@key, 'toggle_subscription')
 
@@ -154,7 +147,6 @@ module.exports = class PollModel extends BaseModel
     @handleDateOption()
     return unless @newOptionName and !_.contains(@pollOptionNames, @newOptionName)
     @pollOptionNames.push @newOptionName
-    @makeAnnouncement = true unless @isNew()
     @setErrors({})
     @setMinimumStanceChoices()
     @newOptionName = ''
@@ -176,3 +168,6 @@ module.exports = class PollModel extends BaseModel
   removeOrphanOptions: ->
     _.each @pollOptions(), (option) =>
       option.remove() unless _.includes(@pollOptionNames, option.name)
+
+  edited: ->
+    @versionsCount > 1

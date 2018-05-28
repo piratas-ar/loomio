@@ -15,7 +15,7 @@ cache:
     - client/node_modules
 
 addons:
-  firefox: "57.0"
+  firefox: "60.0"
   postgresql: "9.6"
   apt:
     sources:
@@ -32,6 +32,9 @@ env:
     - DISPLAY=:99.0
     - PATH=$PATH:$TRAVIS_BUILD_DIR/bin
     - RAILS_ENV=test
+    - PUMA_WORKERS=2
+    - MIN_THREADS=3
+    - MAX_THREADS=3
     - CC_TEST_REPORTER_ID=9fbffa5d3f717f4adb3cd49ab4742701ae7c604f3c3afea23fd04aed5cb88ce0
   matrix:
     - TASK=e2e
@@ -40,6 +43,7 @@ env:
 
 before_install:
   - /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16
+  - gem install bundler
   - nvm install 8.4.0
   - nvm use 8.4.0
   - npm install -g yarn gulp
@@ -53,7 +57,8 @@ before_script:
   - cp config/database.yml.$DB config/database.yml
   - bundle exec rake db:setup
   - if [ "$TASK" = "plugins" ]; then bundle exec rake plugins:fetch plugins:install; fi
-  - bundle exec rake travis:prepare
+  - bundle exec rake travis:build_client
+  - bundle exec rake travis:cc_reporter
   - bundle exec rails server -b 0.0.0.0 > /dev/null &
 
 script:

@@ -1,7 +1,7 @@
-FlashService   = require 'shared/services/flash_service.coffee'
-AbilityService = require 'shared/services/ability_service.coffee'
+FlashService   = require 'shared/services/flash_service'
+AbilityService = require 'shared/services/ability_service'
 
-{ applyLoadingFunction } = require 'shared/helpers/apply.coffee'
+{ applyLoadingFunction } = require 'shared/helpers/apply'
 
 angular.module('loomioApp').directive 'pollCommonUndecidedUser', ->
   scope: {user: '=', poll: '='}
@@ -9,11 +9,6 @@ angular.module('loomioApp').directive 'pollCommonUndecidedUser', ->
   controller: ['$scope', ($scope) ->
     $scope.canAdministerPoll = ->
       AbilityService.canAdministerPoll($scope.poll)
-
-    $scope.resend = ->
-      $scope.user.resend().then ->
-        FlashService.success 'common.action.resent'
-    applyLoadingFunction($scope, 'resend')
 
     $scope.remind = ->
       $scope.user.remind($scope.poll).then ->

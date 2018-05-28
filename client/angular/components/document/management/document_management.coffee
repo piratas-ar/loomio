@@ -1,5 +1,5 @@
-AbilityService = require 'shared/services/ability_service.coffee'
-ModalService   = require 'shared/services/modal_service.coffee'
+AbilityService = require 'shared/services/ability_service'
+ModalService   = require 'shared/services/modal_service'
 
 angular.module('loomioApp').directive 'documentManagement', ->
   scope: {group: '=', fragment: '=', filter: '@', header: '@'}
@@ -22,10 +22,9 @@ angular.module('loomioApp').directive 'documentManagement', ->
       ModalService.open 'DocumentModal', doc: -> doc
 
     $scope.remove = (doc) ->
-      ModalService.open 'ConfirmModal',
-        forceSubmit: -> false
-        submit:      -> doc.destroy
-        text:        ->
+      ModalService.open 'ConfirmModal', confirm: ->
+        submit:      doc.destroy
+        text:
           title:    'documents_page.confirm_remove_title'
           helptext: 'documents_page.confirm_remove_helptext'
           flash:    'documents_page.document_removed'

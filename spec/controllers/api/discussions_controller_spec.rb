@@ -130,6 +130,18 @@ describe API::DiscussionsController do
       end
     end
 
+    describe 'guest threads' do
+      it 'displays guest threads' do
+        sign_in user
+        another_discussion.guest_group.add_member! user
+        DiscussionReader.for(user: user, discussion: another_discussion).set_volume! :normal
+        get :dashboard
+        json = JSON.parse(response.body)
+        discussion_ids = json['discussions'].map { |d| d['id'] }
+        expect(discussion_ids).to include another_discussion.id
+      end
+    end
+
     describe 'filtering' do
       let(:subgroup_discussion) { create :discussion, group: subgroup }
       let(:muted_discussion) { create :discussion, group: group }
@@ -196,6 +208,16 @@ describe API::DiscussionsController do
         json = JSON.parse(response.body)
         expect(json.keys).to include *(%w[users groups discussions])
         expect(json['discussions'][0].keys).to include *(%w[id key title description last_activity_at created_at updated_at items_count private author_id group_id ])
+      end
+
+      it 'displays discussion to guest group members' do
+        discussion.group.memberships.find_by(user: user).destroy
+        discussion.guest_group.add_member!(user)
+        get :show, params: { id: discussion.key }
+        json = JSON.parse(response.body)
+
+        expect(response.status).to eq 200
+        expect(json['discussions'][0]['id']).to eq discussion.id
       end
 
       it 'returns the reader fields' do
@@ -269,7 +291,7 @@ describe API::DiscussionsController do
     context 'success' do
       it 'moves a discussion' do
         destination_group = create :formal_group
-        destination_group.members << user
+        destination_group.add_member! user
         source_group = discussion.group
         patch :move, params: { id: discussion.id, group_id: destination_group.id }, format: :json
 
@@ -447,15 +469,14 @@ describe API::DiscussionsController do
         expect(Discussion.last).to be_present
       end
 
-      describe 'make_announcement' do
-        it 'does not email users for non-announcements' do
-          expect { post :create, params: { discussion: discussion_params }, format: :json }.to_not change { ActionMailer::Base.deliveries.count }
-        end
+      it 'doesnt email everyone' do
+        expect { post :create, params: { discussion: discussion_params }, format: :json }.to_not change { ActionMailer::Base.deliveries.count }
+      end
 
-        it 'makes an announcement' do
-          discussion_params[:make_announcement] = true
-          expect { post :create, params: { discussion: discussion_params }, format: :json }.to change { ActionMailer::Base.deliveries.count }.by(1)
-        end
+      it 'emails mentioned users' do
+        group.add_member! another_user
+        discussion_params[:description] = "Hello @#{another_user.username}!"
+        expect { post :create, params: { discussion: discussion_params }, format: :json }.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
 
       it 'responds with json' do
@@ -650,6 +671,81 @@ describe API::DiscussionsController do
 
     it 'does not allow logged out users to pin a thread' do
       post :pin, params: { id: discussion.id }
+      expect(response.status).to eq 403
+    end
+  end
+
+  describe 'fork' do
+    let(:user) { create :user }
+    let(:another_user) { create :user }
+    let(:group) { create :formal_group }
+    let!(:discussion) { create :discussion, group: group }
+    let(:target_event) { create :event, discussion: discussion, kind: :new_comment, eventable: create(:comment, discussion: discussion), sequence_id: 2 }
+    let(:another_event) { create :event, discussion: discussion, kind: :new_comment, eventable: create(:comment, discussion: discussion), sequence_id: 3 }
+    let(:fork_params) {{
+      title: "A forked title",
+      group_id: group.id,
+      description: "A forked description",
+      private: true,
+      forked_event_ids: [target_event.id, another_event.id]
+    }}
+
+    before { group.add_admin! user }
+
+    it 'forks a thread' do
+      sign_in user
+      expect { post :fork, params: { discussion: fork_params } }.to change { Discussion.count }.by(1)
+      expect(response.status).to eq 200
+
+      new_discussion = Discussion.last
+      expect(new_discussion.items).to include target_event
+      expect(new_discussion.items).to include another_event
+      expect(new_discussion.title).to eq fork_params[:title]
+
+      items = discussion.reload.items
+      expect(items).to_not include target_event
+      expect(items).to_not include another_event
+
+      forked_event = items.find_by(kind: :discussion_forked)
+      expect(forked_event).to be_present
+      expect(forked_event.sequence_id).to eq 2
+    end
+
+    it 'transfers read state from old discussion readers' do
+      event4 = create :event, discussion: discussion, kind: :new_comment, eventable: create(:comment, discussion: discussion), sequence_id: 4
+      event5 = create :event, discussion: discussion, kind: :new_comment, eventable: create(:comment, discussion: discussion), sequence_id: 5
+      event6 = create :event, discussion: discussion, kind: :new_comment, eventable: create(:comment, discussion: discussion), sequence_id: 6
+      reader = create :discussion_reader, discussion: discussion, user: user, read_ranges_string: '4-6'
+      another_reader = create :discussion_reader, discussion: discussion, user: another_user, read_ranges_string: '2-3,5-6'
+      fork_params[:forked_event_ids] = [target_event.id, event4.id, event5.id]
+
+      sign_in user
+
+      #the fork post creates a discussion and reports success, the fork is performed by the signed in user
+      expect { post :fork, params: { discussion: fork_params } }.to change { Discussion.count }.by(1)
+      expect(response.status).to eq 200
+
+      #the created discussion has two discussion readers (those created on the original discussion)
+      d = Discussion.last
+      expect(d.discussion_readers.count).to eq 2
+
+      #the discussion reader is that of the user and its discussion is that which was made it has read ranges representing the entirety for the user
+      dr = DiscussionReader.find_by(user: user, discussion: d)
+      expect(dr).to be_present
+      expect(dr.read_ranges_string).to eq '2-2,4-5'
+
+      #the other user hadnt read event 4 so they should not have read it
+      dr2 = DiscussionReader.find_by(user: another_user, discussion: d)
+      expect(dr2).to be_present
+      expect(dr2.read_ranges_string).to eq '2-2,5-5'
+    end
+
+
+
+
+    it 'does not allow non admins to fork a thread' do
+      sign_in another_user
+      post :fork, params: { discussion: fork_params }
       expect(response.status).to eq 403
     end
   end

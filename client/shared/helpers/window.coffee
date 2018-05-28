@@ -15,15 +15,19 @@ module.exports =
   exportGlobals: ->
     window.moment = require 'moment'
     window._      = require 'lodash'
-    _.extend window._, require 'shared/helpers/lodash_ext.coffee'
+    _.extend window._, require 'shared/helpers/lodash_ext'
 
   initServiceWorker: ->
     if document.location.protocol.match(/https/) && navigator.serviceWorker?
       navigator.serviceWorker.register(document.location.origin + '/service-worker.js', scope: './')
 
+  triggerResize: (delay) ->
+    setTimeout ->
+      window.dispatchEvent(new window.Event('resize'))
+    , delay if window.Event?
+
   print:             -> window.print()
   is2x:              -> window.devicePixelRatio >= 2
-  triggerResize:     -> setTimeout -> window.dispatchEvent(new window.Event('resize')) if window.Event
   viewportSize:      -> viewportSize()
   hardReload: (path) -> hardReload(path)
 
@@ -34,9 +38,9 @@ hardReload = (path) ->
     window.location.reload()
 
 viewportSize = ->
-  if window.innerWidth < 480
+  if window.innerWidth < 600
     'small'
-  else if window.innerWidth < 992
+  else if window.innerWidth < 960
     'medium'
   else if window.innerWidth < 1280
     'large'

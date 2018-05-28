@@ -1,7 +1,8 @@
 class Full::UserSerializer < UserSerializer
   attributes :email, :email_when_proposal_closing_soon, :email_missed_yesterday,
-             :email_when_mentioned, :email_on_participation, :selected_locale, :locale,
-             :default_membership_volume, :experiences, :is_coordinator, :is_admin
+             :email_when_mentioned, :email_on_participation, :selected_locale,
+             :locale, :default_membership_volume, :experiences, :is_coordinator,
+             :is_admin
 
   has_many :formal_memberships, serializer: MembershipSerializer, root: :memberships
   has_many :guest_memberships,  serializer: Simple::MembershipSerializer, root: :memberships
@@ -9,7 +10,7 @@ class Full::UserSerializer < UserSerializer
   has_many :identities,         serializer: IdentitySerializer, root: :identities
 
   def guest_memberships
-    from_scope :memberships
+    from_scope :guest_memberships
   end
 
   def formal_memberships
@@ -28,7 +29,11 @@ class Full::UserSerializer < UserSerializer
     object.adminable_group_ids.any?
   end
 
-  def include_gravatar_md5?
+  def include_email?
+    true
+  end
+
+  def include_email_hash?
     true
   end
 
