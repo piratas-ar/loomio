@@ -18,9 +18,7 @@ describe API::ProfileController do
         username
         avatar_initials
         avatar_kind
-        time_zone
-        search_fragment
-        label])
+        time_zone])
       expect(json['users'][0].keys).to_not include 'email'
       expect(json['users'][0]['name']).to eq another_user.name
     end
@@ -172,4 +170,38 @@ describe API::ProfileController do
     end
   end
 
+  describe "mentionable" do
+    let(:user)  { create :user }
+    let(:group) { create :formal_group }
+    let!(:jennifer) { create :user, name: 'jennifer', username: 'queenie' }
+    let!(:jessica)  { create :user, name: 'jeesica', username: 'queenbee' }
+    let!(:emilio)   { create :user, name: 'emilio', username: 'coolguy' }
+
+    # jennifer and emilio are in the group
+    # jessica is not in the group
+
+    before do
+      group.add_member! user
+      group.add_member! jennifer
+      sign_in user
+    end
+
+    it "returns users with name matching fragment" do
+      get :mentionable_users, params: {q: "je"}
+      json = JSON.parse(response.body)
+      user_ids = json['users'].map { |c| c['id'] }
+      expect(user_ids).to     include jennifer.id
+      expect(user_ids).to_not include jessica.id
+      expect(user_ids).to_not include emilio.id
+    end
+
+    it "returns users with username matching fragment" do
+      get :mentionable_users, params: {q: "qu"}
+      json = JSON.parse(response.body)
+      user_ids = json['users'].map { |c| c['id'] }
+      expect(user_ids).to     include jennifer.id
+      expect(user_ids).to_not include jessica.id
+      expect(user_ids).to_not include emilio.id
+    end
+  end
 end
