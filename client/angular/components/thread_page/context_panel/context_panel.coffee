@@ -7,6 +7,7 @@ ThreadService  = require 'shared/services/thread_service'
 LmoUrlService  = require 'shared/services/lmo_url_service'
 FlashService   = require 'shared/services/flash_service'
 I18n           = require 'shared/services/i18n'
+AppConfig      = require 'shared/services/app_config.coffee'
 
 { listenForTranslations, listenForReactions } = require 'shared/helpers/listen'
 { scrollTo }                                  = require 'shared/helpers/layout'
