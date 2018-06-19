@@ -26,7 +26,7 @@ module Boot
           app:               AppConfig.app_features
         },
         inlineTranslation: {
-          isAvailable:       TranslationService.translator.present?,
+          isAvailable:       false,
           supportedLangs:    AppConfig.translate_languages
         },
         pageSize: {

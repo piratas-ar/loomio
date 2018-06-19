@@ -1,5 +1,3 @@
-require "google/cloud/translate"
-
 class TranslationService
   extend LocalesHelper
 
@@ -25,7 +23,8 @@ class TranslationService
     ]).first
   end
 
+  # Siempre responder nulo porque no queremos traducir via google
   def self.translator
-    @@translator ||= Google::Cloud::Translate.new if ENV['GOOGLE_CLOUD_KEY']
+    @@translator ||= nil
   end
 end
