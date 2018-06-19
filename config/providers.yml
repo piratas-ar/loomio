@@ -1,6 +1,3 @@
-# for providers which provide OAuth login capability
-identity:
-
 # for providers which provide additional API access
 community:
   - facebook
