@@ -17,7 +17,6 @@ module Boot
         contactEmail:        ENV['SUPPORT_EMAIL'],
         plugins:             Plugins::Repository.to_config,
         theme:               AppConfig.theme,
-        sentry_dsn:          ENV['SENTRY_PUBLIC_DSN'],
         regex: {
           url:               JsRegex.new(AppConfig::URL_REGEX),
           email:             JsRegex.new(AppConfig::EMAIL_REGEX)

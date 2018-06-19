@@ -5,14 +5,12 @@ class ApplicationController < ActionController::Base
   include ErrorRescueHelper
   include CurrentUserHelper
   include ForceSslHelper
-  include SentryRavenHelper
   include PrettyUrlHelper
 
   around_action :process_time_zone          # LocalesHelper
   around_action :use_preferred_locale       # LocalesHelper
   before_action :set_last_seen_at           # CurrentUserHelper
   before_action :handle_pending_memberships # PendingActionsHelper
-  before_action :set_raven_context
 
   helper_method :current_user
   helper_method :current_version
