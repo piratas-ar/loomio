@@ -14,8 +14,4 @@ class ContactMessage
   end
 
   private
-
-  def client
-    @client ||= Clients::Intercom.new(token: ENV["INTERCOM_ACCESS_TOKEN"])
-  end
 end

@@ -12,7 +12,6 @@ module Boot
         locales:             ActiveModel::ArraySerializer.new(supported_locales, each_serializer: LocaleSerializer, root: false),
         momentLocales:       AppConfig.moment_locales,
         recaptchaKey:        ENV['RECAPTCHA_APP_KEY'],
-        intercomAppId:       ENV['INTERCOM_APP_ID'],
         baseUrl:             root_url,
         contactEmail:        ENV['SUPPORT_EMAIL'],
         plugins:             Plugins::Repository.to_config,
