@@ -330,7 +330,6 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (4.2.0)
-    newrelic_rpm (5.0.0.342)
     nio4r (2.3.0)
     nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
@@ -597,7 +596,6 @@ DEPENDENCIES
   maxminddb
   net-scp
   net-ssh
-  newrelic_rpm
   nokogiri
   oj
   paper_trail (~> 8.1.2)
