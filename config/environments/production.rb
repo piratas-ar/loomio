@@ -1,5 +1,5 @@
 Loomio::Application.configure do
-  config.log_level = :info
+  config.log_level = :debug
 
   # Code is not reloaded between requests
   config.cache_classes = true
