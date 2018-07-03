@@ -1,16 +1,4 @@
 class Queries::PersonalDataQuery
-  def self.visits(user)
-    Visit.where(user_id: user.id)
-  end
-
-  def self.ahoy_events(user)
-    Ahoy::Event.where(user_id: user.id)
-  end
-
-  def self.ahoy_messages(user)
-    Ahoy::Message.where(user_id: user.id)
-  end
-
   def self.comments(user)
     Comment.where(user_id: user.id)
   end
@@ -43,10 +31,6 @@ class Queries::PersonalDataQuery
     Group.where(creator_id: user.id)
   end
 
-  def self.group_visits(user)
-    GroupVisit.where(user_id: user.id)
-  end
-
   def self.login_tokens(user)
     LoginToken.where(user_id: user.id)
   end
@@ -69,10 +53,6 @@ class Queries::PersonalDataQuery
   def self.identities(user)
     Identities::Base.where(user_id: user.id).
       or(Identities::Base.where(email: user.email))
-  end
-
-  def self.organisation_visits(user)
-    OrganisationVisit.where(user_id: user.id)
   end
 
   def self.outcomes(user)

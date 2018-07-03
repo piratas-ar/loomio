@@ -1,5 +1,4 @@
 class API::DiscussionsController < API::RestfulController
-  after_action :track_visit, only: :show
   include UsesDiscussionReaders
   include UsesPolls
   include UsesFullSerializer
@@ -86,10 +85,6 @@ class API::DiscussionsController < API::RestfulController
   end
 
   private
-
-  def track_visit
-    VisitService.record(group: resource.group, visit: current_visit, user: current_user)
-  end
 
   def accessible_records
     Queries::VisibleDiscussions.new(user: current_user, group_ids: @group&.id_and_subgroup_ids)

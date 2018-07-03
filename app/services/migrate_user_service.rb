@@ -25,8 +25,6 @@ class MigrateUserService
   end
 
   SCHEMA = {
-    ahoy_events: :user_id,
-    ahoy_messages: :user_id,
     attachments: :user_id,
     documents: :author_id,
     comments: :user_id,
@@ -34,7 +32,6 @@ class MigrateUserService
     discussion_readers: :user_id,
     discussions: :author_id,
     events: :user_id,
-    group_visits: :user_id,
     groups: :creator_id,
     login_tokens: :user_id,
     membership_requests: [:requestor_id, :responder_id],
@@ -42,13 +39,11 @@ class MigrateUserService
     notifications: :user_id,
     oauth_applications: :owner_id,
     omniauth_identities: :user_id,
-    organisation_visits: :user_id,
     outcomes: :author_id,
     poll_did_not_votes: :user_id,
     poll_unsubscriptions: :user_id,
     polls: :author_id,
     versions: :whodunnit,
-    visits: :user_id,
     user_deactivation_responses: :user_id
   }.freeze
 

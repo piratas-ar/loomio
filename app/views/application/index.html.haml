@@ -39,5 +39,3 @@
           %error_page{'ng-if' => 'pageError', 'error' => 'pageError'}
 
     %script{src: bundle_asset_path(:"angular.bundle.min.js")}
-
-    = javascript_include_tag 'angular_ahoy' if AppConfig.app_features[:ahoy_tracking]
