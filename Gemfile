@@ -1,7 +1,6 @@
 source 'http://rubygems.org'
 
-ruby '2.5.0'
-gem 'daemons'
+ruby '2.5.1'
 gem 'dotenv-rails', require: 'dotenv/rails-now'
 gem 'rails', '~> 5.1.5'
 gem 'actioncable'
