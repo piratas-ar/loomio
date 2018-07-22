@@ -33,7 +33,6 @@ namespace :loomio do
     end
     
     AnnouncementService.delay.resend_pending_memberships
-    LocateUsersAndGroupsJob.perform_later
     UsageReportService.send if (Time.now.hour == 0)
   end
 
